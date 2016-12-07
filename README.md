@@ -73,12 +73,7 @@ Multiply a `Vector2` by another `Vector2` to get the dot product.
 
 ### Access Values
 
-Convenient access to `Vector2` members:
-
-* dot notation
-* index access
-* key access
-
+Convenient access to `Vector2` members via dot notation, indexes, or keys.
 
     >>> my_vector = Vector2(2, 3)
     >>> my_vector.x
