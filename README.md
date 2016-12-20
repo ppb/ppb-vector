@@ -83,6 +83,11 @@ Convenient access to `Vector2` members via dot notation, indexes, or keys.
     >>> my_vector["x"]
     2
 
+Also iterable for translation between Vector2 and other sequence types.
+
+    >>> tuple(Vector(2, 3))
+    (2, 3)
+
 ### Methods
 
 Useful functions for game development.
