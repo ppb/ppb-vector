@@ -77,6 +77,10 @@ class Vector2(object):
         else:
             return True
 
+    def __iter__(self):
+        yield self.x
+        yield self.y
+
     def rotate(self, degrees):
         r = radians(degrees)
         r_cos = cos(r)
