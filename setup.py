@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='ppb-vector',
-    version='0.1',
+    version='0.2',
     packages=['ppb_vector'],
     url='http://github.com/pathunstrom/ppb-vector',
     license='',
