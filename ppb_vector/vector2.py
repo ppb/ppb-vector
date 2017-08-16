@@ -1,13 +1,17 @@
 from math import cos, hypot, radians, sin
 from numbers import Number
+from collections.abc import Sequence
 
 
-class Vector2(object):
+class Vector2(Sequence):
 
     def __init__(self, x, y):
         self.x = x
         self.y = y
         self.length = hypot(x, y)
+    
+    def __len__(self):
+        return 2
 
     def __add__(self, other):
         t = type(other)
@@ -43,16 +47,16 @@ class Vector2(object):
             return Vector2(self.x * other, self.y * other)
 
     def __getitem__(self, item):
-        item_type = type(item)
-
-        if item_type is str:
+        if hasattr(item, '__index__'):
+            item = item.__index__()
+        if isinstance(item, str):
             if item == 'x':
                 return self.x
             elif item == 'y':
                 return self.y
             else:
                 raise KeyError
-        elif item_type is int:
+        elif isinstance(item, int):
             if item == 0:
                 return self.x
             elif item == 1:
