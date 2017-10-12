@@ -11,6 +11,14 @@ The 2D Vector Class for the PursuedPyBear project.
 
 Implements many convenience features:
 
+### Unpacking
+
+    >>> x, y = *Vector(1, 3)
+    >>> print(x)
+    1
+    >>> print(y)
+    3
+    
 ### Addition
 
     >>> Vector2(1, 0) + Vector2(0, 1)
