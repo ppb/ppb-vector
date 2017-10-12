@@ -1,5 +1,5 @@
 # ppb-vector
-My 2D Vector class
+The 2D Vector Class for the PursuedPyBear project.
 
 ## Usage
 
@@ -140,5 +140,3 @@ less than length.
     Vector2(3.5999999999999996, 4.8)
     >>> Vector2(3, 4).truncate(6)
     Vector2(3, 4)
-
-
