@@ -1,6 +1,14 @@
 # ppb-vector
 The 2D Vector Class for the PursuedPyBear project.
 
+## Install
+
+You can install `Vector2` pip package using
+
+```bash
+pip install 'ppb-vector'
+```
+
 ## Usage
 
 `Vector2` is an immutable 2D Vector. Instantiated as expected: 
