@@ -1,26 +1,14 @@
-import unittest
-
 import ppb_vector
+import pytest
 
+@pytest.mark.parametrize("x, y, expected", [
+    (6, 8, 10),
+    (8, 6, 10),
+    (0, 0, 0),
+    (-6, -8, 10),
+    (1, 2, 2.23606797749979)
+])
 
-class TestLength(unittest.TestCase):
-
-    def test_valid_params(self):
-        vector = ppb_vector.Vector2(6, 8)
-        assert vector.length == 10
-
-    def test_valid_params_order_doesnt_matter(self):
-        vector = ppb_vector.Vector2(8, 6)
-        assert vector.length == 10
-
-    def test_zero(self):
-        vector = ppb_vector.Vector2(0, 0)
-        assert vector.length == 0
-
-    def test_negative(self):
-        vector = ppb_vector.Vector2(-6, -8)
-        assert vector.length == 10
-
-    def test_nonperfect_square(self):
-        vector = ppb_vector.Vector2(1, 2)
-        assert vector.length == 2.23606797749979
+def test_length(x, y, expected):
+    vector = ppb_vector.Vector2(x, y)
+    assert vector.length == expected
