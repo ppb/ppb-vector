@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name='ppb-vector',
-    version='0.4.0rc1',
+    version='1.0',
     packages=['ppb_vector'],
     url='http://github.com/pathunstrom/ppb-vector',
     license='',
@@ -21,7 +21,7 @@ setup(
     long_description=readme(),
     long_description_content_type="text/markdown",
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Libraries',
         'Topic :: Scientific/Engineering :: Mathematics',
