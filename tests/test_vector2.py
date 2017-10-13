@@ -11,3 +11,7 @@ class TestIterable(unittest.TestCase):
         print(test_tuple)
         self.assertEqual(test_tuple[0], 3)
         self.assertEqual(test_tuple[1], 4)
+
+
+if __name__ == '__main__':
+    unittest.main()
