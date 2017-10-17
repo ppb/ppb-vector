@@ -9,7 +9,5 @@ from ppb_vector import Vector2
     (Vector2(-1.5, 2.4), -2, Vector2(3.0, -4.8)),
     (Vector2(1, 2), 0.1, Vector2(0.1, 0.2))
 ])
-
-
 def test_scalar_multiplication(x, y, expected):
     assert x * y == expected
