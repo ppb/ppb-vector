@@ -145,7 +145,7 @@ Scale given `Vector2` to length of `scalar`.
     >>> Vector2(7, 7).scale(5)
     Vector2(3.5355339059327373, 3.5355339059327373)
 
-Note that `Vector2.scale` is equivalent to `Vector2.truncate` when `scalar` is
+Note that `Vector2.scale()` is equivalent to `Vector2.truncate()` when `scalar` is
 less than length.
 
     >>> Vector2(3, 4).scale(4)
