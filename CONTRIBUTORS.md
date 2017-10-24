@@ -20,3 +20,4 @@ Thank you everyone below for your contributions **(No matter how big or small)!*
 | [Rodrigo Prado](https://github.com/royopa) |
 | [Jamie Bliss](https://github.com/astronouth7303) |
 | [Devesh Kailay](https://github.com/deveshd2k) |
+| [Vitaly Khabarov](https://github.com/vitkhab) |
