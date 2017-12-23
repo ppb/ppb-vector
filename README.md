@@ -156,3 +156,12 @@ less than length.
     Vector2(3.5999999999999996, 4.8)
     >>> Vector2(3, 4).truncate(6)
     Vector2(3, 4)
+
+#### reflect(surface_normal)
+
+Reflect a `Vector2` based on a given surface normal.
+
+    >>> Vector2(5, 3).reflect(Vector2(-1, 0))
+    Vector2(-5, 3)
+    >>> Vector2(5, 3).reflect(Vector2(-1, -2).normalize())
+    Vector2(0.5999999999999996, -5.800000000000001)
