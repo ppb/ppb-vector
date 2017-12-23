@@ -104,6 +104,11 @@ Also iterable for translation between Vector2 and other sequence types.
     >>> tuple(Vector(2, 3))
     (2, 3)
 
+### Negation
+
+    >>> -Vector2(1, 1)
+    Vector2(-1.0, -1.0)
+
 ### Methods
 
 Useful functions for game development.
