@@ -9,7 +9,7 @@ class Vector2(Sequence):
         self.x = x
         self.y = y
         self.length = hypot(x, y)
-    
+
     def __len__(self):
         return 2
 
@@ -114,4 +114,6 @@ class Vector2(Sequence):
         """
         if not (0.99999 < surface_normal.length < 1.00001):
             raise ValueError("Reflection requires a normalized vector.")
+        if self * surface_normal > 0:
+            self = -self
         return self - (2 * (self * surface_normal) * surface_normal)
