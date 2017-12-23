@@ -107,3 +107,11 @@ class Vector2(Sequence):
         except ZeroDivisionError:
             scale = 1
         return self * scale
+
+    def reflect(self, surface_normal: 'Vector2') -> 'Vector2':
+        """
+        Calculate the reflection of the vector against a given surface normal
+        """
+        if not (0.99999 < surface_normal.length < 1.00001):
+            raise ValueError("Reflection requires a normalized vector.")
+        return self - (2 * (self * surface_normal) * surface_normal)
