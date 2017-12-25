@@ -85,9 +85,6 @@ class Vector2(Sequence):
         yield self.x
         yield self.y
 
-    def __neg__(self):
-        return self.rotate(180)
-
     def rotate(self, degrees):
         r = radians(degrees)
         r_cos = cos(r)
