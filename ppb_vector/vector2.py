@@ -67,7 +67,7 @@ class Vector2(Sequence):
             raise TypeError
 
     def __repr__(self):
-        return "Vector2({}, {})".format(self.x, self.y)
+        return f"{type(self)}({self.x}, {self.y})"
 
     def __eq__(self, other):
         if isinstance(other, Vector2):
