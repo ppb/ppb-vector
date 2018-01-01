@@ -86,7 +86,7 @@ class Vector2(Sequence):
         yield self.y
 
     def __neg__(self):
-        return self.rotate(180)
+        return self * -1
 
     def rotate(self, degrees):
         r = radians(degrees)
