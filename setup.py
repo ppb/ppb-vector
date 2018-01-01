@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='ppb-vector',
-    version='0.2',
+    version='0.3',
     packages=['ppb_vector'],
     url='http://github.com/pathunstrom/ppb-vector',
     license='',
@@ -14,6 +14,6 @@ setup(
         'Intended Audience :: Developers',
         'Topic :: Software Development',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5'
+        'Programming Language :: Python :: 3.6'
     ]
 )
