@@ -1,4 +1,4 @@
-from math import asin, cos, degrees, hypot, radians, sin
+from math import acos, cos, degrees, hypot, radians, sin
 from numbers import Number
 from collections.abc import Sequence
 
@@ -93,7 +93,7 @@ class Vector2(Sequence):
         return self * -1
 
     def angle(self, other):
-        return degrees(asin(self.normalize() ^ other.normalize()))
+        return degrees(acos(self.normalize() * other.normalize()))
 
     def rotate(self, degrees):
         r = radians(degrees)
