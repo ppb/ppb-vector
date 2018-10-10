@@ -2,6 +2,25 @@ from math import cos, hypot, radians, sin
 from numbers import Number
 from collections.abc import Sequence
 
+__all__ = 'Vector2',
+
+
+def is_vector_like(value):
+    return isinstance(value, (Vector2, list, tuple, dict))
+
+
+def _mkvector(value):
+    if isinstance(value, Vector2):
+        return value
+    # FIXME: Allow all types of sequences
+    elif isinstance(value, (list, tuple)) and len(value) == 2:
+        return Vector2(value[0], value[1])
+    # FIXME: Allow all types of mappings
+    elif isinstance(value, dict) and 'x' in value and 'y' in value and len(value) == 2:
+        return Vector2(value['x'], value['y'])
+    else:
+        raise ValueError("Cannot use {} as a vector-like".format(value))
+
 
 class Vector2(Sequence):
 
@@ -14,28 +33,27 @@ class Vector2(Sequence):
         return 2
 
     def __add__(self, other):
-        t = type(other)
-        if isinstance(other, Vector2):
-            return type(self)(self.x + other.x, self.y + other.y)
-        elif isinstance(other, (list, tuple)) and len(other) == 2:
-            return Vector2(self.x + other[0], self.y + other[1])
-        elif isinstance(other, (dict, set)) and 'x' in other and 'y' in other and len(other) == 2:
-            return Vector2(self.x + other['x'], self.y + other['y'])
-        else:
+        try:
+            other = _mkvector(other)
+        except ValueError:
             return NotImplemented
+        rtype = type(other) if isinstance(other, Vector2) else type(self)
+        return rtype(self.x + other.x, self.y + other.y)
 
     def __sub__(self, other):
-        if isinstance(other, Vector2):
-            return Vector2(self.x - other.x, self.y - other.y)
-        elif isinstance(other, (list, tuple)) and len(other) == 2:
-            return Vector2(self.x - other[0], self.y - other[1])
-        elif isinstance(other, dict) and 'x' in other and 'y' in other and len(other) == 2:
-            return Vector2(self.x - other['x'], self.y - other['y'])
-        else:
+        try:
+            other = _mkvector(other)
+        except ValueError:
             return NotImplemented
+        rtype = type(other) if isinstance(other, Vector2) else type(self)
+        return rtype(self.x - other.x, self.y - other.y)
 
     def __mul__(self, other):
-        if isinstance(other, Vector2):
+        if is_vector_like(other):
+            try:
+                other = _mkvector(other)
+            except ValueError:
+                return NotImplemented
             return self.x * other.x + self.y * other.y
         elif isinstance(other, Number):
             return Vector2(self.x * other, self.y * other)
@@ -43,8 +61,7 @@ class Vector2(Sequence):
             return NotImplemented
 
     def __rmul__(self, other):
-        if isinstance(other, Number):
-            return Vector2(self.x * other, self.y * other)
+        return self.__mul__(other)
 
     def __getitem__(self, item):
         if hasattr(item, '__index__'):
@@ -67,16 +84,18 @@ class Vector2(Sequence):
             raise TypeError
 
     def __repr__(self):
-        return "Vector2({}, {})".format(self.x, self.y)
+        return "{}({}, {})".format(type(self).__name__, self.x, self.y)
 
     def __eq__(self, other):
-        if isinstance(other, Vector2):
+        if is_vector_like(other):
+            other = _mkvector(other)
             return self.x == other.x and self.y == other.y
         else:
             return False
 
     def __ne__(self, other):
-        if isinstance(other, Vector2):
+        if is_vector_like(other, Vector2):
+            other = _mkvector(other)
             return self.x != other.x or self.y != other.y
         else:
             return True
@@ -115,6 +134,7 @@ class Vector2(Sequence):
         """
         Calculate the reflection of the vector against a given surface normal
         """
+        surface_normal = _mkvector(surface_normal)
         if not (0.99999 < surface_normal.length < 1.00001):
             raise ValueError("Reflection requires a normalized vector.")
         vec_new = self
