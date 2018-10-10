@@ -23,3 +23,4 @@ Thank you everyone below for your contributions **(No matter how big or small)!*
 | [Vitaly Khabarov](https://github.com/vitkhab) |||
 | [Ricky Putra](kurokochin) |||
 | [Maybeking](https://github.com/Maybeking) |||
+| [Henry](https://github.com/hphu) |||
