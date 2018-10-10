@@ -87,6 +87,11 @@ Multiply a `Vector2` by another `Vector2` to get the dot product.
     >>> Vector2(45, 60).length
     75.0
 
+### Cross-product
+
+    >>> Vector(1, 0) ^ Vector(0, 1)
+    1
+
 ### Access Values
 
 Convenient access to `Vector2` members via dot notation, indexes, or keys.

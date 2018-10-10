@@ -46,6 +46,10 @@ class Vector2(Sequence):
         if isinstance(other, Number):
             return Vector2(self.x * other, self.y * other)
 
+    def __xor__(self, other):
+        assert(isinstance(other, Vector2))
+        return self.x * other.y - self.y * other.x
+
     def __getitem__(self, item):
         if hasattr(item, '__index__'):
             item = item.__index__()
