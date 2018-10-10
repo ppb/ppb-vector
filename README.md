@@ -87,10 +87,13 @@ Multiply a `Vector2` by another `Vector2` to get the dot product.
     >>> Vector2(45, 60).length
     75.0
 
-### Cross-product
+### Cross-product and angle
 
     >>> Vector(1, 0) ^ Vector(0, 1)
     1
+    
+    >>> Vector(1, 0).angle(Vector(0, 1))
+    90
 
 ### Access Values
 
