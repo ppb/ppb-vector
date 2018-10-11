@@ -40,4 +40,4 @@ def test_reflect_prop(initial: Vector2, normal: Vector2):
     note(f"Reflected: {reflected}")
     note(f"Re-Reflected: {returned}")
     assert isclose_vector(initial, returned)
-    assert isclose((initial * normal), (reflected * normal))
+    assert isclose((initial * normal), -(reflected * normal))
