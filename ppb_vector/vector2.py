@@ -1,4 +1,4 @@
-from math import cos, hypot, radians, sin
+from math import acos, cos, degrees, hypot, radians, sin
 from numbers import Real
 from collections.abc import Sequence
 
@@ -46,6 +46,9 @@ class Vector2(Sequence):
         if isinstance(other, Real):
             return Vector2(self.x * other, self.y * other)
 
+    def __xor__(self, other):
+        return self.x * other.y - self.y * other.x
+
     def __getitem__(self, item):
         if hasattr(item, '__index__'):
             item = item.__index__()
@@ -87,6 +90,9 @@ class Vector2(Sequence):
 
     def __neg__(self):
         return self * -1
+
+    def angle(self, other):
+        return degrees(acos(self.normalize() * other.normalize()))
 
     def rotate(self, degrees):
         r = radians(degrees)

@@ -87,6 +87,14 @@ Multiply a `Vector2` by another `Vector2` to get the dot product.
     >>> Vector2(45, 60).length
     75.0
 
+### Cross-product
+
+Take the cross-product between two (2D) vectors.
+The result is expressed as a scalar, as it is known to lie on the z-axis.
+
+    >>> Vector(1, 0) ^ Vector(0, 1)
+    1
+
 ### Access Values
 
 Convenient access to `Vector2` members via dot notation, indexes, or keys.
@@ -121,6 +129,16 @@ Rotate a vector in relation to its own origin and return a new `Vector2`.
     Vector2(0.0, 1.0)
 
 Positive rotation is counter/anti-clockwise.
+
+#### angle(vector)
+
+Compute the angle between two vectors, expressed as a scalar in degrees.
+
+    >>> Vector(1, 0).angle(Vector(0, 1))
+    90
+
+As with `rotate()`, angles are signed, and refer to a direct coordinate system
+(i.e. positive rotations are counter-clockwise).
 
 #### normalize()
 
