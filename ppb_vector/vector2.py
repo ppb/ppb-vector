@@ -1,11 +1,11 @@
 from math import acos, cos, degrees, hypot, radians, sin
-from numbers import Number
+from numbers import Real
 from collections.abc import Sequence
 
 
 class Vector2(Sequence):
 
-    def __init__(self, x, y):
+    def __init__(self, x: Real, y: Real):
         self.x = x
         self.y = y
         self.length = hypot(x, y)
@@ -37,13 +37,13 @@ class Vector2(Sequence):
     def __mul__(self, other):
         if isinstance(other, Vector2):
             return self.x * other.x + self.y * other.y
-        elif isinstance(other, Number):
+        elif isinstance(other, Real):
             return Vector2(self.x * other, self.y * other)
         else:
             return NotImplemented
 
     def __rmul__(self, other):
-        if isinstance(other, Number):
+        if isinstance(other, Real):
             return Vector2(self.x * other, self.y * other)
 
     def __xor__(self, other):
