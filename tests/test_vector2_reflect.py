@@ -35,7 +35,7 @@ def isclose_vector(a, b, *, rel_tol=1e-06, abs_tol=1e-3):
 def test_reflect_prop(initial: Vector2, normal: Vector2):
     assume(initial != Vector2(0, 0))
     assume(normal != Vector2(0, 0))
-    assume(initial ^ normal != 0)  # FIXME: cross product
+    assume(initial ^ normal != 0)
     assume(initial.length < 1e300)
     normal = normal.normalize()
     reflected = initial.reflect(normal)
