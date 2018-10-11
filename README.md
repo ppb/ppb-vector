@@ -130,6 +130,16 @@ Rotate a vector in relation to its own origin and return a new `Vector2`.
 
 Positive rotation is counter/anti-clockwise.
 
+#### angle(vector)
+
+Compute the angle between two vectors, expressed as a scalar in degrees.
+
+    >>> Vector(1, 0).angle(Vector(0, 1))
+    90
+
+As with `rotate()`, angles are signed, and refer to a direct coordinate system
+(i.e. positive rotations are counter-clockwise).
+
 #### normalize()
 
 Return the normalized `Vector2` for the given `Vector2`.
