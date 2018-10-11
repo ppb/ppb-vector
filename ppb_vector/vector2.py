@@ -47,7 +47,6 @@ class Vector2(Sequence):
             return Vector2(self.x * other, self.y * other)
 
     def __xor__(self, other):
-        assert(isinstance(other, Vector2))
         return self.x * other.y - self.y * other.x
 
     def __getitem__(self, item):
