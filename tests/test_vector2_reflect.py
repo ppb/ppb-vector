@@ -20,8 +20,8 @@ def test_reflect(initial_vector, surface_normal, expected_vector):
 
 
 stvector = lambda: st.builds(
-    Vector2, 
-    st.floats(allow_nan=False, allow_infinity=False), 
+    Vector2,
+    st.floats(allow_nan=False, allow_infinity=False),
     st.floats(allow_nan=False, allow_infinity=False)
 )
 
