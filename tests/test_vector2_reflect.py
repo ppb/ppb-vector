@@ -1,8 +1,8 @@
 from ppb_vector import Vector2
 import pytest
 from hypothesis import given, assume, note
-import hypothesis.strategies as st
 from math import isclose, isnan, isinf
+from utils import units, vectors
 
 
 reflect_data = (
@@ -19,19 +19,7 @@ def test_reflect(initial_vector, surface_normal, expected_vector):
     assert initial_vector.reflect(surface_normal) == expected_vector
 
 
-stvector = lambda: st.builds(
-    Vector2,
-    st.floats(allow_nan=False, allow_infinity=False),
-    st.floats(allow_nan=False, allow_infinity=False)
-)
-
-@st.composite
-def stunit(draw, elements=st.floats(min_value=0, max_value=360)):
-    angle = draw(elements)
-    return Vector2(1, 0).rotate(angle)
-
-
-@given(initial=stvector(), normal=stunit())
+@given(initial=vectors(), normal=units())
 def test_reflect_prop(initial: Vector2, normal: Vector2):
     assume(initial != Vector2(0, 0))
     assume(initial ^ normal != 0)

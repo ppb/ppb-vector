@@ -1,3 +1,17 @@
+from ppb_vector import Vector2
+import hypothesis.strategies as st
+
 def angle_isclose(x, y, epsilon = 6.5e-5):
     d = (x - y) % 360
     return (d < epsilon) or (d > 360 - epsilon)
+
+vectors = lambda: st.builds(
+    Vector2,
+    st.floats(allow_nan=False, allow_infinity=False),
+    st.floats(allow_nan=False, allow_infinity=False)
+)
+
+@st.composite
+def units(draw, elements=st.floats(min_value=0, max_value=360)):
+    angle = draw(elements)
+    return Vector2(1, 0).rotate(angle)
