@@ -21,12 +21,10 @@ def test_reflect(initial_vector, surface_normal, expected_vector):
 
 @given(initial=vectors(), normal=units())
 def test_reflect_prop(initial: Vector2, normal: Vector2):
-    assume(initial != Vector2(0, 0))
     assume(initial ^ normal != 0)
     reflected = initial.reflect(normal)
     returned = reflected.reflect(normal)
     note(f"Reflected: {reflected}")
-    note(f"Re-Reflected: {returned}")
     assert not any(map(isinf, reflected))
     assert initial.isclose(returned)
     assert isclose((initial * normal), -(reflected * normal))
