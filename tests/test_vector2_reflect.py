@@ -31,11 +31,6 @@ def stunit(draw, elements=st.floats(min_value=0, max_value=360)):
     return Vector2(1, 0).rotate(angle)
 
 
-def isclose_vector(a, b, *, rel_tol=1e-06, abs_tol=1e-3):
-    d = (a - b).length
-    return d < rel_tol * max(a.length, b.length) or d < abs_tol
-
-
 @given(initial=stvector(), normal=stunit())
 def test_reflect_prop(initial: Vector2, normal: Vector2):
     assume(initial != Vector2(0, 0))
@@ -46,5 +41,5 @@ def test_reflect_prop(initial: Vector2, normal: Vector2):
     note(f"Reflected: {reflected}")
     note(f"Re-Reflected: {returned}")
     assert not any(map(isinf, reflected))
-    assert isclose_vector(initial, returned)
+    assert initial.isclose(returned)
     assert isclose((initial * normal), -(reflected * normal))

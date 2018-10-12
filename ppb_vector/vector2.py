@@ -94,6 +94,10 @@ class Vector2(Sequence):
     def angle(self, other):
         return degrees(acos(self.normalize() * other.normalize()))
 
+    def isclose(a, b, *, rel_tol=1e-06, abs_tol=1e-3):
+        d = (a - b).length
+        return d < rel_tol * max(a.length, b.length) or d < abs_tol
+
     def rotate(self, degrees):
         r = radians(degrees)
         r_cos = cos(r)
