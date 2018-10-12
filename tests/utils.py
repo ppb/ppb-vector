@@ -3,8 +3,8 @@ import hypothesis.strategies as st
 
 vectors = lambda: st.builds(
     Vector2,
-    st.floats(allow_nan=False, allow_infinity=False),
-    st.floats(allow_nan=False, allow_infinity=False)
+    st.floats(min_value=-1e300, max_value=1e300),
+    st.floats(min_value=-1e300, max_value=1e300)
 )
 
 @st.composite
