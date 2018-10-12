@@ -7,8 +7,8 @@ def angle_isclose(x, y, epsilon = 6.5e-5):
 
 vectors = lambda: st.builds(
     Vector2,
-    st.floats(allow_nan=False, allow_infinity=False),
-    st.floats(allow_nan=False, allow_infinity=False)
+    st.floats(min_value=-1e300, max_value=1e300),
+    st.floats(min_value=-1e300, max_value=1e300)
 )
 
 @st.composite

@@ -23,7 +23,6 @@ def test_reflect(initial_vector, surface_normal, expected_vector):
 def test_reflect_prop(initial: Vector2, normal: Vector2):
     assume(initial != Vector2(0, 0))
     assume(initial ^ normal != 0)
-    assume(initial.length < 1e300)
     reflected = initial.reflect(normal)
     returned = reflected.reflect(normal)
     note(f"Reflected: {reflected}")
