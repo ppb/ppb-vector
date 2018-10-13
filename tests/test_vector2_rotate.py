@@ -1,8 +1,10 @@
 from ppb_vector import Vector2
-from utils import angle_isclose
-from hypothesis import given, strategies as st
+from utils import angle_isclose, vectors
 import pytest
 import math
+from hypothesis import assume, given, note
+import hypothesis.strategies as st
+
 
 data = [
     (Vector2(1, 1), 90, Vector2(-1, 1)),
@@ -30,3 +32,18 @@ def test_trig_stability(degree):
     r_cos = math.cos(r)
     r_sin = math.sin(r)
     assert math.isclose(r_cos * r_cos + r_sin * r_sin, 1)
+
+
+@given(
+    initial=vectors(),
+    angle=st.floats(min_value=-360, max_value=360),
+)
+def test_rotation_angle(initial, angle):
+    assume(initial.length > 1e-5)
+    rotated = initial.rotate(angle)
+    note(f"Rotated: {rotated}")
+
+    measured_angle = initial.angle(rotated)
+    d = measured_angle - angle % 360
+    note(f"Angle: {measured_angle} = {angle} + {d if d<180 else d-360}")
+    assert angle_isclose(angle, measured_angle)
