@@ -28,7 +28,7 @@ def _mkvector(value):
     elif isinstance(value, dict) and 'x' in value and 'y' in value and len(value) == 2:
         return Vector2(value['x'], value['y'])
     else:
-        raise ValueError("Cannot use {} as a vector-like".format(value))
+        raise ValueError(f"Cannot use {value} as a vector-like")
 
 
 class Vector2(Sequence):
@@ -93,7 +93,7 @@ class Vector2(Sequence):
             raise TypeError
 
     def __repr__(self) -> str:
-        return "{}({}, {})".format(type(self).__name__, self.x, self.y)
+        return f"{type(self).__name__}({self.x}, {self.y})"
 
     def __eq__(self, other: VectorLike) -> bool:
         if is_vector_like(other):
