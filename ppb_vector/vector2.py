@@ -1,11 +1,11 @@
 from math import acos, cos, degrees, hypot, radians, sin
-from numbers import Number
+from numbers import Real
 from collections.abc import Sequence
 
 
 class Vector2(Sequence):
 
-    def __init__(self, x, y):
+    def __init__(self, x: Real, y: Real):
         self.x = x
         self.y = y
         self.length = hypot(x, y)
@@ -37,13 +37,13 @@ class Vector2(Sequence):
     def __mul__(self, other):
         if isinstance(other, Vector2):
             return self.x * other.x + self.y * other.y
-        elif isinstance(other, Number):
+        elif isinstance(other, Real):
             return Vector2(self.x * other, self.y * other)
         else:
             return NotImplemented
 
     def __rmul__(self, other):
-        if isinstance(other, Number):
+        if isinstance(other, Real):
             return Vector2(self.x * other, self.y * other)
 
     def __xor__(self, other):
@@ -93,6 +93,28 @@ class Vector2(Sequence):
 
     def angle(self, other):
         return degrees(acos(self.normalize() * other.normalize()))
+
+    def isclose(self, other: 'Vector2', *, rel_tol: float=1e-06, abs_tol: float=1e-3):
+        """
+        Determine whether two vectors are close in value.
+
+           rel_tol
+               maximum difference for being considered "close", relative to the
+               magnitude of the input values
+            abs_tol
+               maximum difference for being considered "close", regardless of the
+               magnitude of the input values
+        
+        Return True if self is close in value to other, and False otherwise.
+        
+        For the values to be considered close, the difference between them
+        must be smaller than at least one of the tolerances.
+        """
+        diff = (self - other).length
+        return (
+            diff < rel_tol * max(self.length, other.length) or 
+            diff < abs_tol
+        )
 
     def rotate(self, degrees):
         r = radians(degrees)
