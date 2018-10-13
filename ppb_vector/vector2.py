@@ -1,6 +1,6 @@
 import typing
 import collections
-from math import cos, hypot, radians, sin
+from math import acos, cos, degrees, hypot, radians, sin
 from numbers import Real
 from collections.abc import Sequence
 
@@ -82,6 +82,9 @@ class Vector2(Sequence):
     def __rmul__(self, other: VectorLike) -> 'Vector2':
         return self.__mul__(other)
 
+    def __xor__(self, other):
+        return self.x * other.y - self.y * other.x
+
     def __getitem__(self, item: typing.Union[str, int]) -> Real:
         if hasattr(item, '__index__'):
             item = item.__index__()
@@ -125,6 +128,9 @@ class Vector2(Sequence):
 
     def __neg__(self) -> 'Vector2':
         return self * -1
+
+    def angle(self, other):
+        return degrees(acos(self.normalize() * other.normalize()))
 
     def rotate(self, degrees: Real) -> 'Vector2':
         r = radians(degrees)
