@@ -64,7 +64,7 @@ class Vector2(Sequence):
             except ValueError:
                 return NotImplemented
             return self.x * other.x + self.y * other.y
-        elif isinstance(other, Number):
+        elif isinstance(other, Real):
             return Vector2(self.x * other, self.y * other)
         else:
             return NotImplemented
@@ -139,7 +139,7 @@ class Vector2(Sequence):
             scale = 1
         return self * scale
 
-    def reflect(self, surface_normal: : VectorLike) -> 'Vector2':
+    def reflect(self, surface_normal: VectorLike) -> 'Vector2':
         """
         Calculate the reflection of the vector against a given surface normal
         """
