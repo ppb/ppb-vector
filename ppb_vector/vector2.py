@@ -116,7 +116,7 @@ class Vector2(Sequence):
             return False
 
     def __ne__(self, other: VectorLike) -> bool:
-        if is_vector_like(other, Vector2):
+        if is_vector_like(other):
             other = _mkvector(other)
             return self.x != other.x or self.y != other.y
         else:
