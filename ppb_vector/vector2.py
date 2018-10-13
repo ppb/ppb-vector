@@ -1,11 +1,20 @@
+import typing
 from math import cos, hypot, radians, sin
-from numbers import Number
+from numbers import Real
 from collections.abc import Sequence
 
 __all__ = 'Vector2',
 
 
-def is_vector_like(value):
+VectorLike = typing.Union[
+    'Vector2',
+    typing.List[Real],  # TODO: Length 2
+    typing.Tuple[Real, Real],
+    typing.Dict[str, Real],  # TODO: Length 2, keys 'x', 'y'
+]
+
+
+def is_vector_like(value: typing.Any) -> bool:
     return isinstance(value, (Vector2, list, tuple, dict))
 
 
@@ -24,15 +33,15 @@ def _mkvector(value):
 
 class Vector2(Sequence):
 
-    def __init__(self, x, y):
+    def __init__(self, x: Real, y: Real):
         self.x = x
         self.y = y
         self.length = hypot(x, y)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return 2
 
-    def __add__(self, other):
+    def __add__(self, other: VectorLike) -> 'Vector2':
         try:
             other = _mkvector(other)
         except ValueError:
@@ -40,7 +49,7 @@ class Vector2(Sequence):
         rtype = type(other) if isinstance(other, Vector2) else type(self)
         return rtype(self.x + other.x, self.y + other.y)
 
-    def __sub__(self, other):
+    def __sub__(self, other: VectorLike) -> 'Vector2':
         try:
             other = _mkvector(other)
         except ValueError:
@@ -48,7 +57,7 @@ class Vector2(Sequence):
         rtype = type(other) if isinstance(other, Vector2) else type(self)
         return rtype(self.x - other.x, self.y - other.y)
 
-    def __mul__(self, other):
+    def __mul__(self, other: VectorLike) -> 'Vector2':
         if is_vector_like(other):
             try:
                 other = _mkvector(other)
@@ -60,10 +69,10 @@ class Vector2(Sequence):
         else:
             return NotImplemented
 
-    def __rmul__(self, other):
+    def __rmul__(self, other: VectorLike) -> 'Vector2':
         return self.__mul__(other)
 
-    def __getitem__(self, item):
+    def __getitem__(self, item: typing.Union[str, int]) -> Real:
         if hasattr(item, '__index__'):
             item = item.__index__()
         if isinstance(item, str):
@@ -83,31 +92,31 @@ class Vector2(Sequence):
         else:
             raise TypeError
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{}({}, {})".format(type(self).__name__, self.x, self.y)
 
-    def __eq__(self, other):
+    def __eq__(self, other: VectorLike) -> bool:
         if is_vector_like(other):
             other = _mkvector(other)
             return self.x == other.x and self.y == other.y
         else:
             return False
 
-    def __ne__(self, other):
+    def __ne__(self, other: VectorLike) -> bool:
         if is_vector_like(other, Vector2):
             other = _mkvector(other)
             return self.x != other.x or self.y != other.y
         else:
             return True
 
-    def __iter__(self):
+    def __iter__(self) -> typing.Iterator[Real]:
         yield self.x
         yield self.y
 
-    def __neg__(self):
+    def __neg__(self) -> 'Vector2':
         return self * -1
 
-    def rotate(self, degrees):
+    def rotate(self, degrees: Real) -> 'Vector2':
         r = radians(degrees)
         r_cos = cos(r)
         r_sin = sin(r)
@@ -115,22 +124,22 @@ class Vector2(Sequence):
         y = round(self.x * r_sin + self.y * r_cos, 5)
         return Vector2(x, y)
 
-    def normalize(self):
+    def normalize(self) -> 'Vector2':
         return self.scale(1)
 
-    def truncate(self, max_length):
+    def truncate(self, max_length: Real) -> 'Vector2':
         if self.length > max_length:
             return self.scale(max_length)
         return self
 
-    def scale(self, length):
+    def scale(self, length: Real) -> 'Vector2':
         try:
             scale = length / self.length
         except ZeroDivisionError:
             scale = 1
         return self * scale
 
-    def reflect(self, surface_normal: 'Vector2') -> 'Vector2':
+    def reflect(self, surface_normal: : VectorLike) -> 'Vector2':
         """
         Calculate the reflection of the vector against a given surface normal
         """
