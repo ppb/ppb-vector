@@ -94,9 +94,27 @@ class Vector2(Sequence):
     def angle(self, other):
         return degrees(acos(self.normalize() * other.normalize()))
 
-    def isclose(a, b, *, rel_tol=1e-06, abs_tol=1e-3):
-        d = (a - b).length
-        return d < rel_tol * max(a.length, b.length) or d < abs_tol
+    def isclose(self, other: 'Vector2', *, rel_tol: float=1e-06, abs_tol: float=1e-3):
+        """
+        Determine whether two vectors are close in value.
+
+           rel_tol
+               maximum difference for being considered "close", relative to the
+               magnitude of the input values
+            abs_tol
+               maximum difference for being considered "close", regardless of the
+               magnitude of the input values
+        
+        Return True if self is close in value to other, and False otherwise.
+        
+        For the values to be considered close, the difference between them
+        must be smaller than at least one of the tolerances.
+        """
+        diff = (self - other).length
+        return (
+            diff < rel_tol * max(self.length, other.length) or 
+            diff < abs_tol
+        )
 
     def rotate(self, degrees):
         r = radians(degrees)
