@@ -41,6 +41,13 @@ class Vector2(Sequence):
         self.y = y
         self.length = hypot(x, y)
 
+    @classmethod
+    def convert(cls, value: VectorLike) -> 'Vector2':
+        """
+        Constructs a vector from a vector-like.
+        """
+        return _mkvector(value, castto=type(cls))
+
     def __len__(self) -> int:
         return 2
 
