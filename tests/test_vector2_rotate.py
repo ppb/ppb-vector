@@ -58,11 +58,11 @@ def test_rotation_stability(increment, loops):
     initial = Vector2(1, 0)
 
     fellswoop = initial.rotate(increment * loops)
-    hypo.note(f"One Fell Swoop: {fellswoop}")
+    note(f"One Fell Swoop: {fellswoop}")
 
     stepwise = initial
     for _ in range(loops):
         stepwise = stepwise.rotate(increment)
-    hypo.note(f"Step-wise: {stepwise}")
+    note(f"Step-wise: {stepwise}")
 
     assert fellswoop.isclose(stepwise)
