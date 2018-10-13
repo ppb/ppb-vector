@@ -83,3 +83,14 @@ def test_rotation_stability2(initial, angles):
     note(f"Step-wise: {stepwise}")
 
     assert fellswoop.isclose(stepwise)
+
+
+@given(
+    a=vectors(max_magnitude=1e150), b=vectors(),
+    l=st.floats(min_value=-1e150, max_value=1e150),
+    angle=st.floats(min_value=-360, max_value=360),
+)
+def test_rotation_linearity(a, b, l, angle):
+    inner = (l * a + b).rotate(angle)
+    outer = l * a.rotate(angle) + b.rotate(angle)
+    assert inner.isclose(outer)
