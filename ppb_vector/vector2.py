@@ -1,4 +1,5 @@
 import typing
+import collections
 from math import cos, hypot, radians, sin
 from numbers import Real
 from collections.abc import Sequence
@@ -18,15 +19,17 @@ def is_vector_like(value: typing.Any) -> bool:
     return isinstance(value, (Vector2, list, tuple, dict))
 
 
-def _mkvector(value):
+_fakevector = collections.namedtuple('_fakevector', ['x', 'y'])
+
+def _mkvector(value, *, castto=_fakevector):
     if isinstance(value, Vector2):
         return value
     # FIXME: Allow all types of sequences
     elif isinstance(value, (list, tuple)) and len(value) == 2:
-        return Vector2(value[0], value[1])
+        return castto(value[0], value[1])
     # FIXME: Allow all types of mappings
     elif isinstance(value, dict) and 'x' in value and 'y' in value and len(value) == 2:
-        return Vector2(value['x'], value['y'])
+        return castto(value['x'], value['y'])
     else:
         raise ValueError(f"Cannot use {value} as a vector-like")
 
@@ -143,10 +146,10 @@ class Vector2(Sequence):
         """
         Calculate the reflection of the vector against a given surface normal
         """
-        surface_normal = _mkvector(surface_normal)
+        surface_normal = _mkvector(surface_normal, castto=Vector2)
         if not (0.99999 < surface_normal.length < 1.00001):
             raise ValueError("Reflection requires a normalized vector.")
         vec_new = self
-        if self * surface_normal>0:
+        if self * surface_normal > 0:
             vec_new = self.rotate(180)
         return vec_new - (2 * (vec_new * surface_normal) * surface_normal)
