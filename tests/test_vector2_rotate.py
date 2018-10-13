@@ -48,3 +48,21 @@ def test_rotation_angle(initial, angle):
     d = measured_angle - angle % 360
     note(f"Angle: {measured_angle} = {angle} + {d if d<180 else d-360}")
     assert angle_isclose(angle, measured_angle)
+
+
+@given(
+    increment=st.floats(min_value=1e-3, max_value=360),
+    loops=st.integers(min_value=0)
+)
+def test_rotation_stability(increment, loops):
+    initial = Vector2(1, 0)
+
+    fellswoop = initial.rotate(increment * loops)
+    hypo.note(f"One Fell Swoop: {fellswoop}")
+
+    stepwise = initial
+    for _ in range(loops):
+        stepwise = stepwise.rotate(increment)
+    hypo.note(f"Step-wise: {stepwise}")
+
+    assert fellswoop.isclose(stepwise)
