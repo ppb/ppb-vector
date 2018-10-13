@@ -82,7 +82,11 @@ class Vector2(Sequence):
     def __rmul__(self, other: VectorLike) -> 'Vector2':
         return self.__mul__(other)
 
-    def __xor__(self, other):
+    def __xor__(self, other: VectorLike) -> Real:
+        """
+        Computes the magnitude of the cross product
+        """
+        other = _mkvector(other)
         return self.x * other.y - self.y * other.x
 
     def __getitem__(self, item: typing.Union[str, int]) -> Real:
@@ -129,7 +133,8 @@ class Vector2(Sequence):
     def __neg__(self) -> 'Vector2':
         return self * -1
 
-    def angle(self, other):
+    def angle(self, other: VectorLike) -> Real:
+        other = _mkvector(other, castto=Vector2)
         return degrees(acos(self.normalize() * other.normalize()))
 
     def rotate(self, degrees: Real) -> 'Vector2':
