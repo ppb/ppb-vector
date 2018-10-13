@@ -7,7 +7,9 @@ import pytest
     (Vector2(1, 1), Vector2(-1, 0), 135),
     (Vector2(0, 1), Vector2(0, -1), 180),
     (Vector2(-1, -1), Vector2(1, 0), 135),
-    (Vector2(-1, -1), Vector2(-1, 0), 45)
+    (Vector2(-1, -1), Vector2(-1, 0), 45),
+    (Vector2(1, 0), Vector2(0, 1), 90),
+    (Vector2(1, 0), Vector2(1, 0), 0),
 ])
 def test_angle(left, right, expected):
     assert isclose(left.angle(right), expected)
