@@ -66,3 +66,20 @@ def test_rotation_stability(increment, loops):
     note(f"Step-wise: {stepwise}")
 
     assert fellswoop.isclose(stepwise)
+
+
+@given(
+    initial=vectors(),
+    angles=st.lists(st.floats(min_value=-360, max_value=360)),
+)
+def test_rotation_stability2(initial, angles):
+    total_angle = sum(angles)
+    fellswoop = initial.rotate(total_angle)
+    note(f"One Fell Swoop: {fellswoop}")
+
+    stepwise = initial
+    for angle in angles:
+        stepwise = stepwise.rotate(angle)
+    note(f"Step-wise: {stepwise}")
+
+    assert fellswoop.isclose(stepwise)
