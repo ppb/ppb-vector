@@ -2,7 +2,7 @@ from ppb_vector import Vector2
 import pytest
 from hypothesis import given, assume, note
 from math import isclose, isinf
-from utils import units, vectors
+from utils import angle_isclose, units, vectors
 
 
 reflect_data = (
@@ -28,3 +28,6 @@ def test_reflect_prop(initial: Vector2, normal: Vector2):
     assert not any(map(isinf, reflected))
     assert initial.isclose(returned)
     assert isclose((initial * normal), -(reflected * normal))
+    assert angle_isclose(normal.angle(initial),
+                         180 - normal.angle(reflected)
+    )
