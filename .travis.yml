@@ -11,10 +11,10 @@ matrix:
     allow_failures:
         - python: "nightly"
 
- cache:
+cache:
     directories:
-     - $HOME/.cache/pip
-     - .hypothesis
+      - $HOME/.cache/pip
+      - .hypothesis
 
 before_install:
   - if [[ $MINICONDA_OS ]]; then
