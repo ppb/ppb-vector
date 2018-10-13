@@ -1,6 +1,6 @@
 import typing
 import collections
-from math import acos, cos, degrees, hypot, isclose, radians, sin
+from math import acos, atan2, cos, degrees, hypot, isclose, radians, sin
 from numbers import Real
 from collections.abc import Sequence
 
@@ -135,7 +135,8 @@ class Vector2(Sequence):
 
     def angle(self, other: VectorLike) -> Real:
         other = _mkvector(other, castto=Vector2)
-        return degrees(acos(self.normalize() * other.normalize()))
+
+        return degrees( atan2(other.x, -other.y) - atan2(self.x, -self.y) )
 
     def isclose(self, other: 'Vector2', *, rel_tol: float=1e-06, abs_tol: float=1e-3):
         """
