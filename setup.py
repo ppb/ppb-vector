@@ -15,5 +15,6 @@ setup(
         'Topic :: Software Development',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6'
-    ]
+    ],
+    zip_safe=True,
 )
