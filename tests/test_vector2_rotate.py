@@ -1,4 +1,5 @@
 from ppb_vector import Vector2
+from utils import angle_isclose
 import pytest
 import math
 
@@ -17,8 +18,9 @@ def isclose(x, y, epsilon = 6.5e-5):
 
 @pytest.mark.parametrize('input, degrees, expected', data)
 def test_multiple_rotations(input, degrees, expected):
-    assert input.rotate(degrees) == expected
-    assert isclose(input.angle(expected), degrees)
+    assert input.rotate(degrees).isclose(expected)
+    assert angle_isclose(input.angle(expected), degrees)
+
 
 def test_for_exception():
     with pytest.raises(TypeError):
