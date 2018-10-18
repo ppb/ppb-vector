@@ -163,7 +163,6 @@ class Vector2(Sequence):
         r = radians(degrees)
         r_cos = cos(r)
         r_sin = sin(r)
-        assert isclose(r_cos * r_cos + r_sin * r_sin, 1)
 
         x = self.x * r_cos - self.y * r_sin
         y = self.x * r_sin + self.y * r_cos

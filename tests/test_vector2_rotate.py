@@ -1,5 +1,6 @@
 from ppb_vector import Vector2
 from utils import angle_isclose
+from hypothesis import given, strategies as st
 import pytest
 import math
 
@@ -25,3 +26,11 @@ def test_multiple_rotations(input, degrees, expected):
 def test_for_exception():
     with pytest.raises(TypeError):
         Vector2('gibberish', 1).rotate(180)
+
+
+@given(degree=st.floats(min_value=-360, max_value=360))
+def test_trig_stability(degree):
+    r = math.radians(degree)
+    r_cos = math.cos(r)
+    r_sin = math.sin(r)
+    assert math.isclose(r_cos * r_cos + r_sin * r_sin, 1)
