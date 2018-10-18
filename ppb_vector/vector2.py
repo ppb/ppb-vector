@@ -190,7 +190,5 @@ class Vector2(Sequence):
         surface_normal = _mkvector(surface_normal, castto=Vector2)
         if not (0.99999 < surface_normal.length < 1.00001):
             raise ValueError("Reflection requires a normalized vector.")
-        vec_new = self
-        if self * surface_normal > 0:
-            vec_new = self.rotate(180)
-        return vec_new - (2 * (vec_new * surface_normal) * surface_normal)
+
+        return self - (2 * (self * surface_normal) * surface_normal)
