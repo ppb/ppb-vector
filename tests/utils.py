@@ -1,11 +1,12 @@
 from ppb_vector import Vector2
 import hypothesis.strategies as st
 
-vectors = lambda: st.builds(
-    Vector2,
-    st.floats(min_value=-1e300, max_value=1e300),
-    st.floats(min_value=-1e300, max_value=1e300)
-)
+
+def vectors(max_magnitude=1e300):
+    return st.builds(Vector2,
+                     st.floats(min_value=-max_magnitude, max_value=max_magnitude),
+                     st.floats(min_value=-max_magnitude, max_value=max_magnitude)
+    )
 
 @st.composite
 def units(draw, elements=st.floats(min_value=0, max_value=360)):

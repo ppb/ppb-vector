@@ -31,6 +31,7 @@ def test_trig_stability(degree):
     r = math.radians(degree)
     r_cos = math.cos(r)
     r_sin = math.sin(r)
+    # Don't use exponents here. Multiplication is generally more stable.
     assert math.isclose(r_cos * r_cos + r_sin * r_sin, 1)
 
 
