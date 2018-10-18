@@ -12,4 +12,4 @@ reflect_data = (
 
 @pytest.mark.parametrize("initial_vector, surface_normal, expected_vector", reflect_data)
 def test_reflect(initial_vector, surface_normal, expected_vector):
-    assert initial_vector.reflect(surface_normal) == expected_vector
+    assert initial_vector.reflect(surface_normal).isclose(expected_vector)

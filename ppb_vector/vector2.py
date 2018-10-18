@@ -1,6 +1,6 @@
 import typing
 import collections
-from math import acos, cos, degrees, hypot, radians, sin
+from math import acos, cos, degrees, hypot, isclose, radians, sin
 from numbers import Real
 from collections.abc import Sequence
 
@@ -163,8 +163,9 @@ class Vector2(Sequence):
         r = radians(degrees)
         r_cos = cos(r)
         r_sin = sin(r)
-        x = round(self.x * r_cos - self.y * r_sin, 5)
-        y = round(self.x * r_sin + self.y * r_cos, 5)
+
+        x = self.x * r_cos - self.y * r_sin
+        y = self.x * r_sin + self.y * r_cos
         return Vector2(x, y)
 
     def normalize(self) -> 'Vector2':
