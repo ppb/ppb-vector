@@ -158,7 +158,10 @@ class Vector2:
 
     def __xor__(self: VectorOrSub, other: VectorLike) -> Realish:
         """
-        Computes the magnitude of the cross product
+        Computes the magnitude of the cross product.
+
+        May overflow on the product of two large vectors
+        (operands length >= 10¹⁵⁰) and produce NaN.
         """
         other = Vector2.convert(other)
         return self.x * other.y - self.y * other.x

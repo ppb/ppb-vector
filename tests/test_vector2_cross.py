@@ -17,8 +17,9 @@ def test_cross(left, right, expected):
     assert right ^ left == -expected
 
 
-@given(a=vectors(), b=vectors(max_magnitude=1e150), c=vectors(),
-       l=st.floats(min_value=-1e150,max_value=1e150),
+@given(a=vectors(max_magnitude=1e150), c=vectors(max_magnitude=1e150),
+       b=vectors(max_magnitude=1e75),
+       l=st.floats(min_value=-1e75,max_value=1e75),
 )
 def test_cross_linearity(a: Vector2, b: Vector2, c: Vector2, l: Real):
     assert isclose(
@@ -26,6 +27,6 @@ def test_cross_linearity(a: Vector2, b: Vector2, c: Vector2, l: Real):
         l * (a ^ b) + (a ^ c)
     )
 
-@given(a=vectors(), b=vectors())
+@given(a=vectors(max_magnitude=1e150), b=vectors(max_magnitude=1e150))
 def test_cross_antisymetry(a: Vector2, b: Vector2):
     assert isclose(a ^ b, - b ^ a)
