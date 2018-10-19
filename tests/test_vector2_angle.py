@@ -3,7 +3,7 @@ from math import isclose
 import pytest
 
 @pytest.mark.parametrize("left, right, expected", [
-    (Vector2(1, 1), Vector2(0, -1), 135),
+    (Vector2(1, 1), Vector2(0, -1), -135),
     (Vector2(1, 1), Vector2(-1, 0), 135),
     (Vector2(0, 1), Vector2(0, -1), 180),
     (Vector2(-1, -1), Vector2(1, 0), 135),
