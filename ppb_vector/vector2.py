@@ -136,7 +136,15 @@ class Vector2(Sequence):
     def angle(self, other: VectorLike) -> Real:
         other = _mkvector(other, castto=Vector2)
 
-        return degrees( atan2(other.x, -other.y) - atan2(self.x, -self.y) )
+        rv = degrees( atan2(other.x, -other.y) - atan2(self.x, -self.y) )
+        # This normalizes the value to (-180, +180], which is the opposite of
+        # what Python usually does but is normal for angles
+        if rv <= -180:
+            rv += 360
+        elif rv > 180:
+            rv -= 360
+
+        return rv
 
     def isclose(self, other: 'Vector2', *, rel_tol: float=1e-06, abs_tol: float=1e-3):
         """

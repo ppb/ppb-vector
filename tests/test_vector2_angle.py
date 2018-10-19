@@ -1,6 +1,9 @@
 from ppb_vector import Vector2
 from math import isclose
 import pytest
+from hypothesis import assume, given, note
+from utils import angle_isclose, vectors
+
 
 @pytest.mark.parametrize("left, right, expected", [
     (Vector2(1, 1), Vector2(0, -1), -135),
@@ -12,5 +15,21 @@ import pytest
     (Vector2(1, 0), Vector2(1, 0), 0),
 ])
 def test_angle(left, right, expected):
-    assert isclose(left.angle(right), expected)
-    assert isclose(right.angle(left), expected)
+    lr = left.angle(right)
+    rl = right.angle(left)
+    assert -180 < lr <= 180
+    assert -180 < rl <= 180
+    assert isclose(lr, expected)
+    assert isclose(rl, -expected)
+
+
+@given(
+    left=vectors(),
+    right=vectors(),
+)
+def test_angle(left, right):
+    lr = left.angle(right)
+    rl = right.angle(left)
+    assert -180 < lr <= 180
+    assert -180 < rl <= 180
+    assert angle_isclose(lr, -rl)
