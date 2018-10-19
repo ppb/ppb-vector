@@ -95,4 +95,6 @@ def test_rotation_stability2(initial, angles):
 def test_rotation_linearity(a, b, l, angle):
     inner = (l * a + b).rotate(angle)
     outer = l * a.rotate(angle) + b.rotate(angle)
+    note(f"Inner: {inner}")
+    note(f"Outer: {outer}")
     assert inner.isclose(outer)
