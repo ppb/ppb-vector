@@ -2,7 +2,7 @@ from ppb_vector import Vector2
 from utils import angle_isclose, vectors
 import pytest  # type: ignore
 import math
-from hypothesis import assume, given, note
+from hypothesis import assume, given, note, example
 import hypothesis.strategies as st
 
 
@@ -91,6 +91,16 @@ def test_rotation_stability2(initial, angles):
     a=vectors(max_magnitude=1e150), b=vectors(),
     l=st.floats(min_value=-1e150, max_value=1e150),
     angle=st.floats(min_value=-360, max_value=360),
+)
+# In this example:
+# * a * l == -b
+# * Rotation must not be an multiple of 90deg
+# * Must be sufficiently large
+@example(
+    a=Vector2(1e10, 1e10),
+    b=Vector2(1e19, 1e19),
+    l=-1e9,
+    angle=45,
 )
 def test_rotation_linearity(a, b, l, angle):
     inner = (l * a + b).rotate(angle)
