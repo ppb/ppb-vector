@@ -161,7 +161,7 @@ class Vector2:
         Computes the magnitude of the cross product.
 
         May overflow on the product of two large vectors
-        (operands length >= 10¹⁵⁰) and produce NaN.
+        (operands length >= 10**150) and produce NaN.
         """
         other = Vector2.convert(other)
         return self.x * other.y - self.y * other.x
