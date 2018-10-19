@@ -1,6 +1,6 @@
 import typing
 import collections
-from math import acos, cos, degrees, hypot, isclose, radians, sin
+from math import acos, atan2, cos, degrees, hypot, isclose, radians, sin
 from numbers import Real
 from collections.abc import Sequence
 
@@ -135,7 +135,16 @@ class Vector2(Sequence):
 
     def angle(self, other: VectorLike) -> Real:
         other = _mkvector(other, castto=Vector2)
-        return degrees(acos(self.normalize() * other.normalize()))
+
+        rv = degrees( atan2(other.x, -other.y) - atan2(self.x, -self.y) )
+        # This normalizes the value to (-180, +180], which is the opposite of
+        # what Python usually does but is normal for angles
+        if rv <= -180:
+            rv += 360
+        elif rv > 180:
+            rv -= 360
+
+        return rv
 
     def isclose(self, other: 'Vector2', *, rel_tol: float=1e-06, abs_tol: float=1e-3):
         """
