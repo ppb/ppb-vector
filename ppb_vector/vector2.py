@@ -1,5 +1,6 @@
 import typing
 import collections
+import functools
 from math import acos, atan2, cos, degrees, hypot, isclose, radians, sin
 from numbers import Real
 from collections.abc import Sequence
@@ -34,6 +35,35 @@ def _mkvector(value, *, castto=_fakevector):
         raise ValueError(f"Cannot use {value} as a vector-like")
 
 
+@functools.lru_cache()
+def _find_lowest_type(left: type, right: type) -> type:
+    """
+    Guess which is the more specific type.
+    """
+    # Basically, see what classes are unique in each type's MRO and return who
+    # has the most.
+    lmro = set(left.__mro__)
+    rmro = set(right.__mro__)
+    lspecial = lmro - rmro
+    rspecial = rmro - lmro
+    if len(lmro) > len(rmro):
+        return left
+    elif len(rmro) > len(lmro):
+        return right
+    else:
+        # They're equal, just arbitrarily pick one
+        return left
+
+
+def _find_lowest_vector(left: type, right: type) -> type:
+    if not issubclass(left, Vector2):
+        return right
+    elif not issubclass(right, Vector2):
+        return left
+    else:
+        return _find_lowest_type(left, right)
+
+
 class Vector2(Sequence):
 
     def __init__(self, x: Real, y: Real):
@@ -56,7 +86,7 @@ class Vector2(Sequence):
             other = _mkvector(other)
         except ValueError:
             return NotImplemented
-        rtype = type(other) if isinstance(other, Vector2) else type(self)
+        rtype = _find_lowest_vector(type(other), type(self))
         return rtype(self.x + other.x, self.y + other.y)
 
     def __sub__(self, other: VectorLike) -> 'Vector2':
@@ -64,7 +94,7 @@ class Vector2(Sequence):
             other = _mkvector(other)
         except ValueError:
             return NotImplemented
-        rtype = type(other) if isinstance(other, Vector2) else type(self)
+        rtype = _find_lowest_vector(type(other), type(self))
         return rtype(self.x - other.x, self.y - other.y)
 
     def __mul__(self, other: VectorLike) -> 'Vector2':
