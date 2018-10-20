@@ -56,7 +56,9 @@ def _find_lowest_type(left: type, right: type) -> type:
 
 
 def _find_lowest_vector(left: type, right: type) -> type:
-    if not issubclass(left, Vector2):
+    if left is right:
+        return left
+    elif not issubclass(left, Vector2):
         return right
     elif not issubclass(right, Vector2):
         return left
