@@ -24,6 +24,9 @@ def test_reflect_prop(initial: Vector2, normal: Vector2):
     # Exclude cases where the initial vector is very close to the surface
     assume(not angle_isclose(initial.angle(normal) % 180, 90, epsilon=10))
 
+    # Exclude cases where the initial vector is very small
+    assume(initial.length > 1e-10)
+
     reflected = initial.reflect(normal)
     returned = reflected.reflect(normal)
     note(f"|normal|: {normal.length}, |initial|: {initial.length}")
