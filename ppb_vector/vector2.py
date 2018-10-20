@@ -75,7 +75,7 @@ class Vector2(Sequence):
                 return NotImplemented
             return self.x * other.x + self.y * other.y
         elif isinstance(other, Real):
-            return Vector2(self.x * other, self.y * other)
+            return type(self)(self.x * other, self.y * other)
         else:
             return NotImplemented
 
@@ -175,7 +175,7 @@ class Vector2(Sequence):
 
         x = self.x * r_cos - self.y * r_sin
         y = self.x * r_sin + self.y * r_cos
-        return Vector2(x, y)
+        return type(self)(x, y)
 
     def normalize(self) -> 'Vector2':
         return self.scale(1)
