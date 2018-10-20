@@ -99,7 +99,7 @@ class Vector2(Sequence):
         rtype = _find_lowest_vector(type(other), type(self))
         return rtype(self.x - other.x, self.y - other.y)
 
-    def __mul__(self, other: VectorLike) -> 'Vector2':
+    def __mul__(self, other: VectorLike) -> typing.Union['Vector2', Real]:
         if is_vector_like(other):
             try:
                 other = _mkvector(other)
@@ -111,7 +111,7 @@ class Vector2(Sequence):
         else:
             return NotImplemented
 
-    def __rmul__(self, other: VectorLike) -> 'Vector2':
+    def __rmul__(self, other: VectorLike) -> typing.Union['Vector2', Real]:
         return self.__mul__(other)
 
     def __xor__(self, other: VectorLike) -> Real:
@@ -178,7 +178,7 @@ class Vector2(Sequence):
 
         return rv
 
-    def isclose(self, other: 'Vector2', *, rel_tol: float=1e-06, abs_tol: float=1e-3):
+    def isclose(self, other: VectorLike, *, rel_tol: float=1e-06, abs_tol: float=1e-3):
         """
         Determine whether two vectors are close in value.
 
