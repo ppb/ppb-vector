@@ -99,7 +99,7 @@ class Vector2(Sequence):
         rtype = _find_lowest_vector(type(other), type(self))
         return rtype(self.x - other.x, self.y - other.y)
 
-    def __mul__(self, other: VectorLike) -> typing.Union['Vector2', Real]:
+    def __mul__(self, other: typing.Union[VectorLike, Real]) -> typing.Union['Vector2', Real]:
         if is_vector_like(other):
             try:
                 other = _mkvector(other)
@@ -111,7 +111,7 @@ class Vector2(Sequence):
         else:
             return NotImplemented
 
-    def __rmul__(self, other: VectorLike) -> typing.Union['Vector2', Real]:
+    def __rmul__(self, other: typing.Union[VectorLike, Real]) -> typing.Union['Vector2', Real]:
         return self.__mul__(other)
 
     def __xor__(self, other: VectorLike) -> Real:
