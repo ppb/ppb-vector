@@ -36,7 +36,7 @@ def _mkvector(value, *, castto=_fakevector):
 
 
 @functools.lru_cache()
-def _find_lowest_type(left: type, right: type) -> type:
+def _find_lowest_type(left: typing.Type, right: typing.Type) -> typing.Type:
     """
     Guess which is the more specific type.
     """
@@ -55,7 +55,7 @@ def _find_lowest_type(left: type, right: type) -> type:
         return left
 
 
-def _find_lowest_vector(left: type, right: type) -> type:
+def _find_lowest_vector(left: typing.Type, right: typing.Type) -> typing.Type:
     if left is right:
         return left
     elif not issubclass(left, Vector2):
