@@ -73,14 +73,20 @@ def _find_lowest_vector(left: typing.Type, right: typing.Type) -> typing.Type:
 
 
 class Vector2:
-    x: float
-    y: float
-    length: float
+    x: Realish
+    y: Realish
+    length: Realish
 
     def __init__(self: VectorOrSub, x: Realish, y: Realish):
-        self.x = float(x)
-        self.y = float(y)
-        self.length = hypot(x, y)
+        try:
+            self.x = x.__float__()
+        except AttributeError:
+            raise TypeError(f"{type(x).__name__} object not convertable to float")
+        try:
+            self.y = y.__float__()
+        except AttributeError:
+            raise TypeError(f"{type(y).__name__} object not convertable to float")
+        self.length = hypot(self.x, self.y)
 
     @classmethod
     def convert(cls: typing.Type[VectorOrSub], value: VectorLike) -> VectorOrSub:
