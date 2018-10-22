@@ -8,12 +8,16 @@ from collections.abc import Sequence
 __all__ = 'Vector2',
 
 
-VectorLike = typing.Union[
-    'Vector2',
+# Vector or subclass
+VectorOrSub = typing.TypeVar('VectorOrSub', bound='Vector2')
+
+# Anything convertable to a Vector, including lists, tuples, and dicts
+VectorLike = typing.TypeVar('VectorLike', typing.Union[
+    VectorOrSub,
     typing.List[Real],  # TODO: Length 2
     typing.Tuple[Real, Real],
     typing.Dict[str, Real],  # TODO: Length 2, keys 'x', 'y'
-]
+])
 
 
 def is_vector_like(value: typing.Any) -> bool:
@@ -68,22 +72,22 @@ def _find_lowest_vector(left: typing.Type, right: typing.Type) -> typing.Type:
 
 class Vector2(Sequence):
 
-    def __init__(self, x: Real, y: Real):
+    def __init__(self: VectorOrSub, x: Real, y: Real):
         self.x = x
         self.y = y
         self.length = hypot(x, y)
 
     @classmethod
-    def convert(cls, value: VectorLike) -> 'Vector2':
+    def convert(cls: typing.Type[VectorOrSub], value: VectorLike) -> VectorOrSub:
         """
         Constructs a vector from a vector-like.
         """
         return _mkvector(value, castto=type(cls))
 
-    def __len__(self) -> int:
+    def __len__(self: VectorOrSub) -> int:
         return 2
 
-    def __add__(self, other: VectorLike) -> 'Vector2':
+    def __add__(self: VectorOrSub, other: VectorLike) -> VectorOrSub:
         try:
             other = _mkvector(other)
         except ValueError:
@@ -91,7 +95,7 @@ class Vector2(Sequence):
         rtype = _find_lowest_vector(type(other), type(self))
         return rtype(self.x + other.x, self.y + other.y)
 
-    def __sub__(self, other: VectorLike) -> 'Vector2':
+    def __sub__(self: VectorOrSub, other: VectorLike) -> VectorOrSub:
         try:
             other = _mkvector(other)
         except ValueError:
@@ -99,7 +103,7 @@ class Vector2(Sequence):
         rtype = _find_lowest_vector(type(other), type(self))
         return rtype(self.x - other.x, self.y - other.y)
 
-    def __mul__(self, other: typing.Union[VectorLike, Real]) -> typing.Union['Vector2', Real]:
+    def __mul__(self: VectorOrSub, other: typing.Union[VectorLike, Real]) -> typing.Union[VectorOrSub, Real]:
         if is_vector_like(other):
             try:
                 other = _mkvector(other)
@@ -111,17 +115,17 @@ class Vector2(Sequence):
         else:
             return NotImplemented
 
-    def __rmul__(self, other: typing.Union[VectorLike, Real]) -> typing.Union['Vector2', Real]:
+    def __rmul__(self: VectorOrSub, other: typing.Union[VectorLike, Real]) -> typing.Union[VectorOrSub, Real]:
         return self.__mul__(other)
 
-    def __xor__(self, other: VectorLike) -> Real:
+    def __xor__(self: VectorOrSub, other: VectorLike) -> Real:
         """
         Computes the magnitude of the cross product
         """
         other = _mkvector(other)
         return self.x * other.y - self.y * other.x
 
-    def __getitem__(self, item: typing.Union[str, int]) -> Real:
+    def __getitem__(self: VectorOrSub, item: typing.Union[str, int]) -> Real:
         if hasattr(item, '__index__'):
             item = item.__index__()
         if isinstance(item, str):
@@ -141,31 +145,31 @@ class Vector2(Sequence):
         else:
             raise TypeError
 
-    def __repr__(self) -> str:
+    def __repr__(self: VectorOrSub) -> str:
         return f"{type(self).__name__}({self.x}, {self.y})"
 
-    def __eq__(self, other: VectorLike) -> bool:
+    def __eq__(self: VectorOrSub, other: VectorLike) -> bool:
         if is_vector_like(other):
             other = _mkvector(other)
             return self.x == other.x and self.y == other.y
         else:
             return False
 
-    def __ne__(self, other: VectorLike) -> bool:
+    def __ne__(self: VectorOrSub, other: VectorLike) -> bool:
         if is_vector_like(other):
             other = _mkvector(other)
             return self.x != other.x or self.y != other.y
         else:
             return True
 
-    def __iter__(self) -> typing.Iterator[Real]:
+    def __iter__(self: VectorOrSub) -> typing.Iterator[Real]:
         yield self.x
         yield self.y
 
-    def __neg__(self) -> 'Vector2':
+    def __neg__(self: VectorOrSub) -> VectorOrSub:
         return self * -1
 
-    def angle(self, other: VectorLike) -> Real:
+    def angle(self: VectorOrSub, other: VectorLike) -> Real:
         other = _mkvector(other, castto=Vector2)
 
         rv = degrees( atan2(other.x, -other.y) - atan2(self.x, -self.y) )
@@ -178,7 +182,7 @@ class Vector2(Sequence):
 
         return rv
 
-    def isclose(self, other: VectorLike, *, rel_tol: float=1e-06, abs_tol: float=1e-3):
+    def isclose(self: VectorOrSub, other: VectorLike, *, rel_tol: Real=1e-06, abs_tol: Real=1e-3) -> bool:
         """
         Determine whether two vectors are close in value.
 
@@ -200,7 +204,7 @@ class Vector2(Sequence):
             diff < abs_tol
         )
 
-    def rotate(self, degrees: Real) -> 'Vector2':
+    def rotate(self: VectorOrSub, degrees: Real) -> VectorOrSub:
         r = radians(degrees)
         r_cos = cos(r)
         r_sin = sin(r)
@@ -209,22 +213,22 @@ class Vector2(Sequence):
         y = self.x * r_sin + self.y * r_cos
         return type(self)(x, y)
 
-    def normalize(self) -> 'Vector2':
+    def normalize(self: VectorOrSub) -> VectorOrSub:
         return self.scale(1)
 
-    def truncate(self, max_length: Real) -> 'Vector2':
+    def truncate(self: VectorOrSub, max_length: Real) -> VectorOrSub:
         if self.length > max_length:
             return self.scale(max_length)
         return self
 
-    def scale(self, length: Real) -> 'Vector2':
+    def scale(self: VectorOrSub, length: Real) -> VectorOrSub:
         try:
             scale = length / self.length
         except ZeroDivisionError:
             scale = 1
         return self * scale
 
-    def reflect(self, surface_normal: VectorLike) -> 'Vector2':
+    def reflect(self: VectorOrSub, surface_normal: VectorLike) -> VectorOrSub:
         """
         Calculate the reflection of the vector against a given surface normal
         """
