@@ -1,6 +1,6 @@
 from ppb_vector import Vector2
 from math import isclose
-import pytest
+import pytest  # type: ignore
 from hypothesis import assume, given, note
 from utils import angle_isclose, vectors
 

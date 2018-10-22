@@ -1,4 +1,4 @@
-import pytest
+import pytest  # type: ignore
 from math import hypot
 
 from ppb_vector import Vector2

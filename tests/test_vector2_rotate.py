@@ -1,6 +1,6 @@
 from ppb_vector import Vector2
 from utils import angle_isclose, vectors
-import pytest
+import pytest  # type: ignore
 import math
 from hypothesis import assume, given, note
 import hypothesis.strategies as st

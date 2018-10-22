@@ -1,5 +1,5 @@
 import ppb_vector
-import pytest
+import pytest  # type: ignore
 
 
 @pytest.mark.parametrize("x, y, expected", [
