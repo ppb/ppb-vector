@@ -261,7 +261,7 @@ class Vector2:
         Calculate the reflection of the vector against a given surface normal
         """
         surface_normal = _mkvector(surface_normal, castto=Vector2)
-        if not (0.99999 < surface_normal.length < 1.00001):
+        if not isclose(surface_normal.length, 1):
             raise ValueError("Reflection requires a normalized vector.")
 
         return self - (2 * (self * surface_normal) * surface_normal)
