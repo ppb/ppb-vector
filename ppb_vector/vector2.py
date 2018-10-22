@@ -87,7 +87,8 @@ class Vector2:
         """
         Constructs a vector from a vector-like.
         """
-        return _mkvector(value, castto=type(cls))
+        fake = _mkvector(value)
+        return cls(fake.x, fake.y)
 
     def __len__(self: VectorOrSub) -> int:
         return 2

@@ -20,7 +20,7 @@ VECTOR_NUMBER_OPS = [
 
 # List of operations that (Vector2) -> Vector2
 UNARY_OPS = [
-    Vector2.convert,
+    lambda v: type(v).convert(v),
     Vector2.__neg__,
     Vector2.normalize,
 ]
