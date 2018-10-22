@@ -12,12 +12,14 @@ __all__ = 'Vector2',
 VectorOrSub = typing.TypeVar('VectorOrSub', bound='Vector2')
 
 # Anything convertable to a Vector, including lists, tuples, and dicts
-VectorLike = typing.TypeVar('VectorLike', typing.Union[
+VectorLike = typing.Union[
     VectorOrSub,
     typing.List[Real],  # TODO: Length 2
     typing.Tuple[Real, Real],
     typing.Dict[str, Real],  # TODO: Length 2, keys 'x', 'y'
-])
+]
+
+Realish = typing.Union[Real, float, int]
 
 
 def is_vector_like(value: typing.Any) -> bool:
@@ -70,9 +72,12 @@ def _find_lowest_vector(left: typing.Type, right: typing.Type) -> typing.Type:
         return _find_lowest_type(left, right)
 
 
-class Vector2(Sequence):
+class Vector2:
+    x: Realish
+    y: Realish
+    length: float
 
-    def __init__(self: VectorOrSub, x: Real, y: Real):
+    def __init__(self: VectorOrSub, x: Realish, y: Realish):
         self.x = x
         self.y = y
         self.length = hypot(x, y)
@@ -103,19 +108,34 @@ class Vector2(Sequence):
         rtype = _find_lowest_vector(type(other), type(self))
         return rtype(self.x - other.x, self.y - other.y)
 
-    def __mul__(self: VectorOrSub, other: typing.Union[VectorLike, Real]) -> typing.Union[VectorOrSub, Real]:
+    def dot(self: VectorOrSub, other: VectorLike) -> Realish:
+        """
+        Return the dot product of two vectors.
+        """
+        other = _mkvector(other)
+        return self.x * other.x + self.y * other.y
+
+    def scale_by(self: VectorOrSub, other: Realish) -> VectorOrSub:
+        """
+        Scale by the given amount.
+        """
+        return type(self)(self.x * other, self.y * other)
+
+    def __mul__(self: VectorOrSub, other: typing.Union[VectorLike, Realish]) -> typing.Union[VectorOrSub, Realish]:
+        """
+        Performs a dot product or scale based on other.
+        """
         if is_vector_like(other):
             try:
-                other = _mkvector(other)
+                return self.dot(other)
             except ValueError:
                 return NotImplemented
-            return self.x * other.x + self.y * other.y
         elif isinstance(other, Real):
-            return type(self)(self.x * other, self.y * other)
+            return self.scale_by(other)
         else:
             return NotImplemented
 
-    def __rmul__(self: VectorOrSub, other: typing.Union[VectorLike, Real]) -> typing.Union[VectorOrSub, Real]:
+    def __rmul__(self: VectorOrSub, other: typing.Union[VectorLike, Realish]) -> typing.Union[VectorOrSub, Realish]:
         return self.__mul__(other)
 
     def __xor__(self: VectorOrSub, other: VectorLike) -> Real:
@@ -125,7 +145,7 @@ class Vector2(Sequence):
         other = _mkvector(other)
         return self.x * other.y - self.y * other.x
 
-    def __getitem__(self: VectorOrSub, item: typing.Union[str, int]) -> Real:
+    def __getitem__(self: VectorOrSub, item: typing.Union[str, int]) -> Realish:
         if hasattr(item, '__index__'):
             item = item.__index__()
         if isinstance(item, str):
@@ -162,14 +182,14 @@ class Vector2(Sequence):
         else:
             return True
 
-    def __iter__(self: VectorOrSub) -> typing.Iterator[Real]:
+    def __iter__(self: VectorOrSub) -> typing.Iterator[Realish]:
         yield self.x
         yield self.y
 
     def __neg__(self: VectorOrSub) -> VectorOrSub:
-        return self * -1
+        return self.scale_by(-1)
 
-    def angle(self: VectorOrSub, other: VectorLike) -> Real:
+    def angle(self: VectorOrSub, other: VectorLike) -> Realish:
         other = _mkvector(other, castto=Vector2)
 
         rv = degrees( atan2(other.x, -other.y) - atan2(self.x, -self.y) )
@@ -182,7 +202,7 @@ class Vector2(Sequence):
 
         return rv
 
-    def isclose(self: VectorOrSub, other: VectorLike, *, rel_tol: Real=1e-06, abs_tol: Real=1e-3) -> bool:
+    def isclose(self: VectorOrSub, other: VectorLike, *, rel_tol: Realish=1e-06, abs_tol: Realish=1e-3) -> bool:
         """
         Determine whether two vectors are close in value.
 
@@ -198,13 +218,15 @@ class Vector2(Sequence):
         For the values to be considered close, the difference between them
         must be smaller than at least one of the tolerances.
         """
+        other = _mkvector(other, castto=Vector2)
         diff = (self - other).length
         return (
-            diff < rel_tol * max(self.length, other.length) or 
+            diff < rel_tol * self.length or
+            diff < rel_tol * other.length or 
             diff < abs_tol
         )
 
-    def rotate(self: VectorOrSub, degrees: Real) -> VectorOrSub:
+    def rotate(self: VectorOrSub, degrees: Realish) -> VectorOrSub:
         r = radians(degrees)
         r_cos = cos(r)
         r_sin = sin(r)
@@ -216,17 +238,22 @@ class Vector2(Sequence):
     def normalize(self: VectorOrSub) -> VectorOrSub:
         return self.scale(1)
 
-    def truncate(self: VectorOrSub, max_length: Real) -> VectorOrSub:
+    def truncate(self: VectorOrSub, max_length: Realish) -> VectorOrSub:
         if self.length > max_length:
             return self.scale(max_length)
         return self
 
-    def scale(self: VectorOrSub, length: Real) -> VectorOrSub:
+    def scale_to(self: VectorOrSub, length: Real) -> VectorOrSub:
+        """
+        Scale the vector to the given length
+        """
         try:
             scale = length / self.length
         except ZeroDivisionError:
             scale = 1
         return self * scale
+
+    scale = scale_to
 
     def reflect(self: VectorOrSub, surface_normal: VectorLike) -> VectorOrSub:
         """
@@ -237,3 +264,5 @@ class Vector2(Sequence):
             raise ValueError("Reflection requires a normalized vector.")
 
         return self - (2 * (self * surface_normal) * surface_normal)
+
+Sequence.register(Vector2)
