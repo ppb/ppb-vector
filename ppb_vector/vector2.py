@@ -19,7 +19,7 @@ VectorLike = typing.Union[
     typing.Dict[str, Real],  # TODO: Length 2, keys 'x', 'y'
 ]
 
-Realish = typing.Union[Real, float, int, typing.SupportsFloat]
+Realish = typing.Union[Real, float, int]
 
 
 def is_vector_like(value: typing.Any) -> bool:
@@ -73,13 +73,13 @@ def _find_lowest_vector(left: typing.Type, right: typing.Type) -> typing.Type:
 
 
 class Vector2:
-    x: Realish
-    y: Realish
+    x: float
+    y: float
     length: float
 
     def __init__(self: VectorOrSub, x: Realish, y: Realish):
-        self.x = x
-        self.y = y
+        self.x = float(x)
+        self.y = float(y)
         self.length = hypot(x, y)
 
     @classmethod
@@ -190,7 +190,7 @@ class Vector2:
     def __neg__(self: VectorOrSub) -> VectorOrSub:
         return self.scale_by(-1)
 
-    def angle(self: VectorOrSub, other: VectorLike) -> Real:
+    def angle(self: VectorOrSub, other: VectorLike) -> float:
         other = _mkvector(other, castto=Vector2)
 
         rv = degrees( atan2(other.x, -other.y) - atan2(self.x, -self.y) )
@@ -252,7 +252,7 @@ class Vector2:
             scale = length / self.length
         except ZeroDivisionError:
             scale = 1
-        return self * scale
+        return self.scale_by(scale)
 
     scale = scale_to
 
