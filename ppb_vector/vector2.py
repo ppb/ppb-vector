@@ -148,7 +148,7 @@ class Vector2:
 
     def __getitem__(self: VectorOrSub, item: typing.Union[str, int]) -> Realish:
         if hasattr(item, '__index__'):
-            item = item.__index__()
+            item = item.__index__()  # type: ignore
         if isinstance(item, str):
             if item == 'x':
                 return self.x
@@ -241,7 +241,7 @@ class Vector2:
 
     def truncate(self: VectorOrSub, max_length: Realish) -> VectorOrSub:
         if self.length > max_length:
-            return self.scale(max_length)
+            return self.scale_to(max_length)
         return self
 
     def scale_to(self: VectorOrSub, length: Real) -> VectorOrSub:
