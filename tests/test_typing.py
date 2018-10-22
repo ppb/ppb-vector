@@ -11,11 +11,10 @@ BINARY_OPS = [
 
 # List of operations that (Vector2, Real) -> Vector2
 VECTOR_NUMBER_OPS = [
-    Vector2.__mul__,
-    Vector2.__rmul__,
+    Vector2.scale_by,
     Vector2.rotate,
     Vector2.truncate,
-    Vector2.scale,
+    Vector2.scale_to,
 ]
 
 # List of operations that (Vector2) -> Vector2

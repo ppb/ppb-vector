@@ -19,7 +19,7 @@ VectorLike = typing.Union[
     typing.Dict[str, Real],  # TODO: Length 2, keys 'x', 'y'
 ]
 
-Realish = typing.Union[Real, float, int]
+Realish = typing.Union[Real, float, int, typing.SupportsFloat]
 
 
 def is_vector_like(value: typing.Any) -> bool:
@@ -109,7 +109,7 @@ class Vector2:
         rtype = _find_lowest_vector(type(other), type(self))
         return rtype(self.x - other.x, self.y - other.y)
 
-    def dot(self: VectorOrSub, other: VectorLike) -> Realish:
+    def dot(self: VectorOrSub, other: VectorLike) -> Real:
         """
         Return the dot product of two vectors.
         """
@@ -190,7 +190,7 @@ class Vector2:
     def __neg__(self: VectorOrSub) -> VectorOrSub:
         return self.scale_by(-1)
 
-    def angle(self: VectorOrSub, other: VectorLike) -> Realish:
+    def angle(self: VectorOrSub, other: VectorLike) -> Real:
         other = _mkvector(other, castto=Vector2)
 
         rv = degrees( atan2(other.x, -other.y) - atan2(self.x, -self.y) )
@@ -244,7 +244,7 @@ class Vector2:
             return self.scale_to(max_length)
         return self
 
-    def scale_to(self: VectorOrSub, length: Real) -> VectorOrSub:
+    def scale_to(self: VectorOrSub, length: Realish) -> VectorOrSub:
         """
         Scale the vector to the given length
         """
