@@ -73,9 +73,9 @@ def _find_lowest_vector(left: typing.Type, right: typing.Type) -> typing.Type:
 
 
 class Vector2:
-    x: Realish
-    y: Realish
-    length: Realish
+    x: float
+    y: float
+    length: float
 
     def __init__(self: VectorOrSub, x: Realish, y: Realish):
         try:
