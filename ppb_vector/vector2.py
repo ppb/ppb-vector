@@ -11,32 +11,36 @@ __all__ = 'Vector2',
 # Vector or subclass
 VectorOrSub = typing.TypeVar('VectorOrSub', bound='Vector2')
 
+Realish = typing.Union[Real, float, int]
+
 # Anything convertable to a Vector, including lists, tuples, and dicts
 VectorLike = typing.Union[
-    VectorOrSub,
-    typing.List[Real],  # TODO: Length 2
-    typing.Tuple[Real, Real],
-    typing.Dict[str, Real],  # TODO: Length 2, keys 'x', 'y'
+    'Vector2',  # Or subclasses, unconnected to the VectorOrSub typevar above
+    typing.List[typing.SupportsFloat],  # TODO: Length 2
+    typing.Tuple[typing.SupportsFloat, typing.SupportsFloat],
+    typing.Dict[str, typing.SupportsFloat],  # TODO: Length 2, keys 'x', 'y'
 ]
-
-Realish = typing.Union[Real, float, int]
 
 
 def is_vector_like(value: typing.Any) -> bool:
     return isinstance(value, (Vector2, list, tuple, dict))
 
 
-_fakevector = collections.namedtuple('_fakevector', ['x', 'y'])
+class _fakevector(typing.NamedTuple):
+    x: float
+    y: float
 
-def _mkvector(value, *, castto=_fakevector):
+
+t_mkvector = typing.TypeVar('t_mkvector', 'Vector2', _fakevector, covariant=True)
+def _mkvector(value: VectorLike, *, castto: typing.Type[t_mkvector]=_fakevector) -> t_mkvector:
     if isinstance(value, Vector2):
-        return value
+        return value  # type: ignore
     # FIXME: Allow all types of sequences
     elif isinstance(value, (list, tuple)) and len(value) == 2:
-        return castto(value[0], value[1])
+        return castto(value[0].__float__(), value[1].__float__())
     # FIXME: Allow all types of mappings
     elif isinstance(value, dict) and 'x' in value and 'y' in value and len(value) == 2:
-        return castto(value['x'], value['y'])
+        return castto(value['x'].__float__(), value['y'].__float__())
     else:
         raise ValueError(f"Cannot use {value} as a vector-like")
 
@@ -77,7 +81,7 @@ class Vector2:
     y: float
     length: float
 
-    def __init__(self: VectorOrSub, x: Realish, y: Realish):
+    def __init__(self, x: typing.SupportsFloat, y: typing.SupportsFloat):
         try:
             self.x = x.__float__()
         except AttributeError:
@@ -115,7 +119,7 @@ class Vector2:
         rtype = _find_lowest_vector(type(other), type(self))
         return rtype(self.x - other.x, self.y - other.y)
 
-    def dot(self: VectorOrSub, other: VectorLike) -> Real:
+    def dot(self: VectorOrSub, other: VectorLike) -> Realish:
         """
         Return the dot product of two vectors.
         """
@@ -128,7 +132,13 @@ class Vector2:
         """
         return type(self)(self.x * other, self.y * other)
 
-    def __mul__(self: VectorOrSub, other: typing.Union[VectorLike, Realish]) -> typing.Union[VectorOrSub, Realish]:
+    @typing.overload
+    def __mul__(self: VectorOrSub, other: VectorLike) -> Realish: pass
+
+    @typing.overload
+    def __mul__(self: VectorOrSub, other: Realish) -> VectorOrSub: pass
+
+    def __mul__(self, other):
         """
         Performs a dot product or scale based on other.
         """
@@ -142,10 +152,16 @@ class Vector2:
         else:
             return NotImplemented
 
-    def __rmul__(self: VectorOrSub, other: typing.Union[VectorLike, Realish]) -> typing.Union[VectorOrSub, Realish]:
+    @typing.overload
+    def __rmul__(self: VectorOrSub, other: VectorLike) -> Realish: pass
+
+    @typing.overload
+    def __rmul__(self: VectorOrSub, other: Realish) -> VectorOrSub: pass
+
+    def __rmul__(self, other):
         return self.__mul__(other)
 
-    def __xor__(self: VectorOrSub, other: VectorLike) -> Real:
+    def __xor__(self: VectorOrSub, other: VectorLike) -> Realish:
         """
         Computes the magnitude of the cross product
         """
@@ -175,14 +191,14 @@ class Vector2:
     def __repr__(self: VectorOrSub) -> str:
         return f"{type(self).__name__}({self.x}, {self.y})"
 
-    def __eq__(self: VectorOrSub, other: VectorLike) -> bool:
+    def __eq__(self: VectorOrSub, other: typing.Any) -> bool:
         if is_vector_like(other):
             other = _mkvector(other)
             return self.x == other.x and self.y == other.y
         else:
             return False
 
-    def __ne__(self: VectorOrSub, other: VectorLike) -> bool:
+    def __ne__(self: VectorOrSub, other: typing.Any) -> bool:
         if is_vector_like(other):
             other = _mkvector(other)
             return self.x != other.x or self.y != other.y
@@ -230,7 +246,7 @@ class Vector2:
         return (
             diff < rel_tol * self.length or
             diff < rel_tol * other.length or 
-            diff < abs_tol
+            diff < float(abs_tol)
         )
 
     def rotate(self: VectorOrSub, degrees: Realish) -> VectorOrSub:
