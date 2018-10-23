@@ -26,19 +26,6 @@ def is_vector_like(value: typing.Any) -> bool:
     return isinstance(value, (Vector2, list, tuple, dict))
 
 
-def _mkvector(value: VectorLike) -> 'Vector2':
-    if isinstance(value, Vector2):
-        return value
-    # FIXME: Allow all types of sequences
-    elif isinstance(value, (list, tuple)) and len(value) == 2:
-        return Vector2(value[0].__float__(), value[1].__float__())
-    # FIXME: Allow all types of mappings
-    elif isinstance(value, dict) and 'x' in value and 'y' in value and len(value) == 2:
-        return Vector2(value['x'].__float__(), value['y'].__float__())
-    else:
-        raise ValueError(f"Cannot use {value} as a vector-like")
-
-
 @functools.lru_cache()
 def _find_lowest_type(left: typing.Type, right: typing.Type) -> typing.Type:
     """
@@ -85,26 +72,38 @@ class Vector2:
         except AttributeError:
             raise TypeError(f"{type(y).__name__} object not convertable to float")
 
+    @classmethod
+    def convert(cls: typing.Type[VectorOrSub], value: VectorLike) -> VectorOrSub:
+        """
+        Constructs a vector from a vector-like.
+        """
+        # Use Vector2.convert() instead of type(self).convert() so that 
+        # _find_lowest_vector() can resolve things well.
+        if isinstance(value, cls):
+            return value
+        elif isinstance(value, Vector2):
+            return cls(value.x, value.y)
+        # FIXME: Allow all types of sequences
+        elif isinstance(value, (list, tuple)) and len(value) == 2:
+            return cls(value[0].__float__(), value[1].__float__())
+        # FIXME: Allow all types of mappings
+        elif isinstance(value, dict) and 'x' in value and 'y' in value and len(value) == 2:
+            return cls(value['x'].__float__(), value['y'].__float__())
+        else:
+            raise ValueError(f"Cannot use {value} as a vector-like")
+
     @property
     def length(self) -> float:
         if not hasattr(self, '_length'):
             self._length = hypot(self.x, self.y)
         return self._length
 
-    @classmethod
-    def convert(cls: typing.Type[VectorOrSub], value: VectorLike) -> VectorOrSub:
-        """
-        Constructs a vector from a vector-like.
-        """
-        fake = _mkvector(value)
-        return cls(fake.x, fake.y)
-
     def __len__(self: VectorOrSub) -> int:
         return 2
 
     def __add__(self: VectorOrSub, other: VectorLike) -> VectorOrSub:
         try:
-            other = _mkvector(other)
+            other = Vector2.convert(other)
         except ValueError:
             return NotImplemented
         rtype = _find_lowest_vector(type(other), type(self))
@@ -112,7 +111,7 @@ class Vector2:
 
     def __sub__(self: VectorOrSub, other: VectorLike) -> VectorOrSub:
         try:
-            other = _mkvector(other)
+            other = Vector2.convert(other)
         except ValueError:
             return NotImplemented
         rtype = _find_lowest_vector(type(other), type(self))
@@ -122,7 +121,7 @@ class Vector2:
         """
         Return the dot product of two vectors.
         """
-        other = _mkvector(other)
+        other = Vector2.convert(other)
         return self.x * other.x + self.y * other.y
 
     def scale_by(self: VectorOrSub, other: Realish) -> VectorOrSub:
@@ -164,7 +163,7 @@ class Vector2:
         """
         Computes the magnitude of the cross product
         """
-        other = _mkvector(other)
+        other = Vector2.convert(other)
         return self.x * other.y - self.y * other.x
 
     def __getitem__(self: VectorOrSub, item: typing.Union[str, int]) -> Realish:
@@ -192,14 +191,14 @@ class Vector2:
 
     def __eq__(self: VectorOrSub, other: typing.Any) -> bool:
         if is_vector_like(other):
-            other = _mkvector(other)
+            other = Vector2.convert(other)
             return self.x == other.x and self.y == other.y
         else:
             return False
 
     def __ne__(self: VectorOrSub, other: typing.Any) -> bool:
         if is_vector_like(other):
-            other = _mkvector(other)
+            other = Vector2.convert(other)
             return self.x != other.x or self.y != other.y
         else:
             return True
@@ -212,7 +211,7 @@ class Vector2:
         return self.scale_by(-1)
 
     def angle(self: VectorOrSub, other: VectorLike) -> float:
-        other = _mkvector(other)
+        other = Vector2.convert(other)
 
         rv = degrees( atan2(other.x, -other.y) - atan2(self.x, -self.y) )
         # This normalizes the value to (-180, +180], which is the opposite of
@@ -240,7 +239,7 @@ class Vector2:
         For the values to be considered close, the difference between them
         must be smaller than at least one of the tolerances.
         """
-        other = _mkvector(other)
+        other = Vector2.convert(other)
         diff = (self - other).length
         return (
             diff < rel_tol * self.length or
@@ -281,7 +280,7 @@ class Vector2:
         """
         Calculate the reflection of the vector against a given surface normal
         """
-        surface_normal = _mkvector(surface_normal)
+        surface_normal = Vector2.convert(surface_normal)
         if not isclose(surface_normal.length, 1):
             raise ValueError("Reflection requires a normalized vector.")
 
