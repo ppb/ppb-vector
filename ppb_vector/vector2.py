@@ -26,21 +26,15 @@ def is_vector_like(value: typing.Any) -> bool:
     return isinstance(value, (Vector2, list, tuple, dict))
 
 
-class _fakevector(typing.NamedTuple):
-    x: float
-    y: float
-
-
-t_mkvector = typing.TypeVar('t_mkvector', 'Vector2', _fakevector, covariant=True)
-def _mkvector(value: VectorLike, *, castto: typing.Type[t_mkvector]=_fakevector) -> t_mkvector:
+def _mkvector(value: VectorLike) -> 'Vector2':
     if isinstance(value, Vector2):
-        return value  # type: ignore
+        return value
     # FIXME: Allow all types of sequences
     elif isinstance(value, (list, tuple)) and len(value) == 2:
-        return castto(value[0].__float__(), value[1].__float__())
+        return Vector2(value[0].__float__(), value[1].__float__())
     # FIXME: Allow all types of mappings
     elif isinstance(value, dict) and 'x' in value and 'y' in value and len(value) == 2:
-        return castto(value['x'].__float__(), value['y'].__float__())
+        return Vector2(value['x'].__float__(), value['y'].__float__())
     else:
         raise ValueError(f"Cannot use {value} as a vector-like")
 
@@ -79,7 +73,7 @@ def _find_lowest_vector(left: typing.Type, right: typing.Type) -> typing.Type:
 class Vector2:
     x: float
     y: float
-    length: float
+    _length: float
 
     def __init__(self, x: typing.SupportsFloat, y: typing.SupportsFloat):
         try:
@@ -90,7 +84,12 @@ class Vector2:
             self.y = y.__float__()
         except AttributeError:
             raise TypeError(f"{type(y).__name__} object not convertable to float")
-        self.length = hypot(self.x, self.y)
+
+    @property
+    def length(self) -> float:
+        if not hasattr(self, '_length'):
+            self._length = hypot(self.x, self.y)
+        return self._length
 
     @classmethod
     def convert(cls: typing.Type[VectorOrSub], value: VectorLike) -> VectorOrSub:
@@ -213,7 +212,7 @@ class Vector2:
         return self.scale_by(-1)
 
     def angle(self: VectorOrSub, other: VectorLike) -> float:
-        other = _mkvector(other, castto=Vector2)
+        other = _mkvector(other)
 
         rv = degrees( atan2(other.x, -other.y) - atan2(self.x, -self.y) )
         # This normalizes the value to (-180, +180], which is the opposite of
@@ -241,7 +240,7 @@ class Vector2:
         For the values to be considered close, the difference between them
         must be smaller than at least one of the tolerances.
         """
-        other = _mkvector(other, castto=Vector2)
+        other = _mkvector(other)
         diff = (self - other).length
         return (
             diff < rel_tol * self.length or
@@ -282,7 +281,7 @@ class Vector2:
         """
         Calculate the reflection of the vector against a given surface normal
         """
-        surface_normal = _mkvector(surface_normal, castto=Vector2)
+        surface_normal = _mkvector(surface_normal)
         if not isclose(surface_normal.length, 1):
             raise ValueError("Reflection requires a normalized vector.")
 
