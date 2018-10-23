@@ -102,19 +102,19 @@ class Vector2:
         return 2
 
     def __add__(self: VectorOrSub, other: VectorLike) -> VectorOrSub:
+        rtype = _find_lowest_vector(type(other), type(self))
         try:
             other = Vector2.convert(other)
         except ValueError:
             return NotImplemented
-        rtype = _find_lowest_vector(type(other), type(self))
         return rtype(self.x + other.x, self.y + other.y)
 
     def __sub__(self: VectorOrSub, other: VectorLike) -> VectorOrSub:
+        rtype = _find_lowest_vector(type(other), type(self))
         try:
             other = Vector2.convert(other)
         except ValueError:
             return NotImplemented
-        rtype = _find_lowest_vector(type(other), type(self))
         return rtype(self.x - other.x, self.y - other.y)
 
     def dot(self: VectorOrSub, other: VectorLike) -> Realish:
