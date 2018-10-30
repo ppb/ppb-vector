@@ -195,11 +195,7 @@ class Vector2:
             return False
 
     def __ne__(self: VectorOrSub, other: typing.Any) -> bool:
-        if is_vector_like(other):
-            other = Vector2.convert(other)
-            return self.x != other.x or self.y != other.y
-        else:
-            return True
+        return not (self == other)
 
     def __iter__(self: VectorOrSub) -> typing.Iterator[Realish]:
         yield self.x
