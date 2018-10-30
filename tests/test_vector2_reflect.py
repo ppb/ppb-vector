@@ -38,7 +38,7 @@ def test_reflect_prop(initial: Vector2, normal: Vector2):
     assert initial.isclose(returned)
     note(f"initial ⋅ normal: {initial * normal}")
     note(f"reflected ⋅ normal: {reflected * normal}")
-    assert isclose((initial.dot(normal)), -(reflected.dot(normal)))
+    assert isclose((initial * normal), -(reflected * normal))
     assert angle_isclose(normal.angle(initial),
                          180 - normal.angle(reflected)
     )
