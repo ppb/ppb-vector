@@ -3,7 +3,7 @@ import collections
 import functools
 from math import acos, atan2, cos, degrees, hypot, isclose, radians, sin
 from numbers import Real
-from collections.abc import Sequence
+from collections.abc import Sequence, Mapping
 
 __all__ = 'Vector2',
 
@@ -16,14 +16,14 @@ Realish = typing.Union[Real, float, int]
 # Anything convertable to a Vector, including lists, tuples, and dicts
 VectorLike = typing.Union[
     'Vector2',  # Or subclasses, unconnected to the VectorOrSub typevar above
-    typing.List[typing.SupportsFloat],  # TODO: Length 2
     typing.Tuple[typing.SupportsFloat, typing.SupportsFloat],
-    typing.Dict[str, typing.SupportsFloat],  # TODO: Length 2, keys 'x', 'y'
+    typing.Sequence[typing.SupportsFloat],  # TODO: Length 2
+    typing.Mapping[str, typing.SupportsFloat],  # TODO: Length 2, keys 'x', 'y'
 ]
 
 
 def is_vector_like(value: typing.Any) -> bool:
-    return isinstance(value, (Vector2, list, tuple, dict))
+    return isinstance(value, (Vector2, Sequence, dict))
 
 
 @functools.lru_cache()
@@ -75,7 +75,7 @@ class Vector2:
     @classmethod
     def convert(cls: typing.Type[VectorOrSub], value: VectorLike) -> VectorOrSub:
         """
-        Constructs a vector from a vector-like.
+        Constructs a vector from a vector-like. Does not perform a copy.
         """
         # Use Vector2.convert() instead of type(self).convert() so that 
         # _find_lowest_vector() can resolve things well.
@@ -83,11 +83,9 @@ class Vector2:
             return value
         elif isinstance(value, Vector2):
             return cls(value.x, value.y)
-        # FIXME: Allow all types of sequences
-        elif isinstance(value, (list, tuple)) and len(value) == 2:
+        elif isinstance(value, Sequence) and len(value) == 2:
             return cls(value[0].__float__(), value[1].__float__())
-        # FIXME: Allow all types of mappings
-        elif isinstance(value, dict) and 'x' in value and 'y' in value and len(value) == 2:
+        elif isinstance(value, Mapping) and 'x' in value and 'y' in value and len(value) == 2:
             return cls(value['x'].__float__(), value['y'].__float__())
         else:
             raise ValueError(f"Cannot use {value} as a vector-like")
