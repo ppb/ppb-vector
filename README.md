@@ -21,7 +21,7 @@ Implements many convenience features:
 
 ### Unpacking
 
-    >>> x, y = *Vector(1, 3)
+    >>> x, y = Vector2(1, 3)
     >>> print(x)
     1
     >>> print(y)
