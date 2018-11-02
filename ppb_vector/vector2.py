@@ -92,9 +92,9 @@ class Vector2:
 
     @property
     def length(self) -> float:
-        if not hasattr(self, '_length'):
-            self._length = hypot(self.x, self.y)
-        return self._length
+        # Surprisingly, caching this value provides no descernable performance
+        # benefit, according to microbenchmarks.
+        return hypot(self.x, self.y)
 
     def __len__(self: VectorOrSub) -> int:
         return 2
