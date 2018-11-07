@@ -24,3 +24,4 @@ Thank you everyone below for your contributions **(No matter how big or small)!*
 | [Ricky Putra](kurokochin) |||
 | [Maybeking](https://github.com/Maybeking) |||
 | [Henry](https://github.com/hphu) |||
+| [nicoo](https://github.com/nbraud) | <nicoo@mur.at> ||
