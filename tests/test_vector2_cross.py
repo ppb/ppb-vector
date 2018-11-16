@@ -1,5 +1,5 @@
 from ppb_vector import Vector2
-import pytest
+import pytest  # type: ignore
 
 @pytest.mark.parametrize("left, right, expected", [
     (Vector2(1, 1), Vector2(0, -1), -1),
