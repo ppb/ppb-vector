@@ -142,7 +142,7 @@ class Vector2:
                 return self.dot(other)
             except ValueError:
                 return NotImplemented
-        elif isinstance(other, Real):
+        elif isinstance(other, (float, int)):
             return self.scale_by(other)
         else:
             return NotImplemented
