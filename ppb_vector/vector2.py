@@ -2,7 +2,6 @@ import typing
 import collections
 import functools
 from math import acos, atan2, cos, degrees, hypot, isclose, radians, sin
-from numbers import Real
 from collections.abc import Sequence, Mapping
 
 __all__ = 'Vector2',
@@ -11,7 +10,7 @@ __all__ = 'Vector2',
 # Vector or subclass
 VectorOrSub = typing.TypeVar('VectorOrSub', bound='Vector2')
 
-Realish = typing.Union[Real, float, int]
+Realish = typing.Union[float, int]
 
 # Anything convertable to a Vector, including lists, tuples, and dicts
 VectorLike = typing.Union[
@@ -143,7 +142,7 @@ class Vector2:
                 return self.dot(other)
             except ValueError:
                 return NotImplemented
-        elif isinstance(other, Real):
+        elif isinstance(other, (float, int)):
             return self.scale_by(other)
         else:
             return NotImplemented
