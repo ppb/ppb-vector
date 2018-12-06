@@ -59,7 +59,6 @@ def _find_lowest_vector(left: typing.Type, right: typing.Type) -> typing.Type:
 class Vector2:
     x: float
     y: float
-    _length: float
 
     def __init__(self, x: typing.SupportsFloat, y: typing.SupportsFloat):
         try:
