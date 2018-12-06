@@ -7,7 +7,7 @@
 | ---- | ----- | ------- |
 | [Piper Thunstrom](https://github.com/pathunstrom) | [pathunstrom@gmail.com](mailto:pathunstrom@gmail.com) | [pathunstrom](https://twitter.com/pathunstrom)
 | [Luna Lunapiena](https://github.com/lunacodes) | [lunacodes@gmail.com](mailto:lunacodes@gmail.com) | [lunacodess](https://twitter.com/lunacodess)
-[Jamie Bliss](https://github.com/astronouth7303/) | [jamie@ivyleav.es](jamie@ivyleav.es) | [AstraLuma](https://twitter.com/AstraLuma)
+| [Jamie Bliss](https://github.com/astronouth7303/) | [jamie@ivyleav.es](jamie@ivyleav.es) | [AstraLuma](https://twitter.com/AstraLuma)
 
 Thank you everyone below for your contributions **(No matter how big or small)!**
 
