@@ -223,20 +223,25 @@ class Vector2:
            rel_tol
                maximum difference for being considered "close", relative to the
                magnitude of the input values
-            abs_tol
+           abs_tol
                maximum difference for being considered "close", regardless of the
                magnitude of the input values
-        
+
         Return True if self is close in value to other, and False otherwise.
-        
+
         For the values to be considered close, the difference between them
         must be smaller than at least one of the tolerances.
         """
         other = Vector2.convert(other)
+
+        rel_length = max(
+            self.length,
+            other.length,
+        )
+
         diff = (self - other).length
         return (
-            diff < rel_tol * self.length or
-            diff < rel_tol * other.length or 
+            diff < rel_tol * rel_length or
             diff < float(abs_tol)
         )
 
