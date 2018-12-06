@@ -110,4 +110,4 @@ def test_rotation_linearity(a, b, l, angle):
     note(f"b.rotate(): {b.rotate(angle)}")
     note(f"Inner: {inner}")
     note(f"Outer: {outer}")
-    assert inner.isclose(outer)
+    assert inner.isclose(outer, rel_to=[a, l * a, b])
