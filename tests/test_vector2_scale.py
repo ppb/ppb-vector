@@ -1,5 +1,8 @@
 import pytest  # type: ignore
+from hypothesis import assume, given
+from hypothesis.strategies import floats
 from math import hypot
+from utils import vectors
 
 from ppb_vector import Vector2
 
@@ -17,11 +20,11 @@ def test_calculate_scale(vector):
     assert vector.scale(scale) == vector_scale_calculated
 
 
-def test_scale_is_equivalent_to_truncate():
-    """ 
-    Vector2.scale is equivalent to Vector2.truncate 
-    when scalar is less than length
+@given(x=vectors(), l=floats(min_value=1e150, max_value=1e150))
+def test_scale_is_equivalent_to_truncate(x: Vector2, l: float):
     """
-    vector_scale = Vector2(3, 4).scale(4)
-    vector_truncate = Vector2(3, 4).truncate(4)
-    assert vector_scale == vector_truncate
+    Vector2.scale_to is equivalent to Vector2.truncate
+    when the scalar is less than length
+    """
+    assume(l <= x.length)
+    assert x.scale_to(l) == x.truncate(l)
