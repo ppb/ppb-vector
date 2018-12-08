@@ -14,6 +14,8 @@ def test_scale_to_length(x: Vector2, l: float):
         assert isclose(x.scale_to(l).length, l)
     except ZeroDivisionError:
         assert x == (0, 0)
+    except ValueError:
+        assert l < 0
 
 
 @given(x=vectors(), l=floats(min_value=1e150, max_value=1e150))

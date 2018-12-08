@@ -261,6 +261,9 @@ class Vector2:
         """
         Scale the vector to the given length
         """
+        if length < 0:
+            raise ValueError("Vector2.scale_to takes non-negative lengths.")
+
         return (length / self.length) * self
 
     scale = scale_to
