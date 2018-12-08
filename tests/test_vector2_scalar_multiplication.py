@@ -1,8 +1,9 @@
 import pytest  # type: ignore
-from hypothesis import given
+from hypothesis import assume, given
 from hypothesis.strategies import floats
 from math import isclose
 from utils import vectors
+
 from ppb_vector import Vector2
 
 
@@ -41,3 +42,10 @@ def test_scalar_linear(l: float, x: Vector2, y: Vector2):
 )
 def test_scalar_length(l: float, x: Vector2):
     assert isclose((l * x).length, abs(l) * x.length)
+
+
+@given(x=vectors(), l=floats(min_value=-1e150, max_value=1e150))
+def test_scalar_division(x: Vector2, l: float):
+    """Test that (x / λ) = (1 / λ) * x"""
+    assume(abs(l) > 1e-100)
+    assert (x / l).isclose((1/l) * x)
