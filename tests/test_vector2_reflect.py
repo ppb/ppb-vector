@@ -32,7 +32,6 @@ def test_reflect_prop(initial: Vector2, normal: Vector2):
     note(f"|normal|: {normal.length}, |initial|: {initial.length}")
     note(f"angle(normal, initial): {normal.angle(initial)}")
     note(f"angle(normal, reflected): {normal.angle(reflected)}")
-    note(f"initial ^ normal: {initial ^ normal}")
     note(f"Reflected: {reflected}")
     assert not any(map(isinf, reflected))
     assert initial.isclose(returned)

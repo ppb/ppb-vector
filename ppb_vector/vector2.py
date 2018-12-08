@@ -156,13 +156,6 @@ class Vector2:
     def __rmul__(self, other):
         return self.__mul__(other)
 
-    def __xor__(self: VectorOrSub, other: VectorLike) -> Realish:
-        """
-        Computes the magnitude of the cross product
-        """
-        other = Vector2.convert(other)
-        return self.x * other.y - self.y * other.x
-
     def __getitem__(self: VectorOrSub, item: typing.Union[str, int]) -> Realish:
         if hasattr(item, '__index__'):
             item = item.__index__()  # type: ignore
