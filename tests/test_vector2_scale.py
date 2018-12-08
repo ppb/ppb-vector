@@ -1,9 +1,15 @@
 import pytest  # type: ignore
 from hypothesis import assume, given
 from hypothesis.strategies import floats
+from math import isclose
 from utils import vectors
 
 from ppb_vector import Vector2
+
+
+@given(x=vectors(), l=floats(min_value=-1e150, max_value=1e150))
+def test_scale_length(x: Vector2, l: float):
+    assert isclose(x.scale_to(l).length, l)
 
 
 @given(x=vectors(), l=floats(min_value=1e150, max_value=1e150))
