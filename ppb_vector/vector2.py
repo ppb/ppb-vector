@@ -164,6 +164,14 @@ class Vector2:
         (operands length >= 10**150) and produce NaN.
         """
         other = Vector2.convert(other)
+        l = self.length
+
+        if l > 1e10:
+            # Preconditionning step, taken from Prof. W. Kahan's
+            #  https://people.eecs.berkeley.edu/~wkahan/MathH110/Cross.pdf
+            𝜚 = (self / l) * (other / l)
+            other -= 𝜚*self
+
         return self.x * other.y - self.y * other.x
 
     def __getitem__(self: VectorOrSub, item: typing.Union[str, int]) -> Realish:
