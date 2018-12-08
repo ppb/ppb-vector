@@ -155,6 +155,10 @@ class Vector2:
     def __rmul__(self, other):
         return self.__mul__(other)
 
+    def __truediv__(self: VectorOrSub, other: Realish) -> VectorOrSub:
+        """Perform a division between a vector and a scalar."""
+        return type(self)(self.x / other, self.y / other)
+
     def __getitem__(self: VectorOrSub, item: typing.Union[str, int]) -> Realish:
         if hasattr(item, '__index__'):
             item = item.__index__()  # type: ignore
