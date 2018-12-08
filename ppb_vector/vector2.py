@@ -261,11 +261,7 @@ class Vector2:
         """
         Scale the vector to the given length
         """
-        try:
-            scale = length / self.length
-        except ZeroDivisionError:
-            scale = 1
-        return self.scale_by(scale)
+        return (length / self.length) * self
 
     scale = scale_to
 

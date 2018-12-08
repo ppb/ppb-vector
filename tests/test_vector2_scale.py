@@ -8,8 +8,12 @@ from ppb_vector import Vector2
 
 
 @given(x=vectors(), l=floats(min_value=-1e150, max_value=1e150))
-def test_scale_length(x: Vector2, l: float):
-    assert isclose(x.scale_to(l).length, l)
+def test_scale_to_length(x: Vector2, l: float):
+    """Test that the length of x.scale_to(l) is l."""
+    try:
+        assert isclose(x.scale_to(l).length, l)
+    except ZeroDivisionError:
+        assert x == (0, 0)
 
 
 @given(x=vectors(), l=floats(min_value=1e150, max_value=1e150))
