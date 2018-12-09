@@ -215,27 +215,36 @@ class Vector2:
 
         return rv
 
-    def isclose(self: VectorOrSub, other: VectorLike, *, rel_tol: Realish=1e-06, abs_tol: Realish=1e-3) -> bool:
+    def isclose(self: VectorOrSub, other: VectorLike, *,
+                abs_tol: Realish=1e-3, rel_tol: Realish=1e-06, rel_to: typing.Sequence[VectorLike]=[]) -> bool:
         """
         Determine whether two vectors are close in value.
 
            rel_tol
                maximum difference for being considered "close", relative to the
                magnitude of the input values
-            abs_tol
+           rel_to
+               additional input values to consider in rel_tol
+           abs_tol
                maximum difference for being considered "close", regardless of the
                magnitude of the input values
-        
+
         Return True if self is close in value to other, and False otherwise.
-        
+
         For the values to be considered close, the difference between them
         must be smaller than at least one of the tolerances.
         """
         other = Vector2.convert(other)
+
+        rel_length = max(
+            self.length,
+            other.length,
+            *map(lambda v: Vector2.convert(v).length, rel_to),
+        )
+
         diff = (self - other).length
         return (
-            diff < rel_tol * self.length or
-            diff < rel_tol * other.length or 
+            diff < rel_tol * rel_length or
             diff < float(abs_tol)
         )
 

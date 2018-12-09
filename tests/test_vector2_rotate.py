@@ -2,7 +2,7 @@ from ppb_vector import Vector2
 from utils import angle_isclose, vectors
 import pytest  # type: ignore
 import math
-from hypothesis import assume, given, note
+from hypothesis import assume, given, note, example
 import hypothesis.strategies as st
 
 
@@ -48,3 +48,66 @@ def test_rotation_angle(initial, angle):
     d = measured_angle - angle % 360
     note(f"Angle: {measured_angle} = {angle} + {d if d<180 else d-360}")
     assert angle_isclose(angle, measured_angle)
+
+
+@given(
+    increment=st.floats(min_value=1e-3, max_value=360),
+    loops=st.integers(min_value=0)
+)
+def test_rotation_stability(increment, loops):
+    initial = Vector2(1, 0)
+
+    fellswoop = initial.rotate(increment * loops)
+    note(f"One Fell Swoop: {fellswoop}")
+
+    stepwise = initial
+    for _ in range(loops):
+        stepwise = stepwise.rotate(increment)
+    note(f"Step-wise: {stepwise}")
+
+    assert fellswoop.isclose(stepwise)
+    assert math.isclose(fellswoop.length, initial.length)
+
+
+@given(
+    initial=vectors(),
+    angles=st.lists(st.floats(min_value=-360, max_value=360)),
+)
+def test_rotation_stability2(initial, angles):
+    total_angle = sum(angles)
+    fellswoop = initial.rotate(total_angle)
+    note(f"One Fell Swoop: {fellswoop}")
+
+    stepwise = initial
+    for angle in angles:
+        stepwise = stepwise.rotate(angle)
+    note(f"Step-wise: {stepwise}")
+
+    assert fellswoop.isclose(stepwise)
+    assert math.isclose(fellswoop.length, initial.length)
+
+
+@given(
+    a=vectors(max_magnitude=1e150), b=vectors(),
+    l=st.floats(min_value=-1e150, max_value=1e150),
+    angle=st.floats(min_value=-360, max_value=360),
+)
+# In this example:
+# * a * l == -b
+# * Rotation must not be an multiple of 90deg
+# * Must be sufficiently large
+@example(
+    a=Vector2(1e10, 1e10),
+    b=Vector2(1e19, 1e19),
+    l=-1e9,
+    angle=45,
+)
+def test_rotation_linearity(a, b, l, angle):
+    inner = (l * a + b).rotate(angle)
+    outer = l * a.rotate(angle) + b.rotate(angle)
+    note(f"l * a + b: {l * a + b}")
+    note(f"l * a.rotate(): {l * a.rotate(angle)}")
+    note(f"b.rotate(): {b.rotate(angle)}")
+    note(f"Inner: {inner}")
+    note(f"Outer: {outer}")
+    assert inner.isclose(outer, rel_to=[a, l * a, b])
