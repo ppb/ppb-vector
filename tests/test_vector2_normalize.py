@@ -9,3 +9,4 @@ import ppb_vector
 def test_normalize_length(v):
     assume(v != (0, 0))
     assert isclose(v.normalize().length, 1)
+    assert v.isclose(v.length * v.normalize())
