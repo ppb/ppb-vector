@@ -12,11 +12,15 @@ def test_scalar_coordinates(scalar: float, vector: Vector2):
     assert scalar * vector.y == (scalar * vector).y
 
 
-@given(x=floats(), y=floats(), v=vectors())
-def test_scalar_associative(x: float, y: float, v: Vector2):
-    """(x * y) * v == x * (y * v)"""
-    left  = (x * y) * v
-    right =  x * (y * v)
+@given(
+    l=floats(),
+    m=floats(),
+    x=vectors()
+)
+def test_scalar_associative(l: float, m: float, x: Vector2):
+    """(l * m) * x == l * (m * x)"""
+    left  = (l * m) * x
+    right =  l * (m * x)
     assert left.isclose(right)
 
 @given(l=floats(), x=vectors(), y=vectors())

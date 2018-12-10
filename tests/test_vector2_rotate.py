@@ -94,24 +94,28 @@ def test_rotation_stability2(initial, angles):
     assert math.isclose(fellswoop.length, initial.length, rel_tol=1e-15)
 
 
-@given(a=vectors(), b=vectors(), l=floats(), angle=angles())
+@given(
+    x=vectors(), y=vectors(),
+    l=floats(),
+    angle=angles(),
+)
 # In this example:
-# * a * l == -b
+# * x * l == -y
 # * Rotation must not be an multiple of 90deg
 # * Must be sufficiently large
 @example(
-    a=Vector2(1e10, 1e10),
-    b=Vector2(1e19, 1e19),
+    x=Vector2(1e10, 1e10),
+    y=Vector2(1e19, 1e19),
     l=-1e9,
     angle=45,
 )
-def test_rotation_linearity(a, b, l, angle):
-    """(l*a + b).rotate is equivalent to l*a.rotate + b.rotate"""
-    inner = (l * a + b).rotate(angle)
-    outer = l * a.rotate(angle) + b.rotate(angle)
-    note(f"l * a + b: {l * a + b}")
-    note(f"l * a.rotate(): {l * a.rotate(angle)}")
-    note(f"b.rotate(): {b.rotate(angle)}")
+def test_rotation_linearity(x, y, l, angle):
+    """(l*x + y).rotate is equivalent to l*x.rotate + y.rotate"""
+    inner = (l * x + y).rotate(angle)
+    outer = l * x.rotate(angle) + y.rotate(angle)
+    note(f"l * x + y: {l * x + y}")
+    note(f"l * x.rotate(): {l * x.rotate(angle)}")
+    note(f"y.rotate(): {y.rotate(angle)}")
     note(f"Inner: {inner}")
     note(f"Outer: {outer}")
-    assert inner.isclose(outer, rel_to=[a, l * a, b])
+    assert inner.isclose(outer, rel_to=[x, l * x, y])
