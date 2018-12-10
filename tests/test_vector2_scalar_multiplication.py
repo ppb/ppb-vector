@@ -1,4 +1,7 @@
 import pytest  # type: ignore
+from hypothesis import given
+from hypothesis.strategies import floats
+from utils import vectors
 from ppb_vector import Vector2
 
 
@@ -11,3 +14,14 @@ from ppb_vector import Vector2
 ])
 def test_scalar_multiplication(x, y, expected):
     assert x * y == expected
+
+
+@given(
+    x=floats(min_value=-1e75, max_value=1e75),
+    y=floats(min_value=-1e75, max_value=1e75),
+    v=vectors(max_magnitude=1e150)
+)
+def test_scalar_associative(x: float, y: float, v: Vector2):
+    left  = (x * y) * v
+    right =  x * (y * v)
+    assert left.isclose(right)
