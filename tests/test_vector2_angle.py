@@ -33,3 +33,14 @@ def test_angle_range(left, right):
     assert -180 < lr <= 180
     assert -180 < rl <= 180
     assert angle_isclose(lr, -rl)
+
+@given(
+    left=vectors(),
+    middle=vectors(),
+    right=vectors(),
+)
+def test_angle_additive(left, middle, right):
+    lm = left.angle(middle)
+    mr = middle.angle(right)
+    lr = left.angle(right)
+    assert angle_isclose(lm + mr, lr)
