@@ -1,14 +1,12 @@
 import pytest  # type: ignore
-
+from hypothesis import assume, given
+from math import isclose
+from utils import vectors
 import ppb_vector
 
 
-@pytest.mark.parametrize("x, y", [
-    (3, 4),
-    (6, 8),
-    (0, 1),
-    (1, 0),
-])
-def test_normalize(x, y):
-    vector = ppb_vector.Vector2(x, y).normalize()
-    assert vector.length == 1
+@given(v=vectors())
+def test_normalize_length(v):
+    assume(v != (0, 0))
+    assert isclose(v.normalize().length, 1)
+    assert v.isclose(v.length * v.normalize())
