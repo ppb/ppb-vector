@@ -39,6 +39,12 @@ def test_for_exception():
 
 @given(angle=angles())
 def test_trig_stability(angle):
+    """cos² + sin² == 1
+
+    We are testing that this equation holds, as otherwise rotations
+    would (slightly) change the length of vectors they are applied to.
+    """
+    r = math.radians(angle)
     r_cos, r_sin = Vector2._trig(angle)
 
     # Don't use exponents here. Multiplication is generally more stable.
@@ -58,17 +64,17 @@ def test_rotation_angle(initial, angle):
     assert angle_isclose(angle, measured_angle)
 
 
-@given(increment=angles(), loops=st.integers(min_value=0, max_value=500))
-def test_rotation_stability(increment, loops):
+@given(angle=angles(), loops=st.integers(min_value=0, max_value=500))
+def test_rotation_stability(angle, loops):
     """Rotating loops times by angle is equivalent to rotating by loops*angle."""
     initial = Vector2(1, 0)
 
-    fellswoop = initial.rotate(increment * loops)
+    fellswoop = initial.rotate(angle * loops)
     note(f"One Fell Swoop: {fellswoop}")
 
     stepwise = initial
     for _ in range(loops):
-        stepwise = stepwise.rotate(increment)
+        stepwise = stepwise.rotate(angle)
     note(f"Step-wise: {stepwise}")
 
     assert fellswoop.isclose(stepwise)
