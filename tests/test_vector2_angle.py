@@ -27,7 +27,7 @@ def test_angle(left, right, expected):
     left=vectors(),
     right=vectors(),
 )
-def test_angle_prop(left, right):
+def test_angle_range(left, right):
     lr = left.angle(right)
     rl = right.angle(left)
     assert -180 < lr <= 180
