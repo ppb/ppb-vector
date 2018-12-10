@@ -40,12 +40,14 @@ def test_for_exception():
 @given(angle=angles())
 def test_trig_stability(angle):
     r_cos, r_sin = Vector2._trig(angle)
+
     # Don't use exponents here. Multiplication is generally more stable.
     assert math.isclose(r_cos * r_cos + r_sin * r_sin, 1, rel_tol=1e-18)
 
 
 @given(initial=vectors(), angle=angles())
 def test_rotation_angle(initial, angle):
+    """initial.angle( initial.rotate(angle) ) == angle"""
     assume(initial.length > 1e-5)
     rotated = initial.rotate(angle)
     note(f"Rotated: {rotated}")
@@ -58,6 +60,7 @@ def test_rotation_angle(initial, angle):
 
 @given(increment=angles(), loops=st.integers(min_value=0, max_value=500))
 def test_rotation_stability(increment, loops):
+    """Rotating loops times by angle is equivalent to rotating by loops*angle."""
     initial = Vector2(1, 0)
 
     fellswoop = initial.rotate(increment * loops)
@@ -77,6 +80,7 @@ def test_rotation_stability(increment, loops):
     angles=st.lists(angles()),
 )
 def test_rotation_stability2(initial, angles):
+    """Rotating by a sequence of angles is equivalent to rotating by the total."""
     total_angle = sum(angles)
     fellswoop = initial.rotate(total_angle)
     note(f"One Fell Swoop: {fellswoop}")
@@ -102,6 +106,7 @@ def test_rotation_stability2(initial, angles):
     angle=45,
 )
 def test_rotation_linearity(a, b, l, angle):
+    """(l*a + b).rotate is equivalent to l*a.rotate + b.rotate"""
     inner = (l * a + b).rotate(angle)
     outer = l * a.rotate(angle) + b.rotate(angle)
     note(f"l * a + b: {l * a + b}")

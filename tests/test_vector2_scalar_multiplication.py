@@ -14,6 +14,7 @@ def test_scalar_coordinates(scalar: float, vector: Vector2):
 
 @given(x=floats(), y=floats(), v=vectors())
 def test_scalar_associative(x: float, y: float, v: Vector2):
+    """(x * y) * v == x * (y * v)"""
     left  = (x * y) * v
     right =  x * (y * v)
     assert left.isclose(right)

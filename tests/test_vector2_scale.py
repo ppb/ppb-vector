@@ -8,7 +8,13 @@ from ppb_vector import Vector2
 
 @given(x=vectors(), length=floats())
 def test_scale_to_length(x: Vector2, length: float):
-    """Test that the length of x.scale_to(length) is l."""
+    """Test that the length of x.scale_to(length) is length.
+
+    Additionally, Vector2.scale_to may raise:
+    - ZeroDivisionError if the vector is null;
+    - ValueError if the desired length is negative.
+
+    """
     try:
         assert isclose(x.scale_to(length).length, length)
     except ZeroDivisionError:
