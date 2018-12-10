@@ -25,3 +25,11 @@ def test_scalar_associative(x: float, y: float, v: Vector2):
     left  = (x * y) * v
     right =  x * (y * v)
     assert left.isclose(right)
+
+@given(
+    l=floats(min_value=-1e150, max_value=1e150),
+    x=vectors(max_magnitude=1e150),
+    y=vectors(max_magnitude=1e150),
+)
+def test_scalar_linear(l: float, x: Vector2, y: Vector2):
+    assert (l * (x + y)).isclose(l*x + l*y)
