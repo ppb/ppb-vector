@@ -156,6 +156,8 @@ Compute the angle between two vectors, expressed as a scalar in degrees.
 As with `rotate()`, angles are signed, and refer to a direct coordinate system
 (i.e. positive rotations are counter-clockwise).
 
+`Vector2.angle` is guaranteed to produce an angle between -180° and 180°.
+
 ### normalize()
 
 Return the normalized `Vector2` for the given `Vector2`.
