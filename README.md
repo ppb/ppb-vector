@@ -51,13 +51,8 @@ Also iterable for translation between Vector2 and other sequence types.
 
 ## Mathematical operators
 
-### Addition
-
-    >>> Vector2(1, 0) + Vector2(0, 1)
-    Vector2(1.0, 1.0)
-
-In addition to `Vector2` addition also accepts vector-like objects such as
-`tuple`, `list`, and `dict`.
+In addition to `Vector2`, operators also accepts, as second operand,
+vector-like objects such as `tuple`, `list`, and `dict`.
 
     >>> Vector2(1, 1) + [1, 3]
     Vector2(2.0, 4.0)
@@ -68,28 +63,22 @@ In addition to `Vector2` addition also accepts vector-like objects such as
     >>> Vector2(1, 1) + {"x": 3, "y": 5}
     Vector2(4.0, 6.0)
 
+
+### Addition
+
+    >>> Vector2(1, 0) + (0, 1)
+    Vector2(1.0, 1.0)
+
 ### Subtraction
 
-    >>> Vector2(3, 3) - Vector2(1, 1)
+    >>> Vector2(3, 3) - (1, 1)
     Vector2(2.0, 2.0)
-
-As with addition, subtraction also takes vector-like objects.
-
-    >>> Vector2(3, 3) - [2, 1]
-    Vector2(1.0, 2.0)
-    
-    >>> Vector2(3, 3) - (2, 1)
-    Vector2(1.0, 2.0)
-    
-    >>> Vector2(3, 3) - {"x": 2, "y": 1}
-    Vector2(1.0, 2.0)
-
 
 ### Equality
 
 Vectors are equal if their coordinates are equal.
 
-    >>> Vector2(1, 0) == Vector2(0, 1)
+    >>> Vector2(1, 0) == (0, 1)
     False
 
 ### Scalar Multiplication
@@ -109,7 +98,7 @@ Multiply a `Vector2` by a scalar to get a scaled `Vector2`:
 
 Multiply a `Vector2` by another `Vector2` to get the dot product.
 
-    >>> Vector2(1, 1) * Vector2(-1, -1)
+    >>> Vector2(1, 1) * (-1, -1)
     -2.0
 
 ### Vector Length
@@ -215,8 +204,8 @@ less than length.
 
 Reflect a `Vector2` based on a given surface normal.
 
-    >>> Vector2(5, 3).reflect(Vector2(-1, 0))
+    >>> Vector2(5, 3).reflect( (-1, 0) )
     Vector2(-5.0, 3.0)
 
-    >>> Vector2(5, 3).reflect(Vector2(-1, -2).normalize())
+    >>> Vector2(5, 3).reflect( Vector2(-1, -2).normalize() )
     Vector2(0.5999999999999996, -5.800000000000001)
