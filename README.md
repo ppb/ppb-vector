@@ -17,7 +17,11 @@ pip install 'ppb-vector'
     >>> Vector2(3, 4)
     Vector2(3, 4)
 
-Implements many convenience features:
+`Vector2` implements many convenience features, as well as
+useful mathematical operations for 2D geometry and linear algebra.
+
+
+## Convenience functions
 
 ### Unpacking
 
@@ -27,6 +31,26 @@ Implements many convenience features:
     >>> print(y)
     3
     
+### Access Values
+
+Convenient access to `Vector2` members via dot notation, indexes, or keys.
+
+    >>> my_vector = Vector2(2, 3)
+    >>> my_vector.x
+    2
+    >>> my_vector[1]
+    3
+    >>> my_vector["x"]
+    2
+
+Also iterable for translation between Vector2 and other sequence types.
+
+    >>> tuple(Vector(2, 3))
+    (2, 3)
+
+
+## Mathematical operators
+
 ### Addition
 
     >>> Vector2(1, 0) + Vector2(0, 1)
@@ -95,33 +119,17 @@ The result is expressed as a scalar, as it is known to lie on the z-axis.
     >>> Vector(1, 0) ^ Vector(0, 1)
     1
 
-### Access Values
-
-Convenient access to `Vector2` members via dot notation, indexes, or keys.
-
-    >>> my_vector = Vector2(2, 3)
-    >>> my_vector.x
-    2
-    >>> my_vector[1]
-    3
-    >>> my_vector["x"]
-    2
-
-Also iterable for translation between Vector2 and other sequence types.
-
-    >>> tuple(Vector(2, 3))
-    (2, 3)
-
 ### Negation
 
     >>> -Vector2(1, 1)
     Vector2(-1.0, -1.0)
 
-### Methods
+
+## Methods
 
 Useful functions for game development.
 
-#### rotate(deg)
+### rotate(deg)
 
 Rotate a vector in relation to its own origin and return a new `Vector2`.
 
@@ -130,7 +138,7 @@ Rotate a vector in relation to its own origin and return a new `Vector2`.
 
 Positive rotation is counter/anti-clockwise.
 
-#### angle(vector)
+### angle(vector)
 
 Compute the angle between two vectors, expressed as a scalar in degrees.
 
@@ -140,28 +148,14 @@ Compute the angle between two vectors, expressed as a scalar in degrees.
 As with `rotate()`, angles are signed, and refer to a direct coordinate system
 (i.e. positive rotations are counter-clockwise).
 
-#### normalize()
+### normalize()
 
 Return the normalized `Vector2` for the given `Vector2`.
 
     >>> Vector2(5, 5).normalize()
     Vector2(0.7071067811865475, 0.7071067811865475)
 
-#### truncate(scalar)
-
-Scale a given `Vector2` to length of `scalar`.
-
-    >>> Vector2(700, 500).truncate(5)
-    Vector2(4.068667356033675, 2.906190968595482)
-
-Note that `Vector2.normalize()` is equivalent to `Vector2.truncate(1)`.
-
-    >>> Vector2(200, 300).normalize()
-    Vector2(0.5547001962252291, 0.8320502943378436)
-    >>> Vector2(200, 300).scale(1)
-    Vector2(0.5547001962252291, 0.8320502943378436)
-
-#### scale(scalar)
+### scale(scalar)
 
 Scale given `Vector2` to length of `scalar`.
 
@@ -180,7 +174,21 @@ less than length.
     >>> Vector2(3, 4).truncate(6)
     Vector2(3, 4)
 
-#### reflect(surface_normal)
+### truncate(scalar)
+
+Scale a given `Vector2` to length of `scalar`.
+
+    >>> Vector2(700, 500).truncate(5)
+    Vector2(4.068667356033675, 2.906190968595482)
+
+Note that `Vector2.normalize()` is equivalent to `Vector2.truncate(1)`.
+
+    >>> Vector2(200, 300).normalize()
+    Vector2(0.5547001962252291, 0.8320502943378436)
+    >>> Vector2(200, 300).scale(1)
+    Vector2(0.5547001962252291, 0.8320502943378436)
+
+### reflect(surface_normal)
 
 Reflect a `Vector2` based on a given surface normal.
 
