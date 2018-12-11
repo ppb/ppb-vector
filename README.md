@@ -160,7 +160,7 @@ As with `rotate()`, angles are signed, and refer to a direct coordinate system
 
 ### normalize()
 
-Return the normalized `Vector2` for the given `Vector2`.
+Return a vector with the same direction, and unit length.
 
     >>> Vector2(5, 5).normalize()
     Vector2(0.7071067811865475, 0.7071067811865475)
