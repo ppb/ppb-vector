@@ -50,9 +50,9 @@ def test_angle_additive(left, middle, right):
     lr = left.angle(right)
     assert angle_isclose(lm + mr, lr)
 
-@given(x=vectors(), l=floats())
-def test_angle_aligned(x: Vector2, l: float):
-    """x.angle(l * x) is 0 or 180, depending on whether l > 0"""
-    assume(l != 0)
-    y = l * x
-    assert angle_isclose(x.angle(y), 0 if l > 0 else 180)
+@given(x=vectors(), scalar=floats())
+def test_angle_aligned(x: Vector2, scalar: float):
+    """x.angle(scalar * x) is 0 or 180, depending on whether scalar > 0"""
+    assume(scalar != 0)
+    y = scalar * x
+    assert angle_isclose(x.angle(y), 0 if scalar > 0 else 180)
