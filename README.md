@@ -117,14 +117,6 @@ Multiply a `Vector2` by another `Vector2` to get the dot product.
     >>> Vector2(45, 60).length
     75.0
 
-### Cross-product
-
-Take the cross-product between two (2D) vectors.
-The result is expressed as a scalar, as it is known to lie on the z-axis.
-
-    >>> Vector(1, 0) ^ Vector(0, 1)
-    1
-
 ### Negation
 
 Negating a `Vector2` is equivalent to multiplying it by -1.
