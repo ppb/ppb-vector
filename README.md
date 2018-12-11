@@ -127,6 +127,8 @@ The result is expressed as a scalar, as it is known to lie on the z-axis.
 
 ### Negation
 
+Negating a `Vector2` is equivalent to multiplying it by -1.
+
     >>> -Vector2(1, 1)
     Vector2(-1.0, -1.0)
 
