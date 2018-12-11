@@ -6,20 +6,28 @@ from hypothesis import assume, given, note, example
 import hypothesis.strategies as st
 
 
-data = [
-    (Vector2(1, 1), 90, Vector2(-1, 1)),
+data_exact = [
+    (Vector2(1, 1), -90, Vector2(1, -1)),
+    (Vector2(1, 1),   0, Vector2(1, 1)),
+    (Vector2(1, 1),  90, Vector2(-1, 1)),
     (Vector2(1, 1), 180, Vector2(-1, -1)),
-    (Vector2(1, 1), 360, Vector2(1, 1)),
-    (Vector2(3, -20), 53, Vector2(17.77816, -9.64039)),
-    (Vector2(math.pi, -1 * math.e), 30, Vector2(4.07984, -0.7833)),
-    (Vector2(math.pi, math.e), 67, Vector2(-1.27467, 3.95397))
 ]
 
-@pytest.mark.parametrize('input, degrees, expected', data)
-def test_multiple_rotations(input, degrees, expected):
-    assert input.rotate(degrees).isclose(expected)
-    assert angle_isclose(input.angle(expected), degrees)
+data_close = [
+    (Vector2(3, -20), 53, Vector2(17.77816, -9.64039)),
+    (Vector2(math.pi, -1 * math.e), 30, Vector2(4.07984, -0.7833)),
+    (Vector2(math.pi, math.e), 67, Vector2(-1.27467, 3.95397)),
+]
 
+@pytest.mark.parametrize('input, angle, expected', data_exact)
+def test_exact_rotations(input, angle, expected):
+    assert input.rotate(angle) == expected
+    assert input.angle(expected) == angle
+
+@pytest.mark.parametrize('input, angle, expected', data_close)
+def test_close_rotations(input, angle, expected):
+    assert input.rotate(angle).isclose(expected)
+    assert angle_isclose(input.angle(expected), angle)
 
 def test_for_exception():
     with pytest.raises(TypeError):
