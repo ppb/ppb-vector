@@ -26,13 +26,11 @@ def test_for_exception():
         Vector2('gibberish', 1).rotate(180)
 
 
-@given(degree=st.floats(min_value=-360, max_value=360))
-def test_trig_stability(degree):
-    r = math.radians(degree)
-    r_cos = math.cos(r)
-    r_sin = math.sin(r)
+@given(angle=st.floats(min_value=-360, max_value=360))
+def test_trig_stability(angle):
+    r_cos, r_sin = Vector2._trig(angle)
     # Don't use exponents here. Multiplication is generally more stable.
-    assert math.isclose(r_cos * r_cos + r_sin * r_sin, 1)
+    assert math.isclose(r_cos * r_cos + r_sin * r_sin, 1, rel_tol=1e-18)
 
 
 @given(
