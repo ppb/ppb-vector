@@ -167,10 +167,24 @@ Return a vector with the same direction, and unit length.
 
 ### scale(scalar)
 
-Scale given `Vector2` to length of `scalar`.
+Scale given `Vector2` to a given length.
 
     >>> Vector2(7, 7).scale(5)
     Vector2(3.5355339059327373, 3.5355339059327373)
+
+Note that `Vector2.normalize()` is equivalent to `Vector2.scale(1)`.
+
+    >>> Vector2(200, 300).normalize()
+    Vector2(0.5547001962252291, 0.8320502943378436)
+    >>> Vector2(200, 300).scale(1)
+    Vector2(0.5547001962252291, 0.8320502943378436)
+
+### truncate(scalar)
+
+Scale a given `Vector2` down to a given length, if it is larger.
+
+    >>> Vector2(700, 500).truncate(5)
+    Vector2(4.068667356033675, 2.906190968595482)
 
 Note that `Vector2.scale` is equivalent to `Vector2.truncate` when `scalar` is
 less than length.
@@ -183,20 +197,6 @@ less than length.
     Vector2(3.5999999999999996, 4.8)
     >>> Vector2(3, 4).truncate(6)
     Vector2(3, 4)
-
-### truncate(scalar)
-
-Scale a given `Vector2` to length of `scalar`.
-
-    >>> Vector2(700, 500).truncate(5)
-    Vector2(4.068667356033675, 2.906190968595482)
-
-Note that `Vector2.normalize()` is equivalent to `Vector2.truncate(1)`.
-
-    >>> Vector2(200, 300).normalize()
-    Vector2(0.5547001962252291, 0.8320502943378436)
-    >>> Vector2(200, 300).scale(1)
-    Vector2(0.5547001962252291, 0.8320502943378436)
 
 ### reflect(surface_normal)
 
