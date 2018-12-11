@@ -87,7 +87,7 @@ As with addition, subtraction also takes vector-like objects.
 
 ### Equality
 
-Vectors are equal if their members are equal.
+Vectors are equal if their coordinates are equal.
 
     >>> Vector2(1, 0) == Vector2(0, 1)
     False
