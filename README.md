@@ -94,9 +94,15 @@ Vectors are equal if their members are equal.
 
 ### Scalar Multiplication
 
-Multiply a `Vector2` by a scalar to get a scaled `Vector2`
+Multiply a `Vector2` by a scalar to get a scaled `Vector2`:
+
+    >>> 3 * Vector2(1, 1)
+    Vector2(3, 3)
 
     >>> Vector2(1, 1) * 3
+    Vector2(3, 3)
+
+    >>> Vector2(1, 1).scale_by(3)
     Vector2(3, 3)
 
 ### Dot Product
