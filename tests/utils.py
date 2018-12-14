@@ -17,3 +17,26 @@ def units(draw, elements=st.floats(min_value=0, max_value=360)):
 def angle_isclose(x, y, epsilon = 6.5e-5):
     d = (x - y) % 360
     return (d < epsilon) or (d > 360 - epsilon)
+
+
+# List of operations that (Vector2, Vector2) -> Vector2
+BINARY_OPS = [
+    Vector2.__add__,
+    Vector2.__sub__,
+    Vector2.reflect,
+]
+
+# List of operations that (Vector2, Real) -> Vector2
+SCALAR_OPS = [
+    Vector2.scale_by,
+    Vector2.rotate,
+    Vector2.truncate,
+    Vector2.scale_to,
+]
+
+# List of operations that (Vector2) -> Vector2
+UNARY_OPS = [
+    lambda v: type(v).convert(v),
+    Vector2.__neg__,
+    Vector2.normalize,
+]
