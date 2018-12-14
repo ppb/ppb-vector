@@ -36,7 +36,7 @@ SCALAR_OPS = [
 
 # List of operations that (Vector2) -> Vector2
 UNARY_OPS = [
-    lambda v: type(v).convert(v),
+    Vector2.convert,
     Vector2.__neg__,
     Vector2.normalize,
 ]
