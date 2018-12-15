@@ -17,6 +17,9 @@ data_close = [
     (Vector2(3, -20), 53, Vector2(17.77816, -9.64039)),
     (Vector2(math.pi, -1 * math.e), 30, Vector2(4.07984, -0.7833)),
     (Vector2(math.pi, math.e), 67, Vector2(-1.27467, 3.95397)),
+
+    (Vector2(1, 0),  30, Vector2(math.sqrt(3)/2, 0.5)),
+    (Vector2(1, 0),  60, Vector2(0.5, math.sqrt(3)/2)),
 ]
 
 @pytest.mark.parametrize('input, angle, expected', data_exact)
