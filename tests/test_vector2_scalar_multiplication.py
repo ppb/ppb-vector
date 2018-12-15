@@ -33,7 +33,7 @@ def test_scalar_associative(x: float, y: float, v: Vector2):
     y=vectors(max_magnitude=1e75),
 )
 def test_scalar_linear(l: float, x: Vector2, y: Vector2):
-    assert (l * (x + y)).isclose(l*x + l*y)
+    assert (l * (x + y)).isclose(l*x + l*y, rel_to=[x, y, l*x, l*y])
 
 @given(
     l=floats(min_value=-1e150, max_value=1e150),
