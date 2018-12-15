@@ -61,7 +61,7 @@ def test_rotation_angle(initial, angle):
 
 @given(
     increment=st.floats(min_value=1e-3, max_value=360),
-    loops=st.integers(min_value=0)
+    loops=st.integers(min_value=0, max_value=500)
 )
 def test_rotation_stability(increment, loops):
     initial = Vector2(1, 0)
