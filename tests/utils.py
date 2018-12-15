@@ -55,5 +55,7 @@ UNARY_OPS = [
 
 # List of (Vector2) -> scalar operations
 UNARY_SCALAR_OPS = [
-    Vector2.length.fget,
+    Vector2.length.fget, # type: ignore
+                         # mypy fails to typecheck properties' attributes:
+                         #  https://github.com/python/mypy/issues/220
 ]
