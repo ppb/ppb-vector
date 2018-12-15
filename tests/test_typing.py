@@ -55,7 +55,7 @@ def test_monop(op):
     assert isinstance(a, V)
 
 
-@pytest.mark.parametrize('op', BINARY_OPS + BINARY_SCALAR_OPS + BOOL_OPS)
+@pytest.mark.parametrize('op', BINARY_OPS + BINARY_SCALAR_OPS + BOOL_OPS) # type: ignore
 def test_binop_vectorlike(op):
     """Test that `op` accepts a vector-like second parameter."""
     x = Vector2(1, 0)
