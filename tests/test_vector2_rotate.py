@@ -75,7 +75,7 @@ def test_rotation_stability(increment, loops):
     note(f"Step-wise: {stepwise}")
 
     assert fellswoop.isclose(stepwise)
-    assert math.isclose(fellswoop.length, initial.length)
+    assert math.isclose(fellswoop.length, initial.length, rel_tol=1e-15)
 
 
 @given(
@@ -93,7 +93,7 @@ def test_rotation_stability2(initial, angles):
     note(f"Step-wise: {stepwise}")
 
     assert fellswoop.isclose(stepwise)
-    assert math.isclose(fellswoop.length, initial.length)
+    assert math.isclose(fellswoop.length, initial.length, rel_tol=1e-15)
 
 
 @given(
