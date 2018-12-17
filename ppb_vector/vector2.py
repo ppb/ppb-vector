@@ -1,7 +1,7 @@
 import typing
 import collections
 import functools
-from math import acos, atan2, cos, degrees, hypot, isclose, radians, sin
+from math import acos, atan2, cos, degrees, hypot, isclose, radians, sin, copysign, sqrt
 from collections.abc import Sequence, Mapping
 
 __all__ = 'Vector2',
@@ -241,10 +241,26 @@ class Vector2:
             diff < float(abs_tol)
         )
 
-    def rotate(self: VectorOrSub, degrees: Realish) -> VectorOrSub:
-        r = radians(degrees)
-        r_cos = cos(r)
-        r_sin = sin(r)
+    @staticmethod
+    def _trig(angle: Realish) -> typing.Tuple[float, float]:
+        r = radians(angle)
+        r_cos, r_sin = cos(r), sin(r)
+
+        if abs(r_cos) > abs(r_sin):
+            # From the equation sin(r)² + cos(r)² = 1, we get
+            #  sin(r) = ±√(1 - cos(r)²), so we can fix r_sin to that value
+            #  preserving its original sign.
+            # This way, r_sin² + r_cos² is closer to 1, meaning that the length
+            #  of rotated vectors is better preserved
+            r_sin = copysign(sqrt(1 - r_cos * r_cos), r_sin)
+        else:
+            # Same for r_cos
+            r_cos = copysign(sqrt(1 - r_sin * r_sin), r_cos)
+
+        return r_cos, r_sin
+
+    def rotate(self: VectorOrSub, angle: Realish) -> VectorOrSub:
+        r_cos, r_sin = Vector2._trig(angle)
 
         x = self.x * r_cos - self.y * r_sin
         y = self.x * r_sin + self.y * r_cos
