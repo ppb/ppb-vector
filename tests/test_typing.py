@@ -1,28 +1,7 @@
 import pytest  # type: ignore
 
 from ppb_vector import Vector2
-
-# List of operations that (Vector2, Vector2) -> Vector2
-BINARY_OPS = [
-    Vector2.__add__,
-    Vector2.__sub__,
-    Vector2.reflect,
-]
-
-# List of operations that (Vector2, Real) -> Vector2
-VECTOR_NUMBER_OPS = [
-    Vector2.scale_by,
-    Vector2.rotate,
-    Vector2.truncate,
-    Vector2.scale_to,
-]
-
-# List of operations that (Vector2) -> Vector2
-UNARY_OPS = [
-    lambda v: type(v).convert(v),
-    Vector2.__neg__,
-    Vector2.normalize,
-]
+from utils import BINARY_OPS, SCALAR_OPS, UNARY_OPS
 
 @pytest.mark.parametrize('op', BINARY_OPS)
 def test_binop_same(op):
@@ -58,10 +37,10 @@ def test_binop_subclass(op):
     assert isinstance(b, V2)
 
 
-@pytest.mark.parametrize('op', VECTOR_NUMBER_OPS)
+@pytest.mark.parametrize('op', SCALAR_OPS)
 def test_vnumop(op):
     class V(Vector2): pass
-    
+
     a = op(V(1, 2), 42)
 
     assert isinstance(a, V)
@@ -70,7 +49,7 @@ def test_vnumop(op):
 @pytest.mark.parametrize('op', UNARY_OPS)
 def test_monop(op):
     class V(Vector2): pass
-    
+
     a = op(V(1, 2))
 
     assert isinstance(a, V)
