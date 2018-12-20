@@ -169,40 +169,40 @@ As with `rotate()`, angles are signed, and refer to a direct coordinate system
 
 Return a vector with the same direction, and unit length.
 
-    >>> Vector2(5, 5).normalize()
-    Vector2(0.7071067811865475, 0.7071067811865475)
+    >>> Vector2(3, 4).normalize()
+    Vector2(0.6, 0.8)
 
 ### scale(scalar)
 
 Scale given `Vector2` to a given length.
 
-    >>> Vector2(7, 7).scale(5)
-    Vector2(3.5355339059327378, 3.5355339059327378)
+    >>> Vector2(7, 24).scale(2)
+    Vector2(0.56, 1.92)
 
 Note that `Vector2.normalize()` is equivalent to `Vector2.scale(1)`.
 
-    >>> Vector2(200, 300).normalize()
-    Vector2(0.5547001962252291, 0.8320502943378436)
-    >>> Vector2(200, 300).scale(1)
-    Vector2(0.5547001962252291, 0.8320502943378436)
+    >>> Vector2(7, 24).normalize()
+    Vector2(0.28, 0.96)
+    >>> Vector2(7, 24).scale(1)
+    Vector2(0.28, 0.96)
 
 ### truncate(scalar)
 
 Scale a given `Vector2` down to a given length, if it is larger.
 
-    >>> Vector2(700, 500).truncate(5)
-    Vector2(4.068667356033675, 2.906190968595482)
+    >>> Vector2(7, 24).truncate(3)
+    Vector2(0.84, 2.88)
 
 Note that `Vector2.scale` is equivalent to `Vector2.truncate` when `scalar` is
 less than length.
 
     >>> Vector2(3, 4).scale(4)
-    Vector2(2.4000000000000004, 3.2)
+    Vector2(2.4, 3.2)
     >>> Vector2(3, 4).truncate(4)
-    Vector2(2.4000000000000004, 3.2)
+    Vector2(2.4, 3.2)
 
     >>> Vector2(3, 4).scale(6)
-    Vector2(3.5999999999999996, 4.8)
+    Vector2(3.6, 4.8)
     >>> Vector2(3, 4).truncate(6)
     Vector2(3.0, 4.0)
 
