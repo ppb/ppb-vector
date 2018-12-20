@@ -61,5 +61,5 @@ def test_binop_vectorlike(op):
     x = Vector2(1, 0)
     result = op(x, Vector2(0, 1))
 
-    for y_like in [ (0, 1), [0, 1], {"x": 0, "y": 1} ]:
+    for y_like in UNIT_VECTOR_LIKES :
         assert op(x, y_like) == result
