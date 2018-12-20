@@ -7,7 +7,7 @@ from utils import vectors
 from ppb_vector import Vector2
 
 
-@given(x=vectors(), l=floats(min_value=-1e150, max_value=1e150))
+@given(x=vectors(max_magnitude=1e75), l=floats(min_value=-1e75, max_value=1e75))
 def test_scale_to_length(x: Vector2, l: float):
     """Test that the length of x.scale_to(l) is l."""
     try:
@@ -18,7 +18,7 @@ def test_scale_to_length(x: Vector2, l: float):
         assert l < 0
 
 
-@given(x=vectors(), l=floats(min_value=1e150, max_value=1e150))
+@given(x=vectors(max_magnitude=1e75), l=floats(min_value=1e75, max_value=1e75))
 def test_scale_is_equivalent_to_truncate(x: Vector2, l: float):
     """
     Vector2.scale_to is equivalent to Vector2.truncate

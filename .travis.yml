@@ -37,3 +37,4 @@ install:
 script:
   - pytest
   - mypy ppb_vector tests
+  - python -m doctest README.md
