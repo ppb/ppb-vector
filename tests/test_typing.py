@@ -1,7 +1,7 @@
 import pytest  # type: ignore
 
 from ppb_vector import Vector2
-from utils import BINARY_OPS, SCALAR_OPS, UNARY_OPS
+from utils import *
 
 @pytest.mark.parametrize('op', BINARY_OPS)
 def test_binop_same(op):
@@ -53,3 +53,13 @@ def test_monop(op):
     a = op(V(1, 2))
 
     assert isinstance(a, V)
+
+
+@pytest.mark.parametrize('op', BINARY_OPS + BINARY_SCALAR_OPS + BOOL_OPS) # type: ignore
+def test_binop_vectorlike(op):
+    """Test that `op` accepts a vector-like second parameter."""
+    x = Vector2(1, 0)
+    result = op(x, Vector2(0, 1))
+
+    for y_like in UNIT_VECTOR_LIKES :
+        assert op(x, y_like) == result

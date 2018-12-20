@@ -59,3 +59,9 @@ UNARY_SCALAR_OPS = [
                          # mypy fails to typecheck properties' attributes:
                          #  https://github.com/python/mypy/issues/220
 ]
+
+
+# Sequence of vector-likes equivalent to the x unit vector
+UNIT_VECTOR_LIKES = (
+    (0, 1), [0, 1], {"x": 0, "y": 1}
+)
