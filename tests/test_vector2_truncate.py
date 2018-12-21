@@ -14,18 +14,6 @@ def test_truncate():
     assert test_vector_truncated == Vector2(4.068667356033675, 2.906190968595482)
 
 
-def test_truncate_larger_max_length():
-    vector = Vector2(3, 5)
-    truncated = vector.truncate(10)
-    assert vector == truncated
-
-
-def test_truncate_equal_max_length():
-    vector = Vector2(3, 4)
-    truncated = vector.truncate(5)
-    assert vector == truncated
-
-
 def test_truncate_lesser_max_length():
     vector = Vector2(20, 30)
     truncated = vector.truncate(10)
@@ -33,13 +21,9 @@ def test_truncate_lesser_max_length():
 
 
 data = [
-    ([Vector2(1, 2), 3], Vector2(1, 2)),
     ([Vector2(5, 12), 6], Vector2(5, 12).scale(6)),
     ([Vector2(92, 19), 61], Vector2(92, 19).scale(61)),
-    ([Vector2(22, 5), 41], Vector2(22, 5)),
     ([Vector2(2212481, 189898), 129039], Vector2(2212481, 189898).scale(129039)),
-    ([Vector2(5, 12), 13], Vector2(5, 12)),
-    ([Vector2(438, 153), 464], Vector2(438, 153)),
     ([Vector2(155, 155), 155], Vector2(155, 155).scale(155))
 ]
 
@@ -52,6 +36,12 @@ def test_multiples_values(test_input, expected):
 @given(x=vectors(max_magnitude=1e75), max_length=floats(min_value=0, max_value=1e75))
 def test_truncate_length(x: Vector2, max_length: float):
     assert x.truncate(max_length).length <= max_length
+
+
+@given(x=vectors(max_magnitude=1e75), max_length=floats(min_value=0, max_value=1e75))
+def test_truncate_invariant(x: Vector2, max_length: float):
+    assume(x.length <= max_length)
+    assert x.truncate(max_length) == x
 
 
 @given(x=vectors(max_magnitude=1e75), max_length=floats(min_value=0, max_value=1e75))
