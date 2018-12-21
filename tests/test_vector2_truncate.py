@@ -50,6 +50,11 @@ def test_multiples_values(test_input, expected):
 
 
 @given(x=vectors(max_magnitude=1e75), max_length=floats(min_value=0, max_value=1e75))
+def test_truncate_length(x: Vector2, max_length: float):
+    assert x.truncate(max_length).length <= max_length
+
+
+@given(x=vectors(max_magnitude=1e75), max_length=floats(min_value=0, max_value=1e75))
 def test_truncate_equivalent_to_scale(x: Vector2, max_length: float):
     """Vector2.scale_to and truncate are equivalent when max_length <= x.length"""
     assume(max_length <= x.length)
