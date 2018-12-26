@@ -274,9 +274,10 @@ class Vector2:
         return self.scale(1)
 
     def truncate(self: VectorOrSub, max_length: Realish) -> VectorOrSub:
-        if self.length > max_length:
-            return self.scale_to(max_length)
-        return self
+        if self.length <= max_length:
+            return self
+
+        return self.scale_to(max_length)
 
     def scale_to(self: VectorOrSub, length: Realish) -> VectorOrSub:
         """
