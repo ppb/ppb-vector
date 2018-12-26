@@ -7,13 +7,6 @@ from utils import vectors
 from ppb_vector import Vector2
 
 
-def test_truncate():
-    test_vector = Vector2(700, 500)
-    test_vector_truncated = test_vector.truncate(5)
-    print(test_vector_truncated)
-    assert test_vector_truncated == Vector2(4.068667356033675, 2.906190968595482)
-
-
 @given(x=vectors(max_magnitude=1e75), max_length=floats(min_value=0, max_value=1e75))
 def test_truncate_length(x: Vector2, max_length: float):
     assert x.truncate(max_length).length <= max_length
