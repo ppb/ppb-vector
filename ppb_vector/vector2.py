@@ -286,6 +286,9 @@ class Vector2:
         if length < 0:
             raise ValueError("Vector2.scale_to takes non-negative lengths.")
 
+        if length == 0:
+            return type(self)(0, 0)
+
         return (length * self) / self.length
 
     scale = scale_to
