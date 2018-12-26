@@ -9,7 +9,7 @@ from ppb_vector import Vector2
 
 @given(x=vectors(max_magnitude=1e75), max_length=floats(min_value=0, max_value=1e75))
 def test_truncate_length(x: Vector2, max_length: float):
-    assert x.truncate(max_length).length <= max_length
+    assert x.truncate(max_length).length <= (1 + 1e-14) * max_length
 
 
 @given(x=vectors(max_magnitude=1e75), max_length=floats(min_value=0, max_value=1e75))
