@@ -15,13 +15,3 @@ def test_scale_to_length(x: Vector2, l: float):
         assert x == (0, 0)
     except ValueError:
         assert l < 0
-
-
-@given(x=vectors(), l=lengths())
-def test_scale_is_equivalent_to_truncate(x: Vector2, l: float):
-    """
-    Vector2.scale_to is equivalent to Vector2.truncate
-    when the scalar is less than length
-    """
-    assume(0 < l <= x.length)
-    assert x.scale_to(l) == x.truncate(l)
