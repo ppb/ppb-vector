@@ -241,8 +241,8 @@ class Vector2:
 
         diff = (self - other).length
         return (
-            diff < rel_tol * rel_length or
-            diff < float(abs_tol)
+            diff <= rel_tol * rel_length or
+            diff <= float(abs_tol)
         )
 
     @staticmethod
