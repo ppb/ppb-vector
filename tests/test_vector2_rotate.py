@@ -1,5 +1,5 @@
 from ppb_vector import Vector2
-from utils import angle_isclose, floats, vectors
+from utils import angle_isclose, angles, floats, vectors
 import pytest  # type: ignore
 import math
 from hypothesis import assume, given, note, example
@@ -37,17 +37,14 @@ def test_for_exception():
         Vector2('gibberish', 1).rotate(180)
 
 
-@given(angle=st.floats(min_value=-360, max_value=360))
+@given(angle=angles())
 def test_trig_stability(angle):
     r_cos, r_sin = Vector2._trig(angle)
     # Don't use exponents here. Multiplication is generally more stable.
     assert math.isclose(r_cos * r_cos + r_sin * r_sin, 1, rel_tol=1e-18)
 
 
-@given(
-    initial=vectors(),
-    angle=st.floats(min_value=-360, max_value=360),
-)
+@given(initial=vectors(), angle=angles())
 def test_rotation_angle(initial, angle):
     assume(initial.length > 1e-5)
     rotated = initial.rotate(angle)
@@ -59,10 +56,7 @@ def test_rotation_angle(initial, angle):
     assert angle_isclose(angle, measured_angle)
 
 
-@given(
-    increment=st.floats(min_value=1e-3, max_value=360),
-    loops=st.integers(min_value=0, max_value=500)
-)
+@given(increment=angles(), loops=st.integers(min_value=0, max_value=500))
 def test_rotation_stability(increment, loops):
     initial = Vector2(1, 0)
 
@@ -80,7 +74,7 @@ def test_rotation_stability(increment, loops):
 
 @given(
     initial=vectors(),
-    angles=st.lists(st.floats(min_value=-360, max_value=360)),
+    angles=st.lists(angles()),
 )
 def test_rotation_stability2(initial, angles):
     total_angle = sum(angles)
@@ -96,10 +90,7 @@ def test_rotation_stability2(initial, angles):
     assert math.isclose(fellswoop.length, initial.length, rel_tol=1e-15)
 
 
-@given(
-    a=vectors(), b=vectors(),
-    l=floats(), angle=st.floats(min_value=-360, max_value=360),
-)
+@given(a=vectors(), b=vectors(), l=floats(), angle=angles())
 # In this example:
 # * a * l == -b
 # * Rotation must not be an multiple of 90deg

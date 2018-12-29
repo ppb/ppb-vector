@@ -2,6 +2,9 @@ from ppb_vector import Vector2
 import hypothesis.strategies as st
 
 
+def angles():
+    return st.floats(min_value=-360, max_value=360)
+
 def floats(max_magnitude=1e75):
     return st.floats(min_value=-max_magnitude, max_value=max_magnitude)
 
