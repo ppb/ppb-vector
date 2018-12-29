@@ -1,8 +1,7 @@
 import pytest  # type: ignore
 from hypothesis import assume, given
-from hypothesis.strategies import floats
 from math import isclose
-from utils import vectors
+from utils import floats, vectors
 
 from ppb_vector import Vector2
 
@@ -18,29 +17,22 @@ def test_scalar_multiplication(x, y, expected):
     assert x * y == expected
 
 
-@given(
-    x=floats(min_value=-1e75, max_value=1e75),
-    y=floats(min_value=-1e75, max_value=1e75),
-    v=vectors()
-)
+@given(x=floats(), y=floats(), v=vectors())
 def test_scalar_associative(x: float, y: float, v: Vector2):
     left  = (x * y) * v
     right =  x * (y * v)
     assert left.isclose(right)
 
-@given(
-    l=floats(min_value=-1e75, max_value=1e75),
-    x=vectors(), y=vectors(),
-)
+@given(l=floats(), x=vectors(), y=vectors())
 def test_scalar_linear(l: float, x: Vector2, y: Vector2):
     assert (l * (x + y)).isclose(l*x + l*y, rel_to=[x, y, l*x, l*y])
 
-@given(l=floats(min_value=-1e150, max_value=1e150), x=vectors())
+@given(l=floats(), x=vectors())
 def test_scalar_length(l: float, x: Vector2):
     assert isclose((l * x).length, abs(l) * x.length)
 
 
-@given(x=vectors(), l=floats(min_value=-1e150, max_value=1e150))
+@given(x=vectors(), l=floats())
 def test_scalar_division(x: Vector2, l: float):
     """Test that (x / λ) = (1 / λ) * x"""
     assume(abs(l) > 1e-100)

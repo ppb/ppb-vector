@@ -2,6 +2,9 @@ from ppb_vector import Vector2
 import hypothesis.strategies as st
 
 
+def floats(max_magnitude=1e75):
+    return st.floats(min_value=-max_magnitude, max_value=max_magnitude)
+
 def vectors(max_magnitude=1e75):
     return st.builds(Vector2,
                      st.floats(min_value=-max_magnitude, max_value=max_magnitude),

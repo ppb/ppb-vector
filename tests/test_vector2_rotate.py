@@ -1,5 +1,5 @@
 from ppb_vector import Vector2
-from utils import angle_isclose, vectors
+from utils import angle_isclose, floats, vectors
 import pytest  # type: ignore
 import math
 from hypothesis import assume, given, note, example
@@ -98,8 +98,7 @@ def test_rotation_stability2(initial, angles):
 
 @given(
     a=vectors(), b=vectors(),
-    l=st.floats(min_value=-1e150, max_value=1e150),
-    angle=st.floats(min_value=-360, max_value=360),
+    l=floats(), angle=st.floats(min_value=-360, max_value=360),
 )
 # In this example:
 # * a * l == -b
