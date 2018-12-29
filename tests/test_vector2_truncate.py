@@ -1,5 +1,5 @@
 import pytest  # type: ignore
-from hypothesis import assume, example, given
+from hypothesis import assume, example, given, note
 from hypothesis.strategies import floats
 from typing import Type, Union
 from utils import vectors
@@ -25,6 +25,9 @@ def test_truncate_invariant(x: Vector2, max_length: float):
 def test_truncate_equivalent_to_scale(x: Vector2, max_length: float):
     """Vector2.scale_to and truncate are equivalent when max_length <= x.length"""
     assume(max_length <= x.length)
+    note(f"x.length = {x.length}")
+    if max_length > 0:
+        note(f"x.length = {x.length / max_length} * max_length")
 
     scale    : Union[Vector2, Type[Exception]]
     truncate : Union[Vector2, Type[Exception]]
