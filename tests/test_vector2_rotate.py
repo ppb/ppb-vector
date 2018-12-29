@@ -97,7 +97,7 @@ def test_rotation_stability2(initial, angles):
 
 
 @given(
-    a=vectors(max_magnitude=1e150), b=vectors(),
+    a=vectors(), b=vectors(),
     l=st.floats(min_value=-1e150, max_value=1e150),
     angle=st.floats(min_value=-360, max_value=360),
 )

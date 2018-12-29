@@ -47,7 +47,7 @@ def test_angle_additive(left, middle, right):
     assert angle_isclose(lm + mr, lr)
 
 @given(
-    x=vectors(max_magnitude=1e150),
+    x=vectors(),
     l=floats(min_value=-1e150, max_value=1e150),
 )
 def test_angle_aligned(x: Vector2, l: float):

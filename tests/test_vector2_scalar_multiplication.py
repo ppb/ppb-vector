@@ -21,7 +21,7 @@ def test_scalar_multiplication(x, y, expected):
 @given(
     x=floats(min_value=-1e75, max_value=1e75),
     y=floats(min_value=-1e75, max_value=1e75),
-    v=vectors(max_magnitude=1e150)
+    v=vectors()
 )
 def test_scalar_associative(x: float, y: float, v: Vector2):
     left  = (x * y) * v
@@ -30,16 +30,12 @@ def test_scalar_associative(x: float, y: float, v: Vector2):
 
 @given(
     l=floats(min_value=-1e75, max_value=1e75),
-    x=vectors(max_magnitude=1e75),
-    y=vectors(max_magnitude=1e75),
+    x=vectors(), y=vectors(),
 )
 def test_scalar_linear(l: float, x: Vector2, y: Vector2):
     assert (l * (x + y)).isclose(l*x + l*y, rel_to=[x, y, l*x, l*y])
 
-@given(
-    l=floats(min_value=-1e150, max_value=1e150),
-    x=vectors(max_magnitude=1e150),
-)
+@given(l=floats(min_value=-1e150, max_value=1e150), x=vectors())
 def test_scalar_length(l: float, x: Vector2):
     assert isclose((l * x).length, abs(l) * x.length)
 
