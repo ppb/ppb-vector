@@ -17,10 +17,8 @@ def vectors(max_magnitude=1e75):
                      st.floats(min_value=-max_magnitude, max_value=max_magnitude)
     )
 
-@st.composite
-def units(draw, elements=st.floats(min_value=0, max_value=360)):
-    angle = draw(elements)
-    return Vector2(1, 0).rotate(angle)
+def units():
+    return st.builds(Vector2(1, 0).rotate, angles())
 
 
 def angle_isclose(x, y, epsilon = 6.5e-5):
