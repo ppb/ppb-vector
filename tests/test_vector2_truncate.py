@@ -42,4 +42,9 @@ def test_truncate_equivalent_to_scale(x: Vector2, max_length: float):
     except Exception as e:
         scale = type(e)
 
-    assert scale == truncate
+    if isinstance(scale, Vector2) and x.length == max_length:
+        # Permit some edge-case where truncation and scaling aren't equivalent
+        assert scale.isclose(truncate, abs_tol=0, rel_tol=1e-12)
+
+    else:
+        assert scale == truncate
