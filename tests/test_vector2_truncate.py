@@ -43,6 +43,7 @@ def test_truncate_equivalent_to_scale(x: Vector2, max_length: float):
 
     if isinstance(scale, Vector2) and x.length == max_length:
         # Permit some edge-case where truncation and scaling aren't equivalent
+        assert isinstance(truncate, Vector2)
         assert scale.isclose(truncate, abs_tol=0, rel_tol=1e-12)
 
     else:
