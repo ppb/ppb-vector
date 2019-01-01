@@ -1,5 +1,5 @@
 import pytest  # type: ignore
-from hypothesis import assume, example, given, note
+from hypothesis import assume, event, example, given, note
 from typing import Type, Union
 from utils import floats, lengths, vectors
 
@@ -39,6 +39,7 @@ def test_truncate_equivalent_to_scale(x: Vector2, max_length: float):
     try:
         scale = x.scale_to(max_length)
     except Exception as e:
+        event(f"Exception {type(e).__name__} thrown")
         scale = type(e)
 
     if isinstance(scale, Vector2) and x.length == max_length:
