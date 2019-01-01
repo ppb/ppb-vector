@@ -35,6 +35,6 @@ install:
   - pip install -r dev-requirements.txt;
   
 script:
-  - pytest
+  - pytest --hypothesis-profile ci
   - mypy ppb_vector tests
   - python -m doctest README.md
