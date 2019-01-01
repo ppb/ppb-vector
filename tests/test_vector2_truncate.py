@@ -19,7 +19,7 @@ def test_truncate_invariant(x: Vector2, max_length: float):
 
 @given(x=vectors(), max_length=floats())
 @example( # Large example where x.length == max_length but 1 * x != x
-    x=Vector2(0.0, 7.387424005855793e+62), max_length=7.387424005855793e+62
+    x=Vector2(0.0, 7.1e+62), max_length=7.1e+62
 )
 def test_truncate_equivalent_to_scale(x: Vector2, max_length: float):
     """Vector2.scale_to and truncate are equivalent when max_length <= x.length"""
