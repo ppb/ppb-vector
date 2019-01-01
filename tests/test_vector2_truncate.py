@@ -1,24 +1,23 @@
 import pytest  # type: ignore
 from hypothesis import assume, example, given, note
-from hypothesis.strategies import floats
 from typing import Type, Union
-from utils import vectors
+from utils import floats, lengths, vectors
 
 from ppb_vector import Vector2
 
 
-@given(x=vectors(max_magnitude=1e75), max_length=floats(min_value=0, max_value=1e75))
+@given(x=vectors(), max_length=lengths())
 def test_truncate_length(x: Vector2, max_length: float):
     assert x.truncate(max_length).length <= (1 + 1e-14) * max_length
 
 
-@given(x=vectors(max_magnitude=1e75), max_length=floats(min_value=0, max_value=1e75))
+@given(x=vectors(), max_length=lengths())
 def test_truncate_invariant(x: Vector2, max_length: float):
     assume(x.length <= max_length)
     assert x.truncate(max_length) == x
 
 
-@given(x=vectors(max_magnitude=1e75), max_length=floats(min_value=0, max_value=1e75))
+@given(x=vectors(), max_length=floats())
 @example( # Large example where x.length == max_length but 1 * x != x
     x=Vector2(0.0, 7.387424005855793e+62), max_length=7.387424005855793e+62
 )
