@@ -11,13 +11,13 @@ def test_truncate_length(x: Vector2, max_length: float):
     assert x.truncate(max_length).length <= (1 + 1e-14) * max_length
 
 
-@given(x=vectors(), max_length=lengths())
+@given(x=vectors(), max_length=lengths(max_value=1e150))
 def test_truncate_invariant(x: Vector2, max_length: float):
     assume(x.length <= max_length)
     assert x.truncate(max_length) == x
 
 
-@given(x=vectors(), max_length=floats())
+@given(x=vectors(max_magnitude=1e150), max_length=floats())
 @example( # Large example where x.length == max_length but 1 * x != x
     x=Vector2(0.0, 7.1e+62), max_length=7.1e+62
 )
