@@ -27,12 +27,15 @@ def angle_isclose(x, y, epsilon = 6.5e-5):
     d = (x - y) % 360
     return (d < epsilon) or (d > 360 - epsilon)
 
-def isclose(x, y, abs_tol: float=1e-9, rel_tol: float=1e-9,
+def isclose(x, y, abs_tol: float=1e-9, rel_tol: float=1e-9, rel_exp: float=1,
             rel_to: Sequence[Union[float, Vector2]]=[]):
+    if rel_exp < 1:
+        raise ValueError(f"Expected rel_exp >= 1, got {rel_exp}")
+
     diff = abs(x - y)
     rel_max = max(abs(x), abs(y),
-                  *(abs(z) for z in rel_to if isinstance(z, float)),
-                  *(z.length for z in rel_to if isinstance(z, Vector2))
+                  *(abs(z) ** rel_exp for z in rel_to if isinstance(z, float)),
+                  *(z.length ** rel_exp for z in rel_to if isinstance(z, Vector2))
     )
     note(f"rel_max = {rel_max}")
     if rel_max > 0:
