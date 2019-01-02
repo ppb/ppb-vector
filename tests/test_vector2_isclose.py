@@ -28,13 +28,14 @@ def test_isclose_abs_error(x, direction, abs_tol):
 
     if abs_tol > EPSILON * x.length:
         negative = x + (1 + EPSILON) * error
-        event("Negative example generated (abs_tol > EPSILON * x.length)")
+        event("Negative example generated (abs_tol > ε * |x|)")
         note(f"negative example: {negative} = x + {negative - x}")
         assert not x.isclose(negative, abs_tol=abs_tol, rel_tol=0)
 
 
+EPSILON = 1e-8
 @given(x=vectors(), direction=units(),
-       rel_tol=floats(min_value=0, max_value=1e75))
+       rel_tol=floats(min_value=EPSILON, max_value=1-EPSILON))
 def test_isclose_rel_error(x, direction, rel_tol):
     """Test x.isclose(abs_tol=0) near the boundary between “close” and “not close”
 
