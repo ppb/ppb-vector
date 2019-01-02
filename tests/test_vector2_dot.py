@@ -3,7 +3,7 @@ from ppb_vector import Vector2
 from math import sqrt
 import pytest  # type: ignore
 from hypothesis import assume, given, note
-from utils import floats, isclose, vectors
+from utils import angles, floats, isclose, vectors
 
 
 @given(x=vectors(), y=vectors())
@@ -13,6 +13,18 @@ def test_dot_commutes(x: Vector2, y: Vector2):
 @given(x=vectors())
 def test_dot_length(x: Vector2):
     assert isclose(x * x, x.length * x.length)
+
+@given(x=vectors(), y=vectors(), angle=angles())
+def test_dot_rotational_invariance(x: Vector2, y: Vector2, angle: float):
+    """Test that rotating vectors doesn't change their dot product."""
+    t = x.angle(y)
+    cos_t, _ = Vector2._trig(t)
+    note(f"θ: {t}")
+    note(f"cos θ: {cos_t}")
+
+    # Exclude near-orthogonal test inputs
+    assume(abs(cos_t) > 1e-6)
+    assert isclose(x * y, x.rotate(angle) * y.rotate(angle), rel_to=(x, y))
 
 
 MAGNITUDE=1e10
