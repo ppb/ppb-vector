@@ -25,3 +25,22 @@ def test_dot_linear(x: Vector2, y: Vector2, z: Vector2, scalar: float):
     note(f"inner: {inner}")
     note(f"outer: {outer}")
     assert isclose(inner, outer, rel_tol=1e-5, rel_to=(x, scalar, y, z))
+
+
+@given(x=vectors(max_magnitude=1e7), y=vectors(max_magnitude=1e7))
+def test_dot_from_angle(x: Vector2, y: Vector2):
+    """Test x · y == |x| · |y| · cos(θ)"""
+    t = x.angle(y)
+    cos_t, _ = Vector2._trig(t)
+
+    # Dismiss near-othogonal test inputs
+    assume(abs(cos_t) > 1e-6)
+
+    min_len, max_len = sorted((x.length, y.length))
+    geometric = min_len * (max_len * cos_t)
+
+    note(f"θ: {t}")
+    note(f"cos θ: {cos_t}")
+    note(f"algebraic: {x * y}")
+    note(f"geometric: {geometric}")
+    assert isclose(x * y, geometric, abs_tol=1e-2, rel_tol=1e-4, rel_to=(x, y))
