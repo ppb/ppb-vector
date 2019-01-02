@@ -34,7 +34,7 @@ def test_isclose_abs_error(x, direction, abs_tol):
         assert not x.isclose(negative, abs_tol=abs_tol, rel_tol=0)
 
 
-@given(x=vectors(), direction=units(),
+@given(x=vectors(max_magnitude=1e30), direction=units(),
        rel_tol=floats(min_value=EPSILON, max_value=1-EPSILON))
 def test_isclose_rel_error(x, direction, rel_tol):
     """Test x.isclose(abs_tol=0) near the boundary between “close” and “not close”
