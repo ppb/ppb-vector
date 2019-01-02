@@ -1,9 +1,9 @@
 from ppb_vector import Vector2
 
-from math import isclose, sqrt
+from math import sqrt
 import pytest  # type: ignore
 from hypothesis import assume, given, note
-from utils import floats, vectors
+from utils import floats, isclose, vectors
 
 
 @given(x=vectors(), y=vectors())
@@ -24,4 +24,4 @@ def test_dot_linear(x: Vector2, y: Vector2, z: Vector2, scalar: float):
     inner, outer = x * (scalar * y + z), scalar * x * y + x * z
     note(f"inner: {inner}")
     note(f"outer: {outer}")
-    assert isclose(inner, outer, abs_tol=1e-5, rel_tol=1e-5)
+    assert isclose(inner, outer, rel_tol=1e-5, rel_to=(x, scalar, y, z))

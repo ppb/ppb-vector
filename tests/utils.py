@@ -1,4 +1,6 @@
 from ppb_vector import Vector2
+from hypothesis import note
+from typing import Sequence, Union
 import hypothesis.strategies as st
 
 
@@ -24,6 +26,21 @@ def units():
 def angle_isclose(x, y, epsilon = 6.5e-5):
     d = (x - y) % 360
     return (d < epsilon) or (d > 360 - epsilon)
+
+def isclose(x, y, abs_tol: float=1e-9, rel_tol: float=1e-9,
+            rel_to: Sequence[Union[float, Vector2]]=[]):
+    diff = abs(x - y)
+    rel_max = max(abs(x), abs(y),
+                  *(abs(z) for z in rel_to if isinstance(z, float)),
+                  *(z.length for z in rel_to if isinstance(z, Vector2))
+    )
+    note(f"rel_max = {rel_max}")
+    if rel_max > 0:
+        note(f"diff = {diff} = {diff/rel_max} * rel_max")
+    else:
+        note(f"diff = {diff}")
+
+    return diff <= rel_max * rel_tol or diff <= abs_tol
 
 
 # List of operations that (Vector2, Vector2) -> Vector2
