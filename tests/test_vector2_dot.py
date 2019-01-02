@@ -6,6 +6,11 @@ from hypothesis import assume, given, note
 from utils import angles, floats, isclose, vectors
 
 
+@given(vector=vectors())
+def test_dot_axis(vector: Vector2):
+    assert vector * (1, 0) == vector.x
+    assert vector * (0, 1) == vector.y
+
 @given(x=vectors(), y=vectors())
 def test_dot_commutes(x: Vector2, y: Vector2):
     assert x * y == y * x
