@@ -55,4 +55,4 @@ def test_dot_from_angle(x: Vector2, y: Vector2):
     note(f"cos θ: {cos_t}")
     note(f"algebraic: {x * y}")
     note(f"geometric: {geometric}")
-    assert isclose(x * y, geometric, abs_tol=1e-2, rel_tol=1e-4, rel_to=(x, y))
+    assert isclose(x * y, geometric, abs_tol=1e-5, rel_tol=1e-5, rel_to=(x, y))
