@@ -42,7 +42,7 @@ def test_dot_linear(x: Vector2, y: Vector2, z: Vector2, scalar: float):
     inner, outer = x * (scalar * y + z), scalar * x * y + x * z
     note(f"inner: {inner}")
     note(f"outer: {outer}")
-    assert isclose(inner, outer, rel_tol=1e-5, rel_to=(x, scalar, y, z), rel_exp=2)
+    assert isclose(inner, outer, rel_to=(x, scalar, y, z), rel_exp=2)
 
 
 @given(x=vectors(max_magnitude=1e7), y=vectors(max_magnitude=1e7))
@@ -61,5 +61,4 @@ def test_dot_from_angle(x: Vector2, y: Vector2):
     note(f"cos θ: {cos_t}")
     note(f"algebraic: {x * y}")
     note(f"geometric: {geometric}")
-    assert isclose(x * y, geometric, abs_tol=1e-5,
-                   rel_tol=1e-5, rel_to=(x, y), rel_exp=2)
+    assert isclose(x * y, geometric, rel_to=(x, y), rel_exp=2)
