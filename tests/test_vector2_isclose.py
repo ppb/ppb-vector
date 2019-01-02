@@ -36,7 +36,19 @@ def test_isclose_abs_error(x, direction, abs_tol):
 @given(x=vectors(), direction=units(),
        rel_tol=floats(min_value=0, max_value=1e75))
 def test_isclose_rel_error(x, direction, rel_tol):
-    assert x.isclose(x + rel_tol * x.length * direction, abs_tol=0, rel_tol=rel_tol)
+    """Test x.isclose(abs_tol=0) near the boundary between “close” and “not close”
+
+    - x + rel_tol * |x| * direction should always be close
+    """
+    error = rel_tol * x.length * direction
+    note(f"error = {error}")
+
+    positive = x + (1 - EPSILON) * error
+    note(f"positive example: {positive} = x + {positive - x}")
+    if x.length > EPSILON:
+        note(f"x + |x| * {(positive - x) / x.length}")
+
+    assert x.isclose(positive, abs_tol=0, rel_tol=rel_tol)
 
 
 def test_isclose_negative_tolerances():
