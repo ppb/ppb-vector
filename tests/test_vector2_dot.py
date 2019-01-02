@@ -10,6 +10,10 @@ from utils import floats, vectors
 def test_dot_commutes(x: Vector2, y: Vector2):
     assert x * y == y * x
 
+@given(x=vectors())
+def test_dot_length(x: Vector2):
+    assert isclose(x * x, x.length * x.length)
+
 
 MAGNITUDE=1e10
 @given(x=vectors(max_magnitude=MAGNITUDE), z=vectors(max_magnitude=MAGNITUDE),
