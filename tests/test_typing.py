@@ -1,4 +1,5 @@
 import pytest  # type: ignore
+from hypothesis import event, given, strategies as st
 
 from ppb_vector import Vector2
 from utils import *
@@ -18,48 +19,49 @@ class V2(Vector2):
 
 
 @pytest.mark.parametrize('op', BINARY_OPS)
-def test_binop_same(op):
-    # Normalize for reflect
-    a = op(V1(1, 2), V1(3, 4).normalize())
-
-    assert isinstance(a, V1)
+@given(x=st.builds(V1, vectors()), y=st.builds(V1, units()))
+def test_binop_same(op, x: V1, y: V2):
+    assert isinstance(op(x, y), V1)
 
 
 @pytest.mark.parametrize('op', BINARY_OPS)
-def test_binop_different(op):
-    # Normalize for reflect
-    a = op(V1(1, 2), V2(3, 4).normalize())
-    b = op(V2(1, 2), V1(3, 4).normalize())
-    assert isinstance(a, (V1, V2))
-    assert isinstance(b, (V1, V2))
+@given(x=vectors(), y=units())
+def test_binop_different(op, x: Vector2, y: Vector2):
+    assert isinstance(op(V1(x), V2(y)), (V1, V2))
+    assert isinstance(op(V2(x), V1(y)), (V1, V2))
 
 
 @pytest.mark.parametrize('op', BINARY_OPS)
-def test_binop_subclass(op):
-    # Normalize for reflect
-    a = op(V1(1, 2), V11(3, 4).normalize())
-    b = op(V11(1, 2), V1(3, 4).normalize())
-    assert isinstance(a, V11)
-    assert isinstance(b, V11)
+@given(x=st.builds(V1, vectors()), y=st.builds(V1, units()))
+def test_binop_subclass(op, x: V1, y: V1):
+    assert isinstance(op(V11(x), y), V11)
+    assert isinstance(op(x, V11(y)), V11)
 
 
 @pytest.mark.parametrize('op', SCALAR_OPS)
-def test_vnumop(op):
-    a = op(V1(1, 2), 42)
-    assert isinstance(a, V1)
+@given(x=st.builds(V1, vectors()), scalar=floats())
+def test_vnumop(op, x: V1, scalar: float):
+    try:
+        assert isinstance(op(x, scalar), V1)
+    except (ValueError, ZeroDivisionError) as e:
+        event(type(e).__name__)
+        pass
 
 
 @pytest.mark.parametrize('op', UNARY_OPS)
-def test_monop(op):
-    a = op(V1(1, 2))
-    assert isinstance(a, V1)
+@given(x=st.builds(V1, vectors()))
+def test_monop(op, x):
+    try:
+        assert isinstance(op(x), V1)
+    except (ValueError, ZeroDivisionError) as e:
+        event(type(e).__name__)
+        pass
 
 
 @pytest.mark.parametrize('op', BINARY_OPS + BINARY_SCALAR_OPS + BOOL_OPS) # type: ignore
-def test_binop_vectorlike(op):
+@given(x=vectors(), y=units())
+def test_binop_vectorlike(op, x: Vector2, y: Vector2):
     """Test that `op` accepts a vector-like second parameter."""
-    x = Vector2(1, 0)
-    y = Vector2(0, 1)
     result = op(x, y)
 
     for y_like in vector_likes(y):
