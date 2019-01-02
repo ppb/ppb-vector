@@ -19,6 +19,11 @@ def test_dot_commutes(x: Vector2, y: Vector2):
 def test_dot_length(x: Vector2):
     assert isclose(x * x, x.length * x.length)
 
+@given(x=vectors(), y=vectors())
+def test_cauchy_schwarz(x: Vector2, y: Vector2):
+    """Test the Cauchy-Schwarz inequality: |x·y| ⩽ |x| |y|"""
+    assert abs(x * y) <= (1 + 1e-12) * x.length * y.length
+
 @given(x=vectors(), y=vectors(), angle=angles())
 def test_dot_rotational_invariance(x: Vector2, y: Vector2, angle: float):
     """Test that rotating vectors doesn't change their dot product."""
