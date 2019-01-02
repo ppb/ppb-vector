@@ -88,7 +88,8 @@ UNARY_SCALAR_OPS = [
 ]
 
 
-# Sequence of vector-likes equivalent to the x unit vector
-UNIT_VECTOR_LIKES = (
-    (0, 1), [0, 1], {"x": 0, "y": 1}
-)
+# Sequence of vector-likes equivalent to the input vector (def. to the x vector)
+def vector_likes(v: Vector2=Vector2(1, 0)):
+    return (
+        (v.x, v.y), [v.x, v.y], {"x": v.x, "y": v.y}
+    )
