@@ -59,7 +59,20 @@ class Vector2:
     x: float
     y: float
 
-    def __init__(self, x: typing.SupportsFloat, y: typing.SupportsFloat):
+    @typing.overload
+    def __init__(self, x: typing.SupportsFloat, y: typing.SupportsFloat): pass
+
+    @typing.overload
+    def __init__(self, other: VectorLike): pass
+
+    def __init__(self, *args):
+        if len(args) == 1:
+            x, y = Vector2.convert(args[0])
+        elif len(args) == 2:
+            x, y = args
+        else:
+            raise TypeError(f"Expected 1 vector-like or 2 float-like arguments, got {len(args)}")
+
         try:
             # The @dataclass decorator made the class frozen, so we need to
             #  bypass the class' default assignment function :
