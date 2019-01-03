@@ -7,5 +7,6 @@ from utils import vector_likes
 def test_convert_subclass(vector_like):
     class V(Vector2): pass
 
-    # test_binop_vectorlike already checks the output value is correct
-    assert isinstance(V.convert(vector_like), V)
+    vector = V.convert(vector_like)
+    assert isinstance(vector, V)
+    assert vector == vector_like
