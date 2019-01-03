@@ -1,5 +1,5 @@
 import pytest  # type: ignore
-from hypothesis import event, given, strategies as st
+from hypothesis import event, given, reject, strategies as st
 
 from ppb_vector import Vector2
 from utils import *
@@ -45,7 +45,7 @@ def test_vnumop(op, x: V1, scalar: float):
         assert isinstance(op(x, scalar), V1)
     except (ValueError, ZeroDivisionError) as e:
         event(type(e).__name__)
-        pass
+        reject()
 
 
 @pytest.mark.parametrize('op', UNARY_OPS)
@@ -55,7 +55,7 @@ def test_monop(op, x):
         assert isinstance(op(x), V1)
     except (ValueError, ZeroDivisionError) as e:
         event(type(e).__name__)
-        pass
+        reject()
 
 
 @pytest.mark.parametrize('op', BINARY_OPS + BINARY_SCALAR_OPS + BOOL_OPS) # type: ignore
