@@ -37,6 +37,8 @@ def test_isclose_abs_error(x, direction, abs_tol):
 
 @given(x=vectors(max_magnitude=1e30), direction=units(),
        rel_tol=floats(min_value=EPSILON, max_value=1-sqrt(EPSILON)))
+@example(x=Vector2(0.5030575955800033, 4183.540331936798), direction=Vector2(-0.21080691603913568, -0.97752772039982), rel_tol=1.0000044626502047e-08)
+@example(x=Vector2(0.336348726648339, 4183.540331936798), direction=Vector2(-0.2108069159366941, -0.9775277204219119), rel_tol=1.0000009102918328e-08)
 def test_isclose_rel_error(x, direction, rel_tol):
     """Test x.isclose(abs_tol=0) near the boundary between “close” and “not close”
 
