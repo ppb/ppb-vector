@@ -39,9 +39,8 @@ def test_isclose_abs_error(x, direction, abs_tol):
 def test_isclose_rel_error(x, direction, rel_tol):
     """Test x.isclose(abs_tol=0) near the boundary between “close” and “not close”
 
-    - x + rel_tol * |x| * direction should always be close
-    - x + (1 + EPSILON) * rel_tol * |x| * direction should not be close
-      assuming it isn't equal to x (because of rounding, or because x is null)
+    - x + (1 - ε) * |x| * rel_tol * direction should always be close
+    - In many cases, we should be able to generate an example that isn't close
     """
     error = rel_tol * x.length * direction
     note(f"error = {error}")
