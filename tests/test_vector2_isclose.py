@@ -17,22 +17,20 @@ EPSILON = 1e-8
 def test_isclose_abs_error(x, direction, abs_tol):
     """Test x.isclose(rel_tol=0) near the boundary between “close” and “not close”
 
-    - x + (1 - ε) * abs_tol * direction should always be close
-    - x + (1 + ε) * abs_tol * direction should not be close
-      assuming it isn't equal to x (because of rounding, or because x is null)
+    - x + (1 - ε) * abs_tol * direction should be close
+    - x + (1 + ε) * abs_tol * direction shouldn't be close
     """
-    error = abs_tol * direction
-    note(f"error = {error}")
+    assume(abs_tol > EPSILON * x.length)
+    note(f"|x|: {x.length}")
 
+    error = abs_tol * direction
     positive = x + (1 - sqrt(EPSILON)) * error
     note(f"positive example: {positive} = x + {positive - x}")
     assert x.isclose(positive, abs_tol=abs_tol, rel_tol=0)
 
-    if abs_tol > EPSILON * x.length:
-        negative = x + (1 + sqrt(EPSILON)) * error
-        event("Negative example generated (abs_tol > ε * |x|)")
-        note(f"negative example: {negative} = x + {negative - x}")
-        assert not x.isclose(negative, abs_tol=abs_tol, rel_tol=0)
+    negative = x + (1 + sqrt(EPSILON)) * abs_tol * direction
+    note(f"negative example: {negative} = x + {negative - x}")
+    assert not x.isclose(negative, abs_tol=abs_tol, rel_tol=0)
 
 
 @given(x=vectors(max_magnitude=1e30), direction=units(),
