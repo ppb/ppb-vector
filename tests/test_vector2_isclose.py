@@ -43,7 +43,8 @@ def test_isclose_rel_error(x, direction, rel_tol):
     """Test x.isclose(abs_tol=0) near the boundary between “close” and “not close”
 
     - x + (1 - ε) * |x| * rel_tol * direction should always be close
-    - In many cases, we should be able to generate an example that isn't close
+    - We can also generate an example that isn't close,
+      though the formula is somewhat complicated.
     """
     assume(x.length > EPSILON)
     note(f"|x| = {x.length}")
@@ -58,15 +59,19 @@ def test_isclose_rel_error(x, direction, rel_tol):
     # In x.isclose(negative), the allowed relative error is relative to |x|
     # and |negative|, so the acceptable errors grow larger as negative does.
     #
-    # The choice of negative accounts for this, with the (1 - rel_tol) term:
-    # we have negative = x + Δ, and we want to pick Δ such that
-    # δ = |x - negative| > rel_tol * max(|x|, |negative|)
-    #
-    # Since r * (|x| + δ) > rel_tol * max(|x|, |negative|), any choice where
-    # δ > rel_tol * (|x| + δ) is suitable. The smallest is
-    # rel_tol |x| / (1 - rel_tol), as such, we take
-    # Δ = r * |x| * direction / (1 - rel_tol), and an ε safety margin.
-    negative = x + (1 + sqrt(EPSILON)) / (1 - rel_tol) * x.length * error
+    # We must account for this; given negative = x + δ error = x + δ rel_tol direction,
+    # we want to pick δ>0 s.t. |x-negative|/rel_tol = δ > max(|x|, |negative|),
+    # i.e. δ > |x| and δ² > negative² = (x + δ error)²
+    # δ² > x² + rel_tol² δ² + 2δ x·error
+    # (1 - rel_tol²) δ² - 2 x·error δ > x²
+    #              a δ² - 2 b       δ > c  with :
+    a = 1 - rel_tol*rel_tol
+    b = x * error
+    c = x*x
+    δ = (b + sqrt(a*c + b*b))/a
+    note(f"δ: {δ}")
+
+    negative = x + (1 + sqrt(EPSILON)) * max(x.length, δ) * error
     note(f"negative example: {negative} = x + {negative - x} = "
          f"x + {(negative - x).length / x.length} * |x| * direction")
 
