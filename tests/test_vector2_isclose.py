@@ -44,9 +44,9 @@ def test_isclose_rel_error(x, direction, rel_tol):
     """
     assume(x.length > EPSILON)
     note(f"|x| = {x.length}")
-    error = rel_tol * x.length * direction
+    error = rel_tol * direction
 
-    positive = x + (1 - EPSILON) * error
+    positive = x + (1 - EPSILON) * x.length * error
     note(f"positive example: {positive} = x + {positive - x} ="
          f"x + {(positive - x).length / x.length} * |x| * direction")
 
@@ -63,7 +63,7 @@ def test_isclose_rel_error(x, direction, rel_tol):
     # δ > rel_tol * (|x| + δ) is suitable. The smallest is
     # rel_tol |x| / (1 - rel_tol), as such, we take
     # Δ = r * |x| * direction / (1 - rel_tol), and an ε safety margin.
-    negative = x + (1 + EPSILON) / (1 - rel_tol) * error
+    negative = x + (1 + EPSILON) / (1 - rel_tol) * x.length * error
     note(f"negative example: {negative} = x + {negative - x} = "
          f"x + {(negative - x).length / x.length} * |x| * direction")
 
