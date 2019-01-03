@@ -13,7 +13,8 @@ def test_isclose_to_self(x, abs_tol, rel_tol):
 
 EPSILON = 1e-8
 
-@given(x=vectors(), direction=units(), abs_tol=lengths())
+@given(x=vectors(max_magnitude=1e30), direction=units(),
+       abs_tol=lengths(max_value=1e30))
 def test_isclose_abs_error(x, direction, abs_tol):
     """Test x.isclose(rel_tol=0) near the boundary between “close” and “not close”
 
