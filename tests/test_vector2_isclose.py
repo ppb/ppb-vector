@@ -42,33 +42,32 @@ def test_isclose_rel_error(x, direction, rel_tol):
     - x + (1 - ε) * |x| * rel_tol * direction should always be close
     - In many cases, we should be able to generate an example that isn't close
     """
+    assume(x.length > EPSILON)
+    note(f"|x| = {x.length}")
     error = rel_tol * x.length * direction
-    note(f"error = {error}")
 
     positive = x + (1 - EPSILON) * error
-    note(f"positive example: {positive} = x + {positive - x}")
-    if x.length > EPSILON:
-        note(f"x + |x| * {(positive - x) / x.length}")
+    note(f"positive example: {positive} = x + {positive - x} ="
+         f"x + {(positive - x).length / x.length} * |x| * direction")
 
     assert x.isclose(positive, abs_tol=0, rel_tol=rel_tol)
 
-    if x.length > EPSILON:
-        # In x.isclose(negative), the allowed relative error is relative to |x|
-        # and |negative|, so the acceptable errors grow larger as negative does.
-        #
-        # The choice of negative accounts for this, with the (1 - rel_tol) term:
-        # we have negative = x + Δ, and we want to pick Δ such that
-        # δ = |x - negative| > rel_tol * max(|x|, |negative|)
-        #
-        # Since r * (|x| + δ) > rel_tol * max(|x|, |negative|), any choice where
-        # δ > rel_tol * (|x| + δ) is suitable. The smallest is
-        # rel_tol |x| / (1 - rel_tol), as such, we take
-        # Δ = r * |x| * direction / (1 - rel_tol), and an ε safety margin.
-        negative = x + (1 + EPSILON) / (1 - rel_tol) * error
-        note(f"negative example: {negative} = x + {negative - x} = "
-             f"x + {(negative - x).length / x.length} * |x| * {(negative - x).normalize()}")
+    # In x.isclose(negative), the allowed relative error is relative to |x|
+    # and |negative|, so the acceptable errors grow larger as negative does.
+    #
+    # The choice of negative accounts for this, with the (1 - rel_tol) term:
+    # we have negative = x + Δ, and we want to pick Δ such that
+    # δ = |x - negative| > rel_tol * max(|x|, |negative|)
+    #
+    # Since r * (|x| + δ) > rel_tol * max(|x|, |negative|), any choice where
+    # δ > rel_tol * (|x| + δ) is suitable. The smallest is
+    # rel_tol |x| / (1 - rel_tol), as such, we take
+    # Δ = r * |x| * direction / (1 - rel_tol), and an ε safety margin.
+    negative = x + (1 + EPSILON) / (1 - rel_tol) * error
+    note(f"negative example: {negative} = x + {negative - x} = "
+         f"x + {(negative - x).length / x.length} * |x| * direction")
 
-        assert not x.isclose(negative, abs_tol=0, rel_tol=rel_tol)
+    assert not x.isclose(negative, abs_tol=0, rel_tol=rel_tol)
 
 
 def test_isclose_negative_tolerances():
