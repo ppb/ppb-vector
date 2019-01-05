@@ -17,3 +17,7 @@ def test_convert_class(cls, vector_like):
 @given(vector=vectors())
 def test_convert_tuple(vector: Vector2):
     assert vector == tuple(vector) == (vector.x, vector.y)
+
+@given(vector=vectors())
+def test_convert_list(vector: Vector2):
+    assert vector == list(vector) == [vector.x, vector.y]
