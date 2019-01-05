@@ -172,6 +172,9 @@ class Vector2:
         """Perform a division between a vector and a scalar."""
         return type(self)(self.x / other, self.y / other)
 
+    def keys(self: VectorOrSub) -> typing.Sequence[str]:
+        return ['x', 'y']
+
     def __getitem__(self: VectorOrSub, item: typing.Union[str, int]) -> Realish:
         if hasattr(item, '__index__'):
             item = item.__index__()  # type: ignore
