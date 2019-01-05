@@ -1,7 +1,8 @@
 import pytest  # type: ignore
+from hypothesis import given
 
 from ppb_vector import Vector2
-from utils import vector_likes
+from utils import vector_likes, vectors
 
 class V(Vector2): pass
 
@@ -11,3 +12,8 @@ def test_convert_class(cls, vector_like):
     vector = cls.convert(vector_like)
     assert isinstance(vector, cls)
     assert vector == vector_like
+
+
+@given(vector=vectors())
+def test_convert_tuple(vector: Vector2):
+    assert vector == tuple(vector) == (vector.x, vector.y)
