@@ -6,3 +6,7 @@ from utils import vectors
 @given(vector=vectors())
 def test_negation_scalar(vector: Vector2):
     assert - vector == (-1) * vector
+
+@given(vector=vectors())
+def test_negation_involutive(vector: Vector2):
+    assert vector == - (- vector)
