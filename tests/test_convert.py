@@ -22,8 +22,12 @@ def test_convert_tuple(vector: Vector2):
 def test_convert_list(vector: Vector2):
     assert vector == list(vector) == [vector.x, vector.y]
 
+@given(vector=vectors())
+def test_convert_dict(vector: Vector2):
+    assert vector == dict(vector) == {'x': vector.x, 'y': vector.y}
 
-@pytest.mark.parametrize('coerce', [tuple, list])
+
+@pytest.mark.parametrize('coerce', [tuple, list, dict])
 @given(x=vectors())
 def test_convert_roundtrip(coerce, x: Vector2):
     assert x == Vector2(coerce(x))
