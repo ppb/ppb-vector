@@ -24,6 +24,8 @@ if [[ "$PYTHON" =~ pypy-* ]]; then
 
   echo "Using ${PYPY}"
   export PATH="${PWD}/${PYPY}/bin:${PATH}"
+  echo "PATH='${PATH}'"
+
   run ln -s pypy3 "${PYPY}/bin/python"
   run python -m ensurepip
   run ln -s pip3 "${PYPY}/bin/pip"
@@ -36,6 +38,8 @@ else
   run wget "${URL}" -O miniconda.sh
   run bash miniconda.sh -b -p "$HOME/miniconda"
   export PATH="$HOME/miniconda/bin:$PATH"
+  echo "PATH='${PATH}'"
+
   run conda config --set always_yes yes --set changeps1 no
   run conda update -q conda
   run conda info -a
