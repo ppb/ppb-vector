@@ -17,25 +17,25 @@ if [[ "$PYTHON" =~ pypy-* ]]; then
   # Download & install a prebuilt pypy snapshot
   PYPY_BRANCH=${PYTHON#*-}
   URL="http://buildbot.pypy.org/nightly/${PYPY_BRANCH}/pypy-c-jit-latest-linux64.tar.bz2"
-  run wget "${URL}" -O pypy.tar.bz2
-  run tar -xf pypy.tar.bz2
-  PYPY=( pypy-c-jit-* )
+  run wget "${URL}" -O ../pypy.tar.bz2
+  run tar -C .. -xf ../pypy.tar.bz2
+  pushd ..; PYPY=( pypy-c-jit-* ); popd
 
   echo "Using ${PYPY}"
-  export PATH="${PWD}/${PYPY}/bin:${PATH}"
+  export PATH="$(realpath ../${PYPY}/bin):${PATH}"
   echo "PATH='${PATH}'"
 
-  run ln -s pypy3 "${PYPY}/bin/python"
+  run ln -s pypy3 "../${PYPY}/bin/python"
   run python -m ensurepip
-  run ln -s pip3 "${PYPY}/bin/pip"
+  run ln -s pip3 "../${PYPY}/bin/pip"
   run pip install -U pip wheel
 
 else
   # Install a Python version with miniconda
   MINICONDA_OS=Linux
   URL="https://repo.continuum.io/miniconda/Miniconda3-latest-${MINICONDA_OS}-x86_64.sh"
-  run wget "${URL}" -O miniconda.sh
-  run bash miniconda.sh -b -p "$HOME/miniconda"
+  run wget "${URL}" -O ../miniconda.sh
+  run bash ../miniconda.sh -b -p "$HOME/miniconda"
   export PATH="$HOME/miniconda/bin:$PATH"
   echo "PATH='${PATH}'"
 

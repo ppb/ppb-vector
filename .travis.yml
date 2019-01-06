@@ -1,3 +1,8 @@
+addons:
+  apt:
+    packages:
+      - realpath
+
 language: python
 matrix:
     fast_finish: yes
