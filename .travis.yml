@@ -30,9 +30,11 @@ before_install:
 
 install:
   - pip install -e .;
+  - # Do not install mypy during pypy builds
+    '[[ ! "$PYTHON" =~ pypy-* ]] || sed -i "/^mypy/d" dev-requirements.txt'
   - pip install -r dev-requirements.txt;
-  
+
 script:
   - pytest --hypothesis-profile ci
-  - mypy ppb_vector tests
+  - '[[ "$PYTHON" =~ pypy-* ]] || mypy ppb_vector tests'
   - python -m doctest README.md
