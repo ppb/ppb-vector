@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
-set -euo pipefail
-
-function run() {
-   echo '$' "$@"
-   "$@"
-}
 
 # Nothing to do if no specific Python version is requested
 [ -n "${PYTHON+x}" ] || return 0
+
+function run() {
+   echo '$' "$@"
+   "$@" || exit 1
+}
 
 if [[ "$TRAVIS_OS_NAME" != linux ]]; then
    echo "This script only supports linux, got \$TRAVIS_OS_NAME='${TRAVIS_OS_NAME}'" >&2
