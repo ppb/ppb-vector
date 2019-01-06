@@ -5,7 +5,7 @@ matrix:
           python: 3.6
         - os: linux
           language: generic
-          env: PYTHON="3.7" MINICONDA_OS="Linux"
+          env: PYTHON="3.7"
         - os: linux
           python: nightly
     allow_failures:
@@ -17,18 +17,7 @@ cache:
       - .hypothesis
 
 before_install:
-  - if [[ $MINICONDA_OS ]]; then
-      URL="https://repo.continuum.io/miniconda/Miniconda3-latest-${MINICONDA_OS}-x86_64.sh";
-      wget "${URL}" -O miniconda.sh;
-      bash miniconda.sh -b -p $HOME/miniconda;
-      export PATH="$HOME/miniconda/bin:$PATH";
-      hash -r;
-      conda config --set always_yes yes --set changeps1 no;
-      conda update -q conda;
-      conda info -a;
-      conda create -q -n test-environment python=$PYTHON;
-      source activate test-environment;
-    fi;
+  - source ./.ci/install-python.sh
 
 install:
   - pip install -e .;
