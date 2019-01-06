@@ -3,6 +3,7 @@ addons:
     packages:
       - realpath
 
+sudo: no
 language: python
 matrix:
     fast_finish: yes
