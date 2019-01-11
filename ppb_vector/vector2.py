@@ -1,7 +1,7 @@
 import typing
 import collections
 import functools
-from dataclasses import dataclass
+from dataclasses import dataclass, FrozenInstanceError
 from math import acos, atan2, cos, degrees, hypot, isclose, radians, sin, copysign, sqrt
 from collections.abc import Sequence, Mapping
 
@@ -57,18 +57,27 @@ def _find_lowest_vector(left: typing.Type, right: typing.Type) -> typing.Type:
         return _find_lowest_type(left, right)
 
 
-@dataclass(eq=False, init=False, repr=False)
+@dataclass(eq=False, frozen=True, init=False, repr=False)
 class Vector2:
     x: float
     y: float
 
     def __init__(self, x: typing.SupportsFloat, y: typing.SupportsFloat):
         try:
-            self.x = x.__float__()
+            # The @dataclass decorator made the class frozen, so we need to
+            #  bypass the class' default assignment function :
+            #
+            #  https://docs.python.org/3/library/dataclasses.html#frozen-instances
+            object.__setattr__(self, 'x', x.__float__())
+        except FrozenInstanceError:
+            raise
         except AttributeError:
             raise TypeError(f"{type(x).__name__} object not convertable to float")
+
         try:
-            self.y = y.__float__()
+            object.__setattr__(self, 'y', y.__float__())
+        except FrozenInstanceError:
+            raise
         except AttributeError:
             raise TypeError(f"{type(y).__name__} object not convertable to float")
 
@@ -77,7 +86,7 @@ class Vector2:
         """
         Constructs a vector from a vector-like. Does not perform a copy.
         """
-        # Use Vector2.convert() instead of type(self).convert() so that 
+        # Use Vector2.convert() instead of type(self).convert() so that
         # _find_lowest_vector() can resolve things well.
         if isinstance(value, cls):
             return value
