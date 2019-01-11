@@ -1,7 +1,7 @@
 import typing
 import collections
 import functools
-from dataclasses import dataclass, FrozenInstanceError
+from dataclasses import dataclass
 from math import acos, atan2, cos, degrees, hypot, isclose, radians, sin, copysign, sqrt
 from collections.abc import Sequence, Mapping
 
@@ -68,17 +68,13 @@ class Vector2:
             #  bypass the class' default assignment function :
             #
             #  https://docs.python.org/3/library/dataclasses.html#frozen-instances
-            object.__setattr__(self, 'x', x.__float__())
-        except FrozenInstanceError:
-            raise
-        except AttributeError:
+            object.__setattr__(self, 'x', float(x))
+        except ValueError:
             raise TypeError(f"{type(x).__name__} object not convertable to float")
 
         try:
-            object.__setattr__(self, 'y', y.__float__())
-        except FrozenInstanceError:
-            raise
-        except AttributeError:
+            object.__setattr__(self, 'y', float(y))
+        except ValueError:
             raise TypeError(f"{type(y).__name__} object not convertable to float")
 
     @classmethod
@@ -93,9 +89,9 @@ class Vector2:
         elif isinstance(value, Vector2):
             return cls(value.x, value.y)
         elif isinstance(value, Sequence) and len(value) == 2:
-            return cls(value[0].__float__(), value[1].__float__())
+            return cls(value[0], value[1])
         elif isinstance(value, Mapping) and 'x' in value and 'y' in value and len(value) == 2:
-            return cls(value['x'].__float__(), value['y'].__float__())
+            return cls(value['x'], value['y'])
         else:
             raise ValueError(f"Cannot use {value} as a vector-like")
 
