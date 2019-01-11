@@ -1,6 +1,7 @@
 import typing
 import collections
 import functools
+from dataclasses import dataclass
 from math import acos, atan2, cos, degrees, hypot, isclose, radians, sin, copysign, sqrt
 from collections.abc import Sequence, Mapping
 
@@ -56,6 +57,7 @@ def _find_lowest_vector(left: typing.Type, right: typing.Type) -> typing.Type:
         return _find_lowest_type(left, right)
 
 
+@dataclass(eq=False, init=False, repr=False)
 class Vector2:
     x: float
     y: float
