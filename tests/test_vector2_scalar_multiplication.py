@@ -6,15 +6,10 @@ from utils import floats, vectors
 from ppb_vector import Vector2
 
 
-@pytest.mark.parametrize("x, y, expected", [
-    (Vector2(6, 1), 0, Vector2(0, 0)),
-    (Vector2(6, 1), 2, Vector2(12, 2)),
-    (Vector2(0, 0), 3, Vector2(0, 0)),
-    (Vector2(-1.5, 2.4), -2, Vector2(3.0, -4.8)),
-    (Vector2(1, 2), 0.1, Vector2(0.1, 0.2))
-])
-def test_scalar_multiplication(x, y, expected):
-    assert x * y == expected
+@given(scalar=floats(), vector=vectors())
+def test_scalar_coordinates(scalar: float, vector: Vector2):
+    assert scalar * vector.x == (scalar * vector).x
+    assert scalar * vector.y == (scalar * vector).y
 
 
 @given(x=floats(), y=floats(), v=vectors())
