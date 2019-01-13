@@ -206,6 +206,9 @@ less than length.
     >>> Vector2(3, 4).truncate(6)
     Vector2(3.0, 4.0)
 
+Note: `x.truncate(max_length)` may sometimes be slightly-larger than
+      `max_length`, due to floating-point rounding effects.
+
 ### reflect(surface_normal)
 
 Reflect a `Vector2` based on a given surface normal.

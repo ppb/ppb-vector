@@ -1,45 +1,51 @@
 import pytest  # type: ignore
+from hypothesis import assume, event, example, given, note
+from typing import Type, Union
+from utils import floats, lengths, vectors
 
 from ppb_vector import Vector2
 
 
-def test_truncate():
-    test_vector = Vector2(700, 500)
-    test_vector_truncated = test_vector.truncate(5)
-    print(test_vector_truncated)
-    assert test_vector_truncated == Vector2(4.068667356033675, 2.906190968595482)
+@given(x=vectors(), max_length=lengths())
+def test_truncate_length(x: Vector2, max_length: float):
+    assert x.truncate(max_length).length <= (1 + 1e-14) * max_length
 
 
-def test_truncate_larger_max_length():
-    vector = Vector2(3, 5)
-    truncated = vector.truncate(10)
-    assert vector == truncated
+@given(x=vectors(), max_length=lengths(max_value=1e150))
+def test_truncate_invariant(x: Vector2, max_length: float):
+    assume(x.length <= max_length)
+    assert x.truncate(max_length) == x
 
 
-def test_truncate_equal_max_length():
-    vector = Vector2(3, 4)
-    truncated = vector.truncate(5)
-    assert vector == truncated
+@given(x=vectors(max_magnitude=1e150), max_length=floats())
+@example( # Large example where x.length == max_length but 1 * x != x
+    x=Vector2(0.0, 7.1e+62), max_length=7.1e+62
+)
+def test_truncate_equivalent_to_scale(x: Vector2, max_length: float):
+    """Vector2.scale_to and truncate are equivalent when max_length <= x.length"""
+    assume(max_length <= x.length)
+    note(f"x.length = {x.length}")
+    if max_length > 0:
+        note(f"x.length = {x.length / max_length} * max_length")
 
+    scale    : Union[Vector2, Type[Exception]]
+    truncate : Union[Vector2, Type[Exception]]
 
-def test_truncate_lesser_max_length():
-    vector = Vector2(20, 30)
-    truncated = vector.truncate(10)
-    assert truncated == vector.scale(10)
+    try:
+        truncate = x.truncate(max_length)
+    except Exception as e:
+        truncate = type(e)
 
+    try:
+        scale = x.scale_to(max_length)
+    except Exception as e:
+        event(f"Exception {type(e).__name__} thrown")
+        scale = type(e)
 
-data = [
-    ([Vector2(1, 2), 3], Vector2(1, 2)),
-    ([Vector2(5, 12), 6], Vector2(5, 12).scale(6)),
-    ([Vector2(92, 19), 61], Vector2(92, 19).scale(61)),
-    ([Vector2(22, 5), 41], Vector2(22, 5)),
-    ([Vector2(2212481, 189898), 129039], Vector2(2212481, 189898).scale(129039)),
-    ([Vector2(5, 12), 13], Vector2(5, 12)),
-    ([Vector2(438, 153), 464], Vector2(438, 153)),
-    ([Vector2(155, 155), 155], Vector2(155, 155).scale(155))
-]
+    if isinstance(scale, Vector2) and x.length == max_length:
+        # Permit some edge-case where truncation and scaling aren't equivalent
+        assert isinstance(truncate, Vector2)
+        assert scale.isclose(truncate, abs_tol=0, rel_tol=1e-12)
 
-
-@pytest.mark.parametrize('test_input, expected', data)
-def test_multiples_values(test_input, expected):
-    assert test_input[0].truncate(test_input[1]) == expected
+    else:
+        assert scale == truncate
