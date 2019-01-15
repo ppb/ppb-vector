@@ -185,11 +185,12 @@ class Vector2:
         return f"{type(self).__name__}({self.x}, {self.y})"
 
     def __eq__(self: VectorOrSub, other: typing.Any) -> bool:
-        if is_vector_like(other):
+        try:
             other = Vector2.convert(other)
             return self.x == other.x and self.y == other.y
-        else:
-            return False
+
+        except (TypeError, ValueError):
+            return NotImplemented
 
     def __iter__(self: VectorOrSub) -> typing.Iterator[Realish]:
         yield self.x
