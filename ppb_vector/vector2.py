@@ -1,6 +1,7 @@
 import typing
 import collections
 import functools
+import dataclasses
 from dataclasses import dataclass
 from math import acos, atan2, cos, degrees, hypot, isclose, radians, sin, copysign, sqrt
 from collections.abc import Sequence, Mapping
@@ -76,6 +77,8 @@ class Vector2:
             object.__setattr__(self, 'y', float(y))
         except ValueError:
             raise TypeError(f"{type(y).__name__} object not convertable to float")
+
+    update = dataclasses.replace
 
     @classmethod
     def convert(cls: typing.Type[VectorOrSub], value: VectorLike) -> VectorOrSub:
