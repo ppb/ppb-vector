@@ -7,6 +7,10 @@ from utils import vectors, vector_likes
 def test_equal_self(x: Vector2):
   assert x == x
 
+@given(x=vectors())
+def test_equal_non_vector(x: Vector2):
+  assert (x == "foo") == ("foo" == x) == False
+
 @given(x=vectors(), y=vectors())
 def test_equal_symmetric(x: Vector2, y):
   assert (x == y) == (y == x)
