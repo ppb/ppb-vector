@@ -189,9 +189,6 @@ class Vector2:
         else:
             return False
 
-    def __ne__(self: VectorOrSub, other: typing.Any) -> bool:
-        return not (self == other)
-
     def __iter__(self: VectorOrSub) -> typing.Iterator[Realish]:
         yield self.x
         yield self.y
