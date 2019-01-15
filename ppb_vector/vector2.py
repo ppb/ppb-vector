@@ -21,14 +21,6 @@ VectorLike = typing.Union[
 ]
 
 
-def is_vector_like(value: typing.Any) -> bool:
-    try:
-        Vector2.convert(value)
-        return True
-    except (ValueError, TypeError):
-        return False
-
-
 @functools.lru_cache()
 def _find_lowest_type(left: typing.Type, right: typing.Type) -> typing.Type:
     """
