@@ -22,7 +22,11 @@ VectorLike = typing.Union[
 
 
 def is_vector_like(value: typing.Any) -> bool:
-    return isinstance(value, (Vector2, Sequence, dict))
+    try:
+        Vector2.convert(value)
+        return True
+    except (ValueError, TypeError):
+        return False
 
 
 @functools.lru_cache()
