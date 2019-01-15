@@ -1,11 +1,19 @@
 from hypothesis import assume, given
 from ppb_vector import Vector2
-from utils import vectors
+from utils import vectors, vector_likes
 
 
 @given(x=vectors())
 def test_equal_self(x: Vector2):
   assert x == x
+
+@given(x=vectors(), y=vectors())
+def test_equal_symmetric(x: Vector2, y):
+  assert (x == y) == (y == x)
+
+  for y_like in vector_likes(y):
+    assert (x == y_like) == (y_like == x)
+
 
 @given(x=vectors())
 def test_non_zero_equal(x: Vector2):
