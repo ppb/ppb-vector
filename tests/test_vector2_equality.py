@@ -11,6 +11,7 @@ def test_equal_self(x: Vector2):
 def test_non_zero_equal(x: Vector2):
   assume(x != (0, 0))
   assert x != 1.1 * x
+  assert x != -x
 
 @given(x=vectors(), y=vectors())
 def test_not_equal_equivalent(x: Vector2, y: Vector2):
