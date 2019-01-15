@@ -140,14 +140,12 @@ class Vector2:
         """
         Performs a dot product or scale based on other.
         """
-        if is_vector_like(other):
-            try:
-                return self.dot(other)
-            except ValueError:
-                return NotImplemented
-        elif isinstance(other, (float, int)):
+        if isinstance(other, (float, int)):
             return self.scale_by(other)
-        else:
+
+        try:
+            return self.dot(other)
+        except (TypeError, ValueError):
             return NotImplemented
 
     @typing.overload
