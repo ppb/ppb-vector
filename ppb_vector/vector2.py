@@ -179,10 +179,10 @@ class Vector2:
     def __eq__(self: VectorOrSub, other: typing.Any) -> bool:
         try:
             other = Vector2.convert(other)
-            return self.x == other.x and self.y == other.y
-
         except (TypeError, ValueError):
             return NotImplemented
+        else:
+            return self.x == other.x and self.y == other.y
 
     def __iter__(self: VectorOrSub) -> typing.Iterator[Realish]:
         yield self.x
