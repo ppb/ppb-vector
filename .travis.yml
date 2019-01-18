@@ -1,15 +1,30 @@
+addons:
+  apt:
+    packages:
+      - realpath
+
+sudo: no
 language: python
 matrix:
+    fast_finish: yes
     include:
+        # CPython builds
         - os: linux
           python: 3.6
         - os: linux
           language: generic
-          env: PYTHON="3.7" MINICONDA_OS="Linux"
+          env: PYTHON="3.7"
         - os: linux
           python: nightly
+
+        # PyPy builds
+        - os: linux
+          language: generic
+          env: PYTHON="pypy-py3.6"
+
     allow_failures:
         - python: "nightly"
+        - env: PYTHON="pypy-py3.6"
 
 cache:
     directories:
@@ -17,24 +32,15 @@ cache:
       - .hypothesis
 
 before_install:
-  - if [[ $MINICONDA_OS ]]; then
-      URL="https://repo.continuum.io/miniconda/Miniconda3-latest-${MINICONDA_OS}-x86_64.sh";
-      wget "${URL}" -O miniconda.sh;
-      bash miniconda.sh -b -p $HOME/miniconda;
-      export PATH="$HOME/miniconda/bin:$PATH";
-      hash -r;
-      conda config --set always_yes yes --set changeps1 no;
-      conda update -q conda;
-      conda info -a;
-      conda create -q -n test-environment python=$PYTHON;
-      source activate test-environment;
-    fi;
+  - source ./.ci/install-python.sh
 
 install:
   - pip install -e .;
+  - # Do not install mypy during pypy builds
+    '[[ ! "$PYTHON" =~ pypy-* ]] || sed -i "/^mypy/d" dev-requirements.txt'
   - pip install -r dev-requirements.txt;
-  
+
 script:
   - pytest --hypothesis-profile ci
-  - mypy ppb_vector tests
+  - '[[ "$PYTHON" =~ pypy-* ]] || mypy ppb_vector tests'
   - python -m doctest README.md
