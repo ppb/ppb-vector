@@ -1,6 +1,8 @@
 import typing
 import collections
 import functools
+import dataclasses
+from dataclasses import dataclass
 from math import acos, atan2, cos, degrees, hypot, isclose, radians, sin, copysign, sqrt
 from collections.abc import Sequence, Mapping
 
@@ -56,35 +58,43 @@ def _find_lowest_vector(left: typing.Type, right: typing.Type) -> typing.Type:
         return _find_lowest_type(left, right)
 
 
+@dataclass(eq=False, frozen=True, init=False, repr=False)
 class Vector2:
     x: float
     y: float
 
     def __init__(self, x: typing.SupportsFloat, y: typing.SupportsFloat):
         try:
-            self.x = x.__float__()
-        except AttributeError:
+            # The @dataclass decorator made the class frozen, so we need to
+            #  bypass the class' default assignment function :
+            #
+            #  https://docs.python.org/3/library/dataclasses.html#frozen-instances
+            object.__setattr__(self, 'x', float(x))
+        except ValueError:
             raise TypeError(f"{type(x).__name__} object not convertable to float")
+
         try:
-            self.y = y.__float__()
-        except AttributeError:
+            object.__setattr__(self, 'y', float(y))
+        except ValueError:
             raise TypeError(f"{type(y).__name__} object not convertable to float")
+
+    update = dataclasses.replace
 
     @classmethod
     def convert(cls: typing.Type[VectorOrSub], value: VectorLike) -> VectorOrSub:
         """
         Constructs a vector from a vector-like. Does not perform a copy.
         """
-        # Use Vector2.convert() instead of type(self).convert() so that 
+        # Use Vector2.convert() instead of type(self).convert() so that
         # _find_lowest_vector() can resolve things well.
         if isinstance(value, cls):
             return value
         elif isinstance(value, Vector2):
             return cls(value.x, value.y)
         elif isinstance(value, Sequence) and len(value) == 2:
-            return cls(value[0].__float__(), value[1].__float__())
+            return cls(value[0], value[1])
         elif isinstance(value, Mapping) and 'x' in value and 'y' in value and len(value) == 2:
-            return cls(value['x'].__float__(), value['y'].__float__())
+            return cls(value['x'], value['y'])
         else:
             raise ValueError(f"Cannot use {value} as a vector-like")
 
