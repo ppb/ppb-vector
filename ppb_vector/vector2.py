@@ -59,7 +59,31 @@ class Vector2:
     x: float
     y: float
 
-    def __init__(self, x: typing.SupportsFloat, y: typing.SupportsFloat):
+    @typing.overload
+    def __init__(self, x: typing.SupportsFloat, y: typing.SupportsFloat): pass
+
+    @typing.overload
+    def __init__(self, other: VectorLike): pass
+
+    def __init__(self, *args, **kwargs):
+        if args and kwargs:
+            raise TypeError("Got a mix of positional and keyword arguments")
+
+        if not args and not kwargs or len(args) > 2:
+            raise TypeError("Expected 1 vector-like or 2 float-like arguments, "
+                            f"got {len(args) + len(kwargs)}")
+
+        if kwargs and frozenset(kwargs) != {'x', 'y'}:
+            raise TypeError("Expected keyword arguments x and y, got: " +
+                            kwargs.keys().join(', '))
+
+        if kwargs:
+            x, y = kwargs['x'], kwargs['y']
+        elif len(args) == 1:
+            x, y = Vector2.convert(args[0])
+        elif len(args) == 2:
+            x, y = args
+
         try:
             # The @dataclass decorator made the class frozen, so we need to
             #  bypass the class' default assignment function :
