@@ -23,10 +23,6 @@ VectorLike = typing.Union[
 ]
 
 
-def is_vector_like(value: typing.Any) -> bool:
-    return isinstance(value, (Vector2, Sequence, dict))
-
-
 @functools.lru_cache()
 def _find_lowest_type(left: typing.Type, right: typing.Type) -> typing.Type:
     """
@@ -146,14 +142,12 @@ class Vector2:
         """
         Performs a dot product or scale based on other.
         """
-        if is_vector_like(other):
-            try:
-                return self.dot(other)
-            except ValueError:
-                return NotImplemented
-        elif isinstance(other, (float, int)):
+        if isinstance(other, (float, int)):
             return self.scale_by(other)
-        else:
+
+        try:
+            return self.dot(other)
+        except (TypeError, ValueError):
             return NotImplemented
 
     @typing.overload
@@ -193,14 +187,12 @@ class Vector2:
         return f"{type(self).__name__}({self.x}, {self.y})"
 
     def __eq__(self: VectorOrSub, other: typing.Any) -> bool:
-        if is_vector_like(other):
+        try:
             other = Vector2.convert(other)
-            return self.x == other.x and self.y == other.y
+        except (TypeError, ValueError):
+            return NotImplemented
         else:
-            return False
-
-    def __ne__(self: VectorOrSub, other: typing.Any) -> bool:
-        return not (self == other)
+            return self.x == other.x and self.y == other.y
 
     def __iter__(self: VectorOrSub) -> typing.Iterator[Realish]:
         yield self.x

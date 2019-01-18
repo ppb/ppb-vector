@@ -1,13 +1,30 @@
-import ppb_vector
+from hypothesis import assume, given
+from ppb_vector import Vector2
+from utils import vectors, vector_likes
 
-def test_equal():
-  test_vector_1 = ppb_vector.Vector2(50, 800)
-  test_vector_2 = ppb_vector.Vector2(50, 800)
-  
-  assert test_vector_1 == test_vector_2
-  
-def test_not_equal():
-  test_vector_1 = ppb_vector.Vector2(800, 800)
-  test_vector_2 = ppb_vector.Vector2(50, 800)
-  
-  assert test_vector_1 != test_vector_2
+
+@given(x=vectors())
+def test_equal_self(x: Vector2):
+  assert x == x
+
+@given(x=vectors())
+def test_equal_non_vector(x: Vector2):
+  assert (x == "foo") == ("foo" == x) == False
+
+@given(x=vectors(), y=vectors())
+def test_equal_symmetric(x: Vector2, y):
+  assert (x == y) == (y == x)
+
+  for y_like in vector_likes(y):
+    assert (x == y_like) == (y_like == x)
+
+
+@given(x=vectors())
+def test_non_zero_equal(x: Vector2):
+  assume(x != (0, 0))
+  assert x != 1.1 * x
+  assert x != -x
+
+@given(x=vectors(), y=vectors())
+def test_not_equal_equivalent(x: Vector2, y: Vector2):
+  assert (x != y) == (not x == y)

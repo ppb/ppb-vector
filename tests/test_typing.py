@@ -59,7 +59,8 @@ def test_monop(op):
 def test_binop_vectorlike(op):
     """Test that `op` accepts a vector-like second parameter."""
     x = Vector2(1, 0)
-    result = op(x, Vector2(0, 1))
+    y = Vector2(0, 1)
+    result = op(x, y)
 
-    for y_like in UNIT_VECTOR_LIKES :
+    for y_like in vector_likes(y):
         assert op(x, y_like) == result
