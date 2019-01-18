@@ -24,7 +24,7 @@ def test_convert_list(vector: Vector2):
 
 @given(vector=vectors())
 def test_convert_dict(vector: Vector2):
-    assert vector == vector.asdict() == {'x': vector.x, 'y': vector.y}
+    assert vector == vector.asdict()
 
 
 @pytest.mark.parametrize('coerce', [tuple, list, Vector2.asdict])
