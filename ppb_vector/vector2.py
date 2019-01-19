@@ -118,8 +118,15 @@ class Vector2:
 
     @classmethod
     def convert(cls: typing.Type[VectorOrSub], value: VectorLike) -> VectorOrSub:
-        """
-        Constructs a vector from a vector-like. Does not perform a copy.
+        """Constructs a vector from a vector-like.
+
+        A vector-like can be:
+
+        - a length-2 `Sequence`, whose contents are interpreted as the `x` and `y` coordinates;
+        - a length-2 `Mapping`, whose keys are `x` and `y`;
+        - or any instance of `Vector2` (or its subclasses).
+
+        `convert` does not perform a copy when `value` already has the right type.
         """
         # Use Vector2.convert() instead of type(self).convert() so that
         # _find_lowest_vector() can resolve things well.
