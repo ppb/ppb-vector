@@ -51,7 +51,7 @@ Also iterable for translation between Vector2 and other sequence types.
 
 ## Mathematical operators
 
-In addition to `Vector2`, operators also accepts, as second operand,
+In addition to `Vector2`s, operators also accept, as second operand,
 vector-like objects such as `tuple`, `list`, and `dict`.
 
     >>> Vector2(1, 1) + [1, 3]
@@ -114,7 +114,8 @@ Multiply a `Vector2` by another `Vector2` to get the dot product.
 
 ### Negation
 
-Negating a `Vector2` is equivalent to multiplying it by -1.
+Negating a `Vector2` produces one with identical length and opposite
+direction. It is equivalent to multiplying it by -1.
 
     >>> -Vector2(1, 1)
     Vector2(-1.0, -1.0)
@@ -155,7 +156,7 @@ Positive rotation is counter/anti-clockwise.
 
 ### angle(vector)
 
-Compute the angle between two vectors, expressed as a scalar in degrees.
+Compute the angle between two vectors, expressed in degrees.
 
     >>> Vector2(1, 0).angle( (0, 1) )
     90.0
@@ -174,7 +175,7 @@ Return a vector with the same direction, and unit length.
 
 ### scale(scalar)
 
-Scale given `Vector2` to a given length.
+Scale a given `Vector2` to a certain length.
 
     >>> Vector2(7, 24).scale(2)
     Vector2(0.56, 1.92)
@@ -193,8 +194,10 @@ Scale a given `Vector2` down to a given length, if it is larger.
     >>> Vector2(7, 24).truncate(3)
     Vector2(0.84, 2.88)
 
-Note that `Vector2.scale` is equivalent to `Vector2.truncate` when `scalar` is
-less than length.
+It produces a vector with the same direction, but possibly a different length.
+
+Note that `vector.scale(max_length)` is equivalent to
+`vector.truncate(max_length)` when `max_length < vector.length`.
 
     >>> Vector2(3, 4).scale(4)
     Vector2(2.4, 3.2)
@@ -211,7 +214,8 @@ Note: `x.truncate(max_length)` may sometimes be slightly-larger than
 
 ### reflect(surface_normal)
 
-Reflect a `Vector2` based on a given surface normal.
+Compute the reflection of a `Vector2` on a surface going through the origin,
+described by its normal vector.
 
     >>> Vector2(5, 3).reflect( (-1, 0) )
     Vector2(-5.0, 3.0)
