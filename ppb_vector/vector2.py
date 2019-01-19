@@ -51,6 +51,25 @@ def _find_lowest_vector(left: typing.Type, right: typing.Type) -> typing.Type:
 
 @dataclass(eq=False, frozen=True, init=False, repr=False)
 class Vector2:
+    """The immutable, 2D vector class of the PursuedPyBear project.
+
+    `Vector2` is an immutable 2D Vector, which can be instantiated as expected:
+
+        >>> from ppb_vector import Vector2
+        >>> Vector2(3, 4)
+        Vector2(3.0, 4.0)
+
+    `Vector2` implements many convenience features, as well as
+    useful mathematical operations for 2D geometry and linear algebra.
+
+    ## Installation
+
+    `Vector2` is part of the `ppb-vector` package; if you use pip, install using
+
+    ```bash
+    pip install 'ppb-vector'
+    ```
+    """
     x: float
     y: float
 
