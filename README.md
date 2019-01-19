@@ -64,23 +64,6 @@ vector-like objects such as `tuple`, `list`, and `dict`.
     Vector2(4.0, 6.0)
 
 
-### Addition
-
-    >>> Vector2(1, 0) + (0, 1)
-    Vector2(1.0, 1.0)
-
-### Subtraction
-
-    >>> Vector2(3, 3) - (1, 1)
-    Vector2(2.0, 2.0)
-
-### Equality
-
-Vectors are equal if their coordinates are equal.
-
-    >>> Vector2(1, 0) == (0, 1)
-    False
-
 ### Scalar Multiplication
 
 Multiply a `Vector2` by a scalar to get a scaled `Vector2`:
@@ -107,20 +90,6 @@ Multiply a `Vector2` by another `Vector2` to get the dot product.
     >>> Vector2(1, 1) * (-1, -1)
     -2.0
 
-### Vector Length
-
-    >>> Vector2(45, 60).length
-    75.0
-
-### Negation
-
-Negating a `Vector2` produces one with identical length and opposite
-direction. It is equivalent to multiplying it by -1.
-
-    >>> -Vector2(1, 1)
-    Vector2(-1.0, -1.0)
-
-
 ## Methods
 
 Useful functions for game development.
@@ -144,81 +113,3 @@ Perform an approximate comparison of two vectors.
   `rel_tol`) is compared to the length of the difference vector.
 
 By default, `abs_tol = 1e-3`, `rel_tol = 1e-6`, and `rel_to = []`.
-
-### rotate(deg)
-
-Rotate a vector in relation to its own origin and return a new `Vector2`.
-
-    >>> Vector2(1, 0).rotate(90)
-    Vector2(0.0, 1.0)
-
-Positive rotation is counter/anti-clockwise.
-
-### angle(vector)
-
-Compute the angle between two vectors, expressed in degrees.
-
-    >>> Vector2(1, 0).angle( (0, 1) )
-    90.0
-
-As with `rotate()`, angles are signed, and refer to a direct coordinate system
-(i.e. positive rotations are counter-clockwise).
-
-`Vector2.angle` is guaranteed to produce an angle between -180° and 180°.
-
-### normalize()
-
-Return a vector with the same direction, and unit length.
-
-    >>> Vector2(3, 4).normalize()
-    Vector2(0.6, 0.8)
-
-### scale(scalar)
-
-Scale a given `Vector2` to a certain length.
-
-    >>> Vector2(7, 24).scale(2)
-    Vector2(0.56, 1.92)
-
-Note that `Vector2.normalize()` is equivalent to `Vector2.scale(1)`.
-
-    >>> Vector2(7, 24).normalize()
-    Vector2(0.28, 0.96)
-    >>> Vector2(7, 24).scale(1)
-    Vector2(0.28, 0.96)
-
-### truncate(scalar)
-
-Scale a given `Vector2` down to a given length, if it is larger.
-
-    >>> Vector2(7, 24).truncate(3)
-    Vector2(0.84, 2.88)
-
-It produces a vector with the same direction, but possibly a different length.
-
-Note that `vector.scale(max_length)` is equivalent to
-`vector.truncate(max_length)` when `max_length < vector.length`.
-
-    >>> Vector2(3, 4).scale(4)
-    Vector2(2.4, 3.2)
-    >>> Vector2(3, 4).truncate(4)
-    Vector2(2.4, 3.2)
-
-    >>> Vector2(3, 4).scale(6)
-    Vector2(3.6, 4.8)
-    >>> Vector2(3, 4).truncate(6)
-    Vector2(3.0, 4.0)
-
-Note: `x.truncate(max_length)` may sometimes be slightly-larger than
-      `max_length`, due to floating-point rounding effects.
-
-### reflect(surface_normal)
-
-Compute the reflection of a `Vector2` on a surface going through the origin,
-described by its normal vector.
-
-    >>> Vector2(5, 3).reflect( (-1, 0) )
-    Vector2(-5.0, 3.0)
-
-    >>> Vector2(5, 3).reflect( Vector2(-1, -2).normalize() )
-    Vector2(0.5999999999999996, -5.800000000000001)
