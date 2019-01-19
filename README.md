@@ -1,5 +1,8 @@
 # ppb-vector
-The 2D Vector Class for the PursuedPyBear project.
+The immutable, 2D vector class for the PursuedPyBear project.
+
+`Vector2` implements many convenience features, as well as
+useful mathematical operations for 2D geometry.
 
 ## Install
 
@@ -17,8 +20,6 @@ pip install 'ppb-vector'
     >>> Vector2(3, 4)
     Vector2(3.0, 4.0)
 
-`Vector2` implements many convenience features, as well as
-useful mathematical operations for 2D geometry and linear algebra.
 
 
 ## Convenience functions
