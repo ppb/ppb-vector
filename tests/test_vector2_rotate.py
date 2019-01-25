@@ -39,13 +39,21 @@ def test_for_exception():
 
 @given(angle=angles())
 def test_trig_stability(angle):
+    """cos² + sin² == 1
+
+    We are testing that this equation holds, as otherwise rotations
+    would (slightly) change the length of vectors they are applied to.
+    """
+    r = math.radians(angle)
     r_cos, r_sin = Vector2._trig(angle)
+
     # Don't use exponents here. Multiplication is generally more stable.
     assert math.isclose(r_cos * r_cos + r_sin * r_sin, 1, rel_tol=1e-18)
 
 
 @given(initial=vectors(), angle=angles())
 def test_rotation_angle(initial, angle):
+    """initial.angle( initial.rotate(angle) ) == angle"""
     assume(initial.length > 1e-5)
     rotated = initial.rotate(angle)
     note(f"Rotated: {rotated}")
@@ -56,16 +64,17 @@ def test_rotation_angle(initial, angle):
     assert angle_isclose(angle, measured_angle)
 
 
-@given(increment=angles(), loops=st.integers(min_value=0, max_value=500))
-def test_rotation_stability(increment, loops):
+@given(angle=angles(), loops=st.integers(min_value=0, max_value=500))
+def test_rotation_stability(angle, loops):
+    """Rotating loops times by angle is equivalent to rotating by loops*angle."""
     initial = Vector2(1, 0)
 
-    fellswoop = initial.rotate(increment * loops)
+    fellswoop = initial.rotate(angle * loops)
     note(f"One Fell Swoop: {fellswoop}")
 
     stepwise = initial
     for _ in range(loops):
-        stepwise = stepwise.rotate(increment)
+        stepwise = stepwise.rotate(angle)
     note(f"Step-wise: {stepwise}")
 
     assert fellswoop.isclose(stepwise)
@@ -77,6 +86,7 @@ def test_rotation_stability(increment, loops):
     angles=st.lists(angles()),
 )
 def test_rotation_stability2(initial, angles):
+    """Rotating by a sequence of angles is equivalent to rotating by the total."""
     total_angle = sum(angles)
     fellswoop = initial.rotate(total_angle)
     note(f"One Fell Swoop: {fellswoop}")
@@ -90,23 +100,28 @@ def test_rotation_stability2(initial, angles):
     assert math.isclose(fellswoop.length, initial.length, rel_tol=1e-15)
 
 
-@given(a=vectors(), b=vectors(), l=floats(), angle=angles())
+@given(
+    x=vectors(), y=vectors(),
+    l=floats(),
+    angle=angles(),
+)
 # In this example:
-# * a * l == -b
+# * x * l == -y
 # * Rotation must not be an multiple of 90deg
 # * Must be sufficiently large
 @example(
-    a=Vector2(1e10, 1e10),
-    b=Vector2(1e19, 1e19),
+    x=Vector2(1e10, 1e10),
+    y=Vector2(1e19, 1e19),
     l=-1e9,
     angle=45,
 )
-def test_rotation_linearity(a, b, l, angle):
-    inner = (l * a + b).rotate(angle)
-    outer = l * a.rotate(angle) + b.rotate(angle)
-    note(f"l * a + b: {l * a + b}")
-    note(f"l * a.rotate(): {l * a.rotate(angle)}")
-    note(f"b.rotate(): {b.rotate(angle)}")
+def test_rotation_linearity(x, y, l, angle):
+    """(l*x + y).rotate is equivalent to l*x.rotate + y.rotate"""
+    inner = (l * x + y).rotate(angle)
+    outer = l * x.rotate(angle) + y.rotate(angle)
+    note(f"l * x + y: {l * x + y}")
+    note(f"l * x.rotate(): {l * x.rotate(angle)}")
+    note(f"y.rotate(): {y.rotate(angle)}")
     note(f"Inner: {inner}")
     note(f"Outer: {outer}")
-    assert inner.isclose(outer, rel_to=[a, l * a, b])
+    assert inner.isclose(outer, rel_to=[x, l * x, y])

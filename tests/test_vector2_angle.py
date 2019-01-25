@@ -28,6 +28,10 @@ def test_angle(left, right, expected):
     right=vectors(),
 )
 def test_angle_range(left, right):
+    """Vector2.angle produces values in [-180; 180] and is antisymmetric.
+
+    Antisymmetry means that left.angle(right) == - right.angle(left).
+    """
     lr = left.angle(right)
     rl = right.angle(left)
     assert -180 < lr <= 180
@@ -40,13 +44,15 @@ def test_angle_range(left, right):
     right=vectors(),
 )
 def test_angle_additive(left, middle, right):
+    """left.angle(middle) + middle.angle(right) == left.angle(right)"""
     lm = left.angle(middle)
     mr = middle.angle(right)
     lr = left.angle(right)
     assert angle_isclose(lm + mr, lr)
 
-@given(x=vectors(), l=floats())
-def test_angle_aligned(x: Vector2, l: float):
-    assume(l != 0)
-    y = l * x
-    assert angle_isclose(x.angle(y), 0 if l > 0 else 180)
+@given(x=vectors(), scalar=floats())
+def test_angle_aligned(x: Vector2, scalar: float):
+    """x.angle(scalar * x) is 0 or 180, depending on whether scalar > 0"""
+    assume(scalar != 0)
+    y = scalar * x
+    assert angle_isclose(x.angle(y), 0 if scalar > 0 else 180)

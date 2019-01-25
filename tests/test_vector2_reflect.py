@@ -21,6 +21,13 @@ def test_reflect(initial_vector, surface_normal, expected_vector):
 
 @given(initial=vectors(), normal=units())
 def test_reflect_prop(initial: Vector2, normal: Vector2):
+    """Test several properties of Vector2.reflect
+
+    * initial.reflect(normal).reflect(normal) == initial
+      i.e. reflection is its own inverse
+    * initial.reflect(normal) * normal == - initial * normal
+    * normal.angle(initial) == 180 - normal.angle(reflected)
+    """
     # Exclude cases where the initial vector is very close to the surface
     assume(not angle_isclose(initial.angle(normal) % 180, 90, epsilon=10))
 

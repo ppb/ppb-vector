@@ -12,23 +12,25 @@ def test_scalar_coordinates(scalar: float, vector: Vector2):
     assert scalar * vector.y == (scalar * vector).y
 
 
-@given(x=floats(), y=floats(), v=vectors())
-def test_scalar_associative(x: float, y: float, v: Vector2):
-    left  = (x * y) * v
-    right =  x * (y * v)
+@given(scalar1=floats(), scalar2=floats(), x=vectors())
+def test_scalar_associative(scalar1: float, scalar2: float, x: Vector2):
+    """(scalar1 * scalar2) * x == scalar1 * (scalar2 * x)"""
+    left  = (scalar1 * scalar2) * x
+    right =  scalar1 * (scalar2 * x)
     assert left.isclose(right)
 
-@given(l=floats(), x=vectors(), y=vectors())
-def test_scalar_linear(l: float, x: Vector2, y: Vector2):
-    assert (l * (x + y)).isclose(l*x + l*y, rel_to=[x, y, l*x, l*y])
+@given(scalar=floats(), x=vectors(), y=vectors())
+def test_scalar_linear(scalar: float, x: Vector2, y: Vector2):
+    assert (scalar * (x + y)).isclose(scalar*x + scalar*y,
+                                      rel_to=[x, y, scalar*x, scalar*y])
 
-@given(l=floats(), x=vectors())
-def test_scalar_length(l: float, x: Vector2):
-    assert isclose((l * x).length, abs(l) * x.length)
+@given(scalar=floats(), x=vectors())
+def test_scalar_length(scalar: float, x: Vector2):
+    assert isclose((scalar * x).length, abs(scalar) * x.length)
 
 
-@given(x=vectors(), l=floats())
-def test_scalar_division(x: Vector2, l: float):
+@given(x=vectors(), scalar=floats())
+def test_scalar_division(x: Vector2, scalar: float):
     """Test that (x / λ) = (1 / λ) * x"""
-    assume(abs(l) > 1e-100)
-    assert (x / l).isclose((1/l) * x)
+    assume(abs(scalar) > 1e-100)
+    assert (x / scalar).isclose((1/scalar) * x)
