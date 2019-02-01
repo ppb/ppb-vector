@@ -124,6 +124,9 @@ class Vector2:
         # benefit, according to microbenchmarks.
         return hypot(self.x, self.y)
 
+    def asdict(self) -> typing.Mapping[str, float]:
+        return {'x': self.x, 'y': self.y}
+
     def __len__(self: VectorOrSub) -> int:
         return 2
 
