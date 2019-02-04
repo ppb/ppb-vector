@@ -1,2 +1,3 @@
 flake8
 mypy>=0.670
+pep8-naming
