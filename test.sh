@@ -15,6 +15,7 @@ else
     PYTEST_OPTIONS=( )
 fi
 
-run pytest "${PYTEST_OPTIONS[@]}"
-[[ "${PYTHON-x}" =~ pypy-* ]] || run mypy ppb_vector tests
+
 run python -m doctest README.md
+[[ "${PYTHON-x}" =~ pypy-* ]] || run mypy ppb_vector tests
+run pytest "${PYTEST_OPTIONS[@]}"
