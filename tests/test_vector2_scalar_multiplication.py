@@ -1,4 +1,3 @@
-import pytest  # type: ignore
 from hypothesis import assume, given
 from math import isclose
 from utils import floats, vectors
@@ -15,14 +14,17 @@ def test_scalar_coordinates(scalar: float, vector: Vector2):
 @given(scalar1=floats(), scalar2=floats(), x=vectors())
 def test_scalar_associative(scalar1: float, scalar2: float, x: Vector2):
     """(scalar1 * scalar2) * x == scalar1 * (scalar2 * x)"""
-    left  = (scalar1 * scalar2) * x
-    right =  scalar1 * (scalar2 * x)
+    left = (scalar1 * scalar2) * x
+    right = scalar1 * (scalar2 * x)
     assert left.isclose(right)
+
 
 @given(scalar=floats(), x=vectors(), y=vectors())
 def test_scalar_linear(scalar: float, x: Vector2, y: Vector2):
-    assert (scalar * (x + y)).isclose(scalar*x + scalar*y,
-                                      rel_to=[x, y, scalar*x, scalar*y])
+    assert (scalar * (x + y)).isclose(
+        scalar * x + scalar * y, rel_to=[x, y, scalar * x, scalar * y]
+    )
+
 
 @given(scalar=floats(), x=vectors())
 def test_scalar_length(scalar: float, x: Vector2):
@@ -33,4 +35,4 @@ def test_scalar_length(scalar: float, x: Vector2):
 def test_scalar_division(x: Vector2, scalar: float):
     """Test that (x / λ) = (1 / λ) * x"""
     assume(abs(scalar) > 1e-100)
-    assert (x / scalar).isclose((1/scalar) * x)
+    assert (x / scalar).isclose((1 / scalar) * x)
