@@ -35,6 +35,7 @@ before_install:
   - source ./.ci/install-python.sh
 
 install:
+  - pip install -U pip wheel setuptools
   - pip install -e .;
   - # Do not install mypy during pypy builds
     '[[ ! "$PYTHON" =~ pypy-* ]] || sed -i "/^mypy/d" dev-requirements.txt'

@@ -28,7 +28,6 @@ if [[ "$PYTHON" =~ pypy-* ]]; then
   run ln -s pypy3 "../${PYPY}/bin/python"
   run python -m ensurepip
   run ln -s pip3 "../${PYPY}/bin/pip"
-  run pip install -U pip wheel
 
 else
   # Install a Python version with miniconda
