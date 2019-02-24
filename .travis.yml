@@ -35,11 +35,11 @@ before_install:
   - source ./.ci/install-python.sh
 
 install:
-  - pip install -U pip wheel setuptools
+  - pip install --upgrade-strategy eager -U pip wheel setuptools
   - pip install -e .;
   - # Do not install mypy during pypy builds
     '[[ ! "$PYTHON" =~ pypy-* ]] || sed -i "/^mypy/d" dev-requirements.txt'
-  - pip install -U -r dev-requirements.txt;
+  - pip install --upgrade-strategy eager -U -r dev-requirements.txt
   - pip list
 
 script:
