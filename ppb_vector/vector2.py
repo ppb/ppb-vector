@@ -56,6 +56,9 @@ class Vector2:
     x: float
     y: float
 
+    # Tell CPython that this isn't an extendable dict
+    __slots__ = ('x', 'y')
+
     @typing.overload
     def __init__(self, x: typing.SupportsFloat, y: typing.SupportsFloat): pass
 
