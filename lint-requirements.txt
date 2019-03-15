@@ -1,3 +1,4 @@
 flake8
+flake8-bugbear
 mypy>=0.670
 pep8-naming
