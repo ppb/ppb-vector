@@ -1,9 +1,9 @@
-import pytest  # type: ignore
-from hypothesis import assume, given
 from math import isclose
-from utils import angle_isclose, floats, lengths, vectors
+
+from hypothesis import assume, given
 
 from ppb_vector import Vector2
+from utils import angle_isclose, floats, lengths, vectors
 
 
 @given(x=vectors(), length=floats())

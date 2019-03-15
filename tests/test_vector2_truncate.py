@@ -1,9 +1,9 @@
-import pytest  # type: ignore
-from hypothesis import assume, event, example, given, note
 from typing import Type, Union
-from utils import floats, lengths, vectors
+
+from hypothesis import assume, event, example, given, note
 
 from ppb_vector import Vector2
+from utils import floats, lengths, vectors
 
 
 @given(x=vectors(), max_length=lengths())
@@ -18,8 +18,8 @@ def test_truncate_invariant(x: Vector2, max_length: float):
 
 
 @given(x=vectors(max_magnitude=1e150), max_length=floats())
-@example( # Large example where x.length == max_length but 1 * x != x
-    x=Vector2(0.0, 7.1e+62), max_length=7.1e+62
+@example(  # Large example where x.length == max_length but 1 * x != x
+    x=Vector2(0.0, 7.1e62), max_length=7.1e62,
 )
 def test_truncate_equivalent_to_scale(x: Vector2, max_length: float):
     """Vector2.scale_to and truncate are equivalent when max_length <= x.length"""
@@ -28,8 +28,8 @@ def test_truncate_equivalent_to_scale(x: Vector2, max_length: float):
     if max_length > 0:
         note(f"x.length = {x.length / max_length} * max_length")
 
-    scale    : Union[Vector2, Type[Exception]]
-    truncate : Union[Vector2, Type[Exception]]
+    scale: Union[Vector2, Type[Exception]]
+    truncate: Union[Vector2, Type[Exception]]
 
     try:
         truncate = x.truncate(max_length)

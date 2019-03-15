@@ -1,4 +1,5 @@
 from hypothesis import given
+
 from ppb_vector import Vector2
 from utils import floats, vectors
 

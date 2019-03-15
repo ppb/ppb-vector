@@ -1,4 +1,5 @@
 import pytest  # type: ignore
+
 from ppb_vector import Vector2
 
 
@@ -18,5 +19,5 @@ def test_vector2_index_access(vector):
 
 
 def test_vector2_key_access(vector):
-    assert vector['x'] == 10
-    assert vector['y'] == 20
+    assert vector["x"] == 10
+    assert vector["y"] == 20

@@ -1,4 +1,4 @@
-pytest~=3.8
 hypothesis
 mypy==0.641
 perf
+pytest~=3.8

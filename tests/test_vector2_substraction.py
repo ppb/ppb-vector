@@ -1,4 +1,5 @@
 import pytest  # type: ignore
+
 from ppb_vector import Vector2
 
 
@@ -25,7 +26,7 @@ def test_substraction_vector_list():
 
 def test_substraction_vector_dict():
     test_vector = Vector2(7, 11)
-    test_dict = {'x': 3, 'y': 5}
+    test_dict = {"x": 3, "y": 5}
     result = test_vector - test_dict
     assert result == Vector2(4, 6)
 
@@ -39,10 +40,10 @@ data = [
     ([Vector2(42, 12), (-5, 23)], Vector2(47, -11)),
     ([Vector2(51, 28), [72, 31]], Vector2(-21, -3)),
     ([Vector2(1, 2), [2, 2]], Vector2(-1, 0)),
-    ([Vector2(1, 2), {'x': 2, 'y': 2}], Vector2(-1, 0)),
+    ([Vector2(1, 2), {"x": 2, "y": 2}], Vector2(-1, 0)),
 ]
 
 
-@pytest.mark.parametrize('test_input, expected', data)
+@pytest.mark.parametrize("test_input, expected", data)
 def test_multiples_values(test_input, expected):
     assert (test_input[0] - test_input[1]) == expected

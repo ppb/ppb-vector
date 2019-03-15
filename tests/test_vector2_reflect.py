@@ -1,7 +1,9 @@
-from ppb_vector import Vector2
-import pytest  # type: ignore
-from hypothesis import given, assume, note
 from math import isclose, isinf
+
+import pytest  # type: ignore
+from hypothesis import assume, given, note
+
+from ppb_vector import Vector2
 from utils import angle_isclose, units, vectors
 
 
@@ -10,7 +12,7 @@ reflect_data = (
     (Vector2(1, 1), Vector2(-1, 0), Vector2(-1, 1)),
     (Vector2(0, 1), Vector2(0, -1), Vector2(0, -1)),
     (Vector2(-1, -1), Vector2(1, 0), Vector2(1, -1)),
-    (Vector2(-1, -1), Vector2(-1, 0), Vector2(1, -1))
+    (Vector2(-1, -1), Vector2(-1, 0), Vector2(1, -1)),
 )
 
 
@@ -45,6 +47,4 @@ def test_reflect_prop(initial: Vector2, normal: Vector2):
     note(f"initial ⋅ normal: {initial * normal}")
     note(f"reflected ⋅ normal: {reflected * normal}")
     assert isclose((initial * normal), -(reflected * normal))
-    assert angle_isclose(normal.angle(initial),
-                         180 - normal.angle(reflected)
-    )
+    assert angle_isclose(normal.angle(initial), 180 - normal.angle(reflected))

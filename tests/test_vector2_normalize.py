@@ -1,8 +1,8 @@
-import pytest  # type: ignore
-from hypothesis import assume, given
 from math import isclose
+
+from hypothesis import assume, given
+
 from utils import vectors
-import ppb_vector
 
 
 @given(x=vectors())

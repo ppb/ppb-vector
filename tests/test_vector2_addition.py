@@ -1,4 +1,5 @@
 import pytest  # type: ignore
+
 from ppb_vector import Vector2
 
 
@@ -25,7 +26,7 @@ def test_addition_vector_list():
 
 def test_addition_vector_dict():
     test_vector = Vector2(1, 1)
-    test_dict = {'x': 3, 'y': 5}
+    test_dict = {"x": 3, "y": 5}
     result = test_vector + test_dict
     assert result == Vector2(4, 6)
 
@@ -33,7 +34,7 @@ def test_addition_vector_dict():
 data = [
     ([Vector2(1, 1), (2, 2)], Vector2(3, 3)),
     ([Vector2(1, 2), [2, 2]], Vector2(3, 4)),
-    ([Vector2(1, 2), {'x': 2, 'y': 2}], Vector2(3, 4)),
+    ([Vector2(1, 2), {"x": 2, "y": 2}], Vector2(3, 4)),
     ([Vector2(10, 16), Vector2(2, 2)], Vector2(12, 18)),
     ([Vector2(25, 22), (12, 92)], Vector2(37, 114)),
     ([Vector2(25, 22), Vector2(22, 61)], Vector2(47, 83)),
@@ -43,6 +44,6 @@ data = [
 ]
 
 
-@pytest.mark.parametrize('test_input, expected', data)
+@pytest.mark.parametrize("test_input, expected", data)
 def test_multiples_values(test_input, expected):
     assert (test_input[0] + test_input[1]) == expected

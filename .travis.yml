@@ -33,6 +33,7 @@ cache:
 
 before_install:
   - source ./.ci/install-python.sh
+  - export TRAVIS_OS_NAME PYTHON
 
 install:
   - pip install --upgrade-strategy eager -U pip wheel setuptools
@@ -43,6 +44,4 @@ install:
   - pip list
 
 script:
-  - pytest --hypothesis-profile ci
-  - '[[ "$PYTHON" =~ pypy-* ]] || mypy ppb_vector tests'
-  - python -m doctest README.md
+  - ./test.sh

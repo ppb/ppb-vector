@@ -1,12 +1,11 @@
-import typing
-import collections
-import functools
 import dataclasses
+import functools
+import typing
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from math import acos, atan2, cos, degrees, hypot, isclose, radians, sin, copysign, sqrt
-from collections.abc import Sequence, Mapping
+from math import atan2, copysign, cos, degrees, hypot, isclose, radians, sin, sqrt
 
-__all__ = 'Vector2',
+__all__ = ('Vector2',)
 
 
 # Vector or subclass
@@ -32,8 +31,6 @@ def _find_lowest_type(left: typing.Type, right: typing.Type) -> typing.Type:
     # has the most.
     lmro = set(left.__mro__)
     rmro = set(right.__mro__)
-    lspecial = lmro - rmro
-    rspecial = rmro - lmro
     if len(lmro) > len(rmro):
         return left
     elif len(rmro) > len(lmro):
@@ -74,8 +71,7 @@ class Vector2:
                             f"got {len(args) + len(kwargs)}")
 
         if kwargs and frozenset(kwargs) != {'x', 'y'}:
-            raise TypeError("Expected keyword arguments x and y, got: " +
-                            kwargs.keys().join(', '))
+            raise TypeError(f"Expected keyword arguments x and y, got: {kwargs.keys().join(', ')}")
 
         if kwargs:
             x, y = kwargs['x'], kwargs['y']
@@ -231,7 +227,7 @@ class Vector2:
     def angle(self: VectorOrSub, other: VectorLike) -> float:
         other = Vector2.convert(other)
 
-        rv = degrees( atan2(other.x, -other.y) - atan2(self.x, -self.y) )
+        rv = degrees(atan2(other.x, -other.y) - atan2(self.x, -self.y))
         # This normalizes the value to (-180, +180], which is the opposite of
         # what Python usually does but is normal for angles
         if rv <= -180:
@@ -242,7 +238,8 @@ class Vector2:
         return rv
 
     def isclose(self: VectorOrSub, other: VectorLike, *,
-                abs_tol: Realish=1e-3, rel_tol: Realish=1e-06, rel_to: typing.Sequence[VectorLike]=[]) -> bool:
+                abs_tol: Realish = 1e-3, rel_tol: Realish = 1e-06,
+                rel_to: typing.Sequence[VectorLike] = ()) -> bool:
         """
         Determine whether two vectors are close in value.
 
@@ -272,10 +269,7 @@ class Vector2:
         )
 
         diff = (self - other).length
-        return (
-            diff <= rel_tol * rel_length or
-            diff <= float(abs_tol)
-        )
+        return (diff <= rel_tol * rel_length or diff <= float(abs_tol))
 
     @staticmethod
     def _trig(angle: Realish) -> typing.Tuple[float, float]:
@@ -334,5 +328,6 @@ class Vector2:
             raise ValueError("Reflection requires a normalized vector.")
 
         return self - (2 * (self * surface_normal) * surface_normal)
+
 
 Sequence.register(Vector2)
