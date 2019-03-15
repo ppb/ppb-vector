@@ -1,4 +1,5 @@
 import pytest  # type: ignore
+
 from ppb_vector import Vector2
 
 

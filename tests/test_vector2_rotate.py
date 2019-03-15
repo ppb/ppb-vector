@@ -1,10 +1,11 @@
+import math
+
+import hypothesis.strategies as st
+import pytest  # type: ignore
+from hypothesis import assume, example, given, note
+
 from ppb_vector import Vector2
 from utils import angle_isclose, angles, floats, vectors
-import pytest  # type: ignore
-import math
-from hypothesis import assume, given, note, example
-import hypothesis.strategies as st
-
 
 data_exact = [
     (Vector2(1, 1), -90, Vector2(1, -1)),

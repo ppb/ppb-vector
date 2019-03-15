@@ -1,7 +1,9 @@
-from ppb_vector import Vector2
 from math import isclose
+
 import pytest  # type: ignore
 from hypothesis import assume, given
+
+from ppb_vector import Vector2
 from utils import angle_isclose, floats, vectors
 
 

@@ -1,5 +1,7 @@
-from hypothesis import assume, given
 from math import isclose
+
+from hypothesis import assume, given
+
 from utils import vectors
 
 

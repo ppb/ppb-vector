@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import perf  # type: ignore
+
 from ppb_vector import Vector2
 from utils import *
 

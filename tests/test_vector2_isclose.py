@@ -1,9 +1,11 @@
-from ppb_vector import Vector2
-from pytest import raises  # type: ignore
 from math import sqrt
-from utils import units, lengths, vectors
-from hypothesis import assume, given, note, example
+
+from hypothesis import assume, example, given, note
 from hypothesis.strategies import floats
+from pytest import raises  # type: ignore
+
+from ppb_vector import Vector2
+from utils import lengths, units, vectors
 
 
 @given(x=vectors(), abs_tol=floats(min_value=0), rel_tol=floats(min_value=0))

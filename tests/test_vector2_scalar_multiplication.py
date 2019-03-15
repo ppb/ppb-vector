@@ -1,8 +1,9 @@
-from hypothesis import assume, given
 from math import isclose
-from utils import floats, vectors
+
+from hypothesis import assume, given
 
 from ppb_vector import Vector2
+from utils import floats, vectors
 
 
 @given(scalar=floats(), vector=vectors())

@@ -1,8 +1,9 @@
-from hypothesis import assume, event, example, given, note
 from typing import Type, Union
-from utils import floats, lengths, vectors
+
+from hypothesis import assume, event, example, given, note
 
 from ppb_vector import Vector2
+from utils import floats, lengths, vectors
 
 
 @given(x=vectors(), max_length=lengths())

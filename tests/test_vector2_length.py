@@ -1,5 +1,6 @@
-import ppb_vector
 import pytest  # type: ignore
+
+import ppb_vector
 
 
 @pytest.mark.parametrize(

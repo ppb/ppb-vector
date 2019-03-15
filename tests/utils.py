@@ -1,7 +1,9 @@
-from ppb_vector import Vector2
-from hypothesis import note
 from typing import Sequence, Union
+
 import hypothesis.strategies as st
+from hypothesis import note
+
+from ppb_vector import Vector2
 
 
 UNIT_X, UNIT_Y = Vector2(1, 0), Vector2(0, 1)

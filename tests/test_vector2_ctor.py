@@ -1,8 +1,8 @@
 import pytest  # type: ignore
 from hypothesis import given
-from utils import floats, vectors, vector_likes
 
 from ppb_vector import Vector2
+from utils import floats, vector_likes, vectors
 
 
 class V(Vector2):

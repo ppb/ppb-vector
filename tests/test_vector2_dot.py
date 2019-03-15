@@ -1,7 +1,8 @@
-from ppb_vector import Vector2
-
 from math import sqrt
+
 from hypothesis import assume, given, note
+
+from ppb_vector import Vector2
 from utils import angles, floats, isclose, vectors
 
 

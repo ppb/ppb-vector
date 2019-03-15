@@ -1,9 +1,9 @@
-import typing
-import functools
 import dataclasses
+import functools
+import typing
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from math import atan2, cos, degrees, hypot, isclose, radians, sin, copysign, sqrt
-from collections.abc import Sequence, Mapping
+from math import atan2, copysign, cos, degrees, hypot, isclose, radians, sin, sqrt
 
 __all__ = ('Vector2',)
 

@@ -1,7 +1,9 @@
-from ppb_vector import Vector2
-import pytest  # type: ignore
-from hypothesis import given, assume, note
 from math import isclose, isinf
+
+import pytest  # type: ignore
+from hypothesis import assume, given, note
+
+from ppb_vector import Vector2
 from utils import angle_isclose, units, vectors
 
 

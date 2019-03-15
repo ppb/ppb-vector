@@ -1,6 +1,7 @@
 from hypothesis import assume, given
+
 from ppb_vector import Vector2
-from utils import vectors, vector_likes
+from utils import vector_likes, vectors
 
 
 @given(x=vectors())
