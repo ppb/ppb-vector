@@ -20,8 +20,8 @@ class DummyVector:
 
 @given(x=floats(), y=floats())
 def test_object_size(x, y):
-    """Check that Vector2 is 3 times smaller than a naïve version."""
-    assert sizeof(Vector2(x, y)) < sizeof(DummyVector(x, y)) / 3
+    """Check that Vector2 is 2 times smaller than a naïve version."""
+    assert sizeof(Vector2(x, y)) < sizeof(DummyVector(x, y)) / 2
 
 
 @given(v=vectors())
