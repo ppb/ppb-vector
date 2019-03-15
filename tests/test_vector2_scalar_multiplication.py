@@ -22,7 +22,8 @@ def test_scalar_associative(scalar1: float, scalar2: float, x: Vector2):
 @given(scalar=floats(), x=vectors(), y=vectors())
 def test_scalar_linear(scalar: float, x: Vector2, y: Vector2):
     assert (scalar * (x + y)).isclose(
-        scalar * x + scalar * y, rel_to=[x, y, scalar * x, scalar * y]
+        scalar * x + scalar * y,
+        rel_to=[x, y, scalar * x, scalar * y],
     )
 
 

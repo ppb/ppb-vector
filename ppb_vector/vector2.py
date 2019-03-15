@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from math import atan2, cos, degrees, hypot, isclose, radians, sin, copysign, sqrt
 from collections.abc import Sequence, Mapping
 
-__all__ = 'Vector2',
+__all__ = ('Vector2',)
 
 
 # Vector or subclass

@@ -14,9 +14,7 @@ def test_isclose_to_self(x, abs_tol, rel_tol):
 EPSILON = 1e-8
 
 
-@given(
-    x=vectors(max_magnitude=1e30), direction=units(), abs_tol=lengths(max_value=1e30)
-)
+@given(x=vectors(max_magnitude=1e30), direction=units(), abs_tol=lengths(max_value=1e30))
 def test_isclose_abs_error(x, direction, abs_tol):
     """Test x.isclose(rel_tol=0) near the boundary between “close” and “not close”
 
@@ -64,8 +62,8 @@ def test_isclose_rel_error(x, direction, rel_tol):
 
     positive = x + (1 - sqrt(EPSILON)) * x.length * error
     note(
-        f"positive example: {positive} = x + {positive - x} ="
-        f"x + {(positive - x).length / x.length} * |x| * direction"
+        f"positive example: {positive} = x + {positive - x} = "
+        f"x + {(positive - x).length / x.length} * |x| * direction",
     )
 
     assert x.isclose(positive, abs_tol=0, rel_tol=rel_tol)
@@ -88,7 +86,7 @@ def test_isclose_rel_error(x, direction, rel_tol):
     negative = x + (1 + sqrt(EPSILON)) * max(x.length, δ) * error
     note(
         f"negative example: {negative} = x + {negative - x} = "
-        f"x + {(negative - x).length / x.length} * |x| * direction"
+        f"x + {(negative - x).length / x.length} * |x| * direction",
     )
 
     assert not x.isclose(negative, abs_tol=0, rel_tol=rel_tol)

@@ -10,8 +10,8 @@ class V(Vector2):
 
 
 @pytest.mark.parametrize(
-    "vector_like", vector_likes(), ids=lambda x: type(x).__name__
-)  # type: ignore
+    "vector_like", vector_likes(), ids=lambda x: type(x).__name__,
+)
 @pytest.mark.parametrize("cls", [Vector2, V])  # type: ignore
 def test_convert_class(cls, vector_like):
     vector = cls.convert(vector_like)
