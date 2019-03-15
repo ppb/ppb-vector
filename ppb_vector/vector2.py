@@ -239,7 +239,7 @@ class Vector2:
 
     def isclose(self: VectorOrSub, other: VectorLike, *,
                 abs_tol: Realish = 1e-3, rel_tol: Realish = 1e-06,
-                rel_to: typing.Sequence[VectorLike] = []) -> bool:
+                rel_to: typing.Sequence[VectorLike] = ()) -> bool:
         """
         Determine whether two vectors are close in value.
 

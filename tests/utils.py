@@ -4,6 +4,9 @@ from typing import Sequence, Union
 import hypothesis.strategies as st
 
 
+UNIT_X, UNIT_Y = Vector2(1, 0), Vector2(0, 1)
+
+
 def angles():
     return st.floats(min_value=-360, max_value=360)
 
@@ -25,7 +28,7 @@ def vectors(max_magnitude=1e75):
 
 
 def units():
-    return st.builds(Vector2(1, 0).rotate, angles())
+    return st.builds(UNIT_X.rotate, angles())
 
 
 def angle_isclose(x, y, epsilon=6.5e-5):
@@ -39,7 +42,7 @@ def isclose(
     abs_tol: float = 1e-9,
     rel_tol: float = 1e-9,
     rel_exp: float = 1,
-    rel_to: Sequence[Union[float, Vector2]] = [],
+    rel_to: Sequence[Union[float, Vector2]] = (),
 ):
     if rel_exp < 1:
         raise ValueError(f"Expected rel_exp >= 1, got {rel_exp}")
@@ -84,5 +87,5 @@ UNARY_SCALAR_OPS = [
 
 
 # Sequence of vector-likes equivalent to the input vector (def. to the x vector)
-def vector_likes(v: Vector2 = Vector2(1, 0)):
+def vector_likes(v: Vector2 = UNIT_X):
     return ((v.x, v.y), [v.x, v.y], {"x": v.x, "y": v.y})
