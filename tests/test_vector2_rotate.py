@@ -63,6 +63,13 @@ def test_trig_invariance(angle: float, n: int):
     assert isclose(r_sin, n_sin, rel_to=[n / 1e15])
 
 
+@given(v=vectors(), angle=angles(), n=st.integers(min_value=0, max_value=1e6))
+def test_rotation_invariance(v: Vector2, angle: float, n: int):
+    assert v.rotate(angle).isclose(v.rotate(angle + 360 * n),
+                                   rel_to=[n / 1e15 * v],
+    )
+
+
 @given(initial=vectors(), angle=angles())
 def test_rotation_angle(initial, angle):
     """initial.angle( initial.rotate(angle) ) == angle"""
