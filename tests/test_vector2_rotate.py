@@ -52,6 +52,13 @@ remarkable_angles.update({
     for angle, (sin_t, cos_t) in remarkable_angles.items()
 })
 
+## extend to negative angles
+remarkable_angles.update({
+    -angle: (-sin_t, cos_t)
+    for angle, (sin_t, cos_t) in remarkable_angles.items()
+})
+
+
 @pytest.mark.parametrize("angle, trig", remarkable_angles.items(),
                           ids=[str(x) for x in remarkable_angles]
 )
