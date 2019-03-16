@@ -16,7 +16,9 @@ data_exact = [
     (Vector2(1, 1), 180, Vector2(-1, -1)),
 ]
 
-@pytest.mark.parametrize("input, angle, expected", data_exact)
+@pytest.mark.parametrize("input, angle, expected", data_exact,
+                         ids=[str(angle) for _, angle, _ in data_exact],
+)
 def test_exact_rotations(input, angle, expected):
     assert input.rotate(angle) == expected
     assert input.angle(expected) == angle
