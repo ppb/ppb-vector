@@ -145,7 +145,7 @@ class Vector2:
             return NotImplemented
         return rtype(self.x - other.x, self.y - other.y)
 
-    def dot(self: VectorOrSub, other: VectorLike) -> Realish:
+    def dot(self: VectorOrSub, other: VectorLike) -> float:
         """
         Return the dot product of two vectors.
         """
@@ -159,7 +159,7 @@ class Vector2:
         return type(self)(self.x * other, self.y * other)
 
     @typing.overload
-    def __mul__(self: VectorOrSub, other: VectorLike) -> Realish: pass
+    def __mul__(self: VectorOrSub, other: VectorLike) -> float: pass
 
     @typing.overload
     def __mul__(self: VectorOrSub, other: Realish) -> VectorOrSub: pass
@@ -177,7 +177,7 @@ class Vector2:
             return NotImplemented
 
     @typing.overload
-    def __rmul__(self: VectorOrSub, other: VectorLike) -> Realish: pass
+    def __rmul__(self: VectorOrSub, other: VectorLike) -> float: pass
 
     @typing.overload
     def __rmul__(self: VectorOrSub, other: Realish) -> VectorOrSub: pass
@@ -189,7 +189,7 @@ class Vector2:
         """Perform a division between a vector and a scalar."""
         return type(self)(self.x / other, self.y / other)
 
-    def __getitem__(self: VectorOrSub, item: typing.Union[str, int]) -> Realish:
+    def __getitem__(self: VectorOrSub, item: typing.Union[str, int]) -> float:
         if hasattr(item, '__index__'):
             item = item.__index__()  # type: ignore
         if isinstance(item, str):
@@ -220,7 +220,7 @@ class Vector2:
         else:
             return self.x == other.x and self.y == other.y
 
-    def __iter__(self: VectorOrSub) -> typing.Iterator[Realish]:
+    def __iter__(self: VectorOrSub) -> typing.Iterator[float]:
         yield self.x
         yield self.y
 
