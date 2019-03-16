@@ -11,8 +11,6 @@ __all__ = ('Vector2',)
 # Vector or subclass
 VectorOrSub = typing.TypeVar('VectorOrSub', bound='Vector2')
 
-Realish = typing.Union[float, int]
-
 # Anything convertable to a Vector, including lists, tuples, and dicts
 VectorLike = typing.Union[
     'Vector2',  # Or subclasses, unconnected to the VectorOrSub typevar above
