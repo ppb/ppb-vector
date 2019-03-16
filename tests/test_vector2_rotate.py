@@ -71,7 +71,10 @@ data_close = [
 ]
 
 
-@pytest.mark.parametrize("input, angle, expected", data_close)
+@pytest.mark.parametrize("input, angle, expected", data_close,
+                         ids=[f"(1,0).rotate({x})" for x in remarkable_angles] +
+                             [f"(1,1).rotate({x})" for x in remarkable_angles],
+)
 def test_close_rotations(input, angle, expected):
     assert input.rotate(angle).isclose(expected)
     assert angle_isclose(input.angle(expected), angle)
