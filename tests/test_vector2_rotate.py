@@ -50,11 +50,13 @@ remarkable_angles.update({
     for angle, (sin_t, cos_t) in remarkable_angles.items()
 })
 
-@pytest.mark.parametrize("angle, trig", remarkable_angles.items())
+@pytest.mark.parametrize("angle, trig", remarkable_angles.items(),
+                          ids=[str(x) for x in remarkable_angles]
+)
 def test_remarkable_angles(angle, trig):
-    angle = math.radians(angle)
+    _angle = math.radians(angle)
     sin_t, cos_t = trig
-    sin_m, cos_m = math.sin(angle), math.cos(angle)
+    sin_m, cos_m = math.sin(_angle), math.cos(_angle)
 
     assert math.isclose(sin_t, sin_m)
     assert math.isclose(cos_t, cos_m)
