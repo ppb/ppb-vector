@@ -5,7 +5,7 @@ import pytest  # type: ignore
 from hypothesis import assume, example, given, note
 
 from ppb_vector import Vector2
-from utils import angle_isclose, angles, floats, vectors
+from utils import angle_isclose, angles, floats, isclose, vectors
 
 data_exact = [
     (Vector2(1, 1), -90, Vector2(1, -1)),
@@ -51,6 +51,16 @@ def test_trig_stability(angle):
 
     # Don't use exponents here. Multiplication is generally more stable.
     assert math.isclose(r_cos * r_cos + r_sin * r_sin, 1, rel_tol=1e-18)
+
+
+@given(angle=angles(), n=st.integers(min_value=0, max_value=1e6))
+def test_trig_invariance(angle: float, n: int):
+    """Test that cos(θ), sin(θ) == cos(θ + n*360°), sin(θ + n*360°)"""
+    r_cos, r_sin = Vector2._trig(angle)
+    n_cos, n_sin = Vector2._trig(angle + 360*n)
+
+    assert isclose(r_cos, n_cos, rel_to=[n / 1e15])
+    assert isclose(r_sin, n_sin, rel_to=[n / 1e15])
 
 
 @given(initial=vectors(), angle=angles())
