@@ -1,4 +1,5 @@
 import math
+from math import sqrt
 
 import hypothesis.strategies as st
 import pytest  # type: ignore
@@ -7,6 +8,7 @@ from hypothesis import assume, example, given, note
 from ppb_vector import Vector2
 from utils import angle_isclose, angles, floats, vectors
 
+
 data_exact = [
     (Vector2(1, 1), -90, Vector2(1, -1)),
     (Vector2(1, 1), 0, Vector2(1, 1)),
@@ -14,22 +16,74 @@ data_exact = [
     (Vector2(1, 1), 180, Vector2(-1, -1)),
 ]
 
-data_close = [
-    (Vector2(3, -20), 53, Vector2(17.77816, -9.64039)),
-    (Vector2(math.pi, -1 * math.e), 30, Vector2(4.07984, -0.7833)),
-    (Vector2(math.pi, math.e), 67, Vector2(-1.27467, 3.95397)),
-    (Vector2(1, 0), 30, Vector2(math.sqrt(3) / 2, 0.5)),
-    (Vector2(1, 0), 60, Vector2(0.5, math.sqrt(3) / 2)),
-]
-
-
-@pytest.mark.parametrize("input, angle, expected", data_exact)
+@pytest.mark.parametrize("input, angle, expected", data_exact,
+                         ids=[str(angle) for _, angle, _ in data_exact],
+)
 def test_exact_rotations(input, angle, expected):
     assert input.rotate(angle) == expected
     assert input.angle(expected) == angle
 
 
-@pytest.mark.parametrize("input, angle, expected", data_close)
+# angle (in degrees) -> (sin, cos)
+## values from 0 to 45°
+## lifted from https://en.wikibooks.org/wiki/Trigonometry/Selected_Angles_Reference
+remarkable_angles = {
+    15: ((sqrt(6) - sqrt(2))/4, (sqrt(6) + sqrt(2))/4),
+    22.5: (sqrt(2 - sqrt(2))/2, sqrt(2 + sqrt(2))/2),
+    30: (0.5, sqrt(3)/2),
+    45: (sqrt(2)/2, sqrt(2)/2),
+}
+
+## extend up to 90°
+remarkable_angles.update({
+    90 - angle: (cos_t, sin_t)
+    for angle, (sin_t, cos_t) in remarkable_angles.items()
+})
+
+## extend up to 180°
+remarkable_angles.update({
+    angle + 90: (cos_t, -sin_t)
+    for angle, (sin_t, cos_t) in remarkable_angles.items()
+})
+
+## extend up to 360°
+remarkable_angles.update({
+    angle + 180: (-sin_t, -cos_t)
+    for angle, (sin_t, cos_t) in remarkable_angles.items()
+})
+
+## extend to negative angles
+remarkable_angles.update({
+    -angle: (-sin_t, cos_t)
+    for angle, (sin_t, cos_t) in remarkable_angles.items()
+})
+
+
+@pytest.mark.parametrize("angle, trig", remarkable_angles.items(),
+                          ids=[str(x) for x in remarkable_angles]
+)
+def test_remarkable_angles(angle, trig):
+    _angle = math.radians(angle)
+    sin_t, cos_t = trig
+    sin_m, cos_m = math.sin(_angle), math.cos(_angle)
+
+    assert math.isclose(sin_t, sin_m)
+    assert math.isclose(cos_t, cos_m)
+
+
+data_close = [
+    (Vector2(1, 0), angle, Vector2(cos_t, sin_t))
+    for (angle, (sin_t, cos_t)) in remarkable_angles.items()
+] + [
+    (Vector2(1, 1), angle, Vector2(cos_t - sin_t, cos_t + sin_t))
+    for (angle, (sin_t, cos_t)) in remarkable_angles.items()
+]
+
+
+@pytest.mark.parametrize("input, angle, expected", data_close,
+                         ids=[f"(1,0).rotate({x})" for x in remarkable_angles] +
+                             [f"(1,1).rotate({x})" for x in remarkable_angles],
+)
 def test_close_rotations(input, angle, expected):
     assert input.rotate(angle).isclose(expected)
     assert angle_isclose(input.angle(expected), angle)
@@ -95,7 +149,10 @@ def test_rotation_stability2(initial, angles):
         stepwise = stepwise.rotate(angle)
     note(f"Step-wise: {stepwise}")
 
-    assert fellswoop.isclose(stepwise)
+    # Increase the tolerance on this comparison,
+    # as stepwise rotations induce rounding errors
+    assert fellswoop.isclose(stepwise, rel_tol=1e-6)
+
     assert math.isclose(fellswoop.length, initial.length, rel_tol=1e-15)
 
 

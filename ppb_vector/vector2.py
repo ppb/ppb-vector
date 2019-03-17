@@ -241,7 +241,7 @@ class Vector2:
         return rv
 
     def isclose(self: VectorOrSub, other: VectorLike, *,
-                abs_tol: typing.SupportsFloat = 1e-3, rel_tol: typing.SupportsFloat = 1e-06,
+                abs_tol: typing.SupportsFloat = 1e-09, rel_tol: typing.SupportsFloat = 1e-09,
                 rel_to: typing.Sequence[VectorLike] = ()) -> bool:
         """
         Determine whether two vectors are close in value.
