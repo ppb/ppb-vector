@@ -11,8 +11,6 @@ __all__ = ('Vector2',)
 # Vector or subclass
 VectorOrSub = typing.TypeVar('VectorOrSub', bound='Vector2')
 
-Realish = typing.Union[float, int]
-
 # Anything convertable to a Vector, including lists, tuples, and dicts
 VectorLike = typing.Union[
     'Vector2',  # Or subclasses, unconnected to the VectorOrSub typevar above
@@ -145,24 +143,25 @@ class Vector2:
             return NotImplemented
         return rtype(self.x - other.x, self.y - other.y)
 
-    def dot(self: VectorOrSub, other: VectorLike) -> Realish:
+    def dot(self: VectorOrSub, other: VectorLike) -> float:
         """
         Return the dot product of two vectors.
         """
         other = Vector2.convert(other)
         return self.x * other.x + self.y * other.y
 
-    def scale_by(self: VectorOrSub, other: Realish) -> VectorOrSub:
+    def scale_by(self: VectorOrSub, other: typing.SupportsFloat) -> VectorOrSub:
         """
         Scale by the given amount.
         """
+        other = float(other)
         return type(self)(self.x * other, self.y * other)
 
     @typing.overload
-    def __mul__(self: VectorOrSub, other: VectorLike) -> Realish: pass
+    def __mul__(self: VectorOrSub, other: VectorLike) -> float: pass
 
     @typing.overload
-    def __mul__(self: VectorOrSub, other: Realish) -> VectorOrSub: pass
+    def __mul__(self: VectorOrSub, other: typing.SupportsFloat) -> VectorOrSub: pass
 
     def __mul__(self, other):
         """
@@ -177,19 +176,20 @@ class Vector2:
             return NotImplemented
 
     @typing.overload
-    def __rmul__(self: VectorOrSub, other: VectorLike) -> Realish: pass
+    def __rmul__(self: VectorOrSub, other: VectorLike) -> float: pass
 
     @typing.overload
-    def __rmul__(self: VectorOrSub, other: Realish) -> VectorOrSub: pass
+    def __rmul__(self: VectorOrSub, other: typing.SupportsFloat) -> VectorOrSub: pass
 
     def __rmul__(self, other):
         return self.__mul__(other)
 
-    def __truediv__(self: VectorOrSub, other: Realish) -> VectorOrSub:
+    def __truediv__(self: VectorOrSub, other: typing.SupportsFloat) -> VectorOrSub:
         """Perform a division between a vector and a scalar."""
+        other = float(other)
         return type(self)(self.x / other, self.y / other)
 
-    def __getitem__(self: VectorOrSub, item: typing.Union[str, int]) -> Realish:
+    def __getitem__(self: VectorOrSub, item: typing.Union[str, int]) -> float:
         if hasattr(item, '__index__'):
             item = item.__index__()  # type: ignore
         if isinstance(item, str):
@@ -220,7 +220,7 @@ class Vector2:
         else:
             return self.x == other.x and self.y == other.y
 
-    def __iter__(self: VectorOrSub) -> typing.Iterator[Realish]:
+    def __iter__(self: VectorOrSub) -> typing.Iterator[float]:
         yield self.x
         yield self.y
 
@@ -241,7 +241,7 @@ class Vector2:
         return rv
 
     def isclose(self: VectorOrSub, other: VectorLike, *,
-                abs_tol: Realish = 1e-09, rel_tol: Realish = 1e-09,
+                abs_tol: typing.SupportsFloat = 1e-09, rel_tol: typing.SupportsFloat = 1e-09,
                 rel_to: typing.Sequence[VectorLike] = ()) -> bool:
         """
         Determine whether two vectors are close in value.
@@ -260,6 +260,7 @@ class Vector2:
         For the values to be considered close, the difference between them
         must be smaller than at least one of the tolerances.
         """
+        abs_tol, rel_tol = float(abs_tol), float(rel_tol)
         if abs_tol < 0 or rel_tol < 0:
             raise ValueError("Vector2.isclose takes non-negative tolerances")
 
@@ -275,7 +276,7 @@ class Vector2:
         return (diff <= rel_tol * rel_length or diff <= float(abs_tol))
 
     @staticmethod
-    def _trig(angle: Realish) -> typing.Tuple[float, float]:
+    def _trig(angle: typing.SupportsFloat) -> typing.Tuple[float, float]:
         r = radians(angle)
         r_cos, r_sin = cos(r), sin(r)
 
@@ -292,7 +293,7 @@ class Vector2:
 
         return r_cos, r_sin
 
-    def rotate(self: VectorOrSub, angle: Realish) -> VectorOrSub:
+    def rotate(self: VectorOrSub, angle: typing.SupportsFloat) -> VectorOrSub:
         r_cos, r_sin = Vector2._trig(angle)
 
         x = self.x * r_cos - self.y * r_sin
@@ -302,16 +303,18 @@ class Vector2:
     def normalize(self: VectorOrSub) -> VectorOrSub:
         return self.scale(1)
 
-    def truncate(self: VectorOrSub, max_length: Realish) -> VectorOrSub:
+    def truncate(self: VectorOrSub, max_length: typing.SupportsFloat) -> VectorOrSub:
+        max_length = float(max_length)
         if self.length <= max_length:
             return self
 
         return self.scale_to(max_length)
 
-    def scale_to(self: VectorOrSub, length: Realish) -> VectorOrSub:
+    def scale_to(self: VectorOrSub, length: typing.SupportsFloat) -> VectorOrSub:
         """
         Scale the vector to the given length
         """
+        length = float(length)
         if length < 0:
             raise ValueError("Vector2.scale_to takes non-negative lengths.")
 
