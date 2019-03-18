@@ -114,9 +114,9 @@ def test_trig_invariance(angle: float, n: int):
     n_cos, n_sin = Vector2._trig(angle + 360*n)
 
     note(f"δcos: {r_cos - n_cos}")
-    assert isclose(r_cos, n_cos, rel_to=[n / 1e15])
+    assert isclose(r_cos, n_cos, rel_to=[n / 1e9])
     note(f"δsin: {r_sin - n_sin}")
-    assert isclose(r_sin, n_sin, rel_to=[n / 1e15])
+    assert isclose(r_sin, n_sin, rel_to=[n / 1e9])
 
 
 @given(v=vectors(), angle=angles(), n=st.integers(min_value=0, max_value=1e6))
@@ -125,7 +125,7 @@ def test_rotation_invariance(v: Vector2, angle: float, n: int):
     rot_once = v.rotate(angle)
     rot_many = v.rotate(angle + 360 * n)
     note(f"δ: {(rot_once - rot_many).length}")
-    assert rot_once.isclose(rot_many, rel_to=[n / 1e15 * v])
+    assert rot_once.isclose(rot_many, rel_tol=n / 1e9)
 
 
 @given(initial=vectors(), angle=angles())
