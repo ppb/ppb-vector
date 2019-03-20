@@ -6,7 +6,7 @@ import pytest  # type: ignore
 from hypothesis import assume, example, given, note
 
 from ppb_vector import Vector2
-from utils import angle_isclose, angles, floats, vectors
+from utils import angle_isclose, angles, floats, isclose, vectors
 
 
 data_exact = [
@@ -105,6 +105,27 @@ def test_trig_stability(angle):
 
     # Don't use exponents here. Multiplication is generally more stable.
     assert math.isclose(r_cos * r_cos + r_sin * r_sin, 1, rel_tol=1e-18)
+
+
+@given(angle=angles(), n=st.integers(min_value=0, max_value=1e6))
+def test_trig_invariance(angle: float, n: int):
+    """Test that cos(θ), sin(θ) ≃ cos(θ + n*360°), sin(θ + n*360°)"""
+    r_cos, r_sin = Vector2._trig(angle)
+    n_cos, n_sin = Vector2._trig(angle + 360*n)
+
+    note(f"δcos: {r_cos - n_cos}")
+    assert isclose(r_cos, n_cos, rel_to=[n / 1e9])
+    note(f"δsin: {r_sin - n_sin}")
+    assert isclose(r_sin, n_sin, rel_to=[n / 1e9])
+
+
+@given(v=vectors(), angle=angles(), n=st.integers(min_value=0, max_value=1e6))
+def test_rotation_invariance(v: Vector2, angle: float, n: int):
+    """Check that rotating by angle and angle + n×360° have the same result."""
+    rot_once = v.rotate(angle)
+    rot_many = v.rotate(angle + 360 * n)
+    note(f"δ: {(rot_once - rot_many).length}")
+    assert rot_once.isclose(rot_many, rel_tol=n / 1e9)
 
 
 @given(initial=vectors(), angle=angles())
