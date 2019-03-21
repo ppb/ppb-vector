@@ -38,10 +38,11 @@ before_install:
 install:
   - pip install --upgrade-strategy eager -U pip wheel setuptools
   - pip install -e .;
-  - # Do not install mypy during pypy builds
-    '[[ ! "$PYTHON" =~ pypy-* ]] || sed -i "/^mypy/d" dev-requirements.txt'
   - pip install --upgrade-strategy eager -U -r dev-requirements.txt
+  - # Lints aren't run under pypy
+    '[[ "$PYTHON" =~ pypy-* ]] || pip install --upgrade-strategy eager -U -r lint-requirements.txt'
   - pip list
 
 script:
+  - ./lint.sh
   - ./test.sh
