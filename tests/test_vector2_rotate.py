@@ -107,7 +107,7 @@ def test_trig_stability(angle):
     assert math.isclose(r_cos * r_cos + r_sin * r_sin, 1, rel_tol=1e-18)
 
 
-@given(angle=angles(), n=st.integers(min_value=0, max_value=1e6))
+@given(angle=angles(), n=st.integers(min_value=0, max_value=1e5))
 def test_trig_invariance(angle: float, n: int):
     """Test that cos(θ), sin(θ) ≃ cos(θ + n*360°), sin(θ + n*360°)"""
     r_cos, r_sin = Vector2._trig(angle)
@@ -119,7 +119,7 @@ def test_trig_invariance(angle: float, n: int):
     assert isclose(r_sin, n_sin, rel_to=[n / 1e9])
 
 
-@given(v=vectors(), angle=angles(), n=st.integers(min_value=0, max_value=1e6))
+@given(v=vectors(), angle=angles(), n=st.integers(min_value=0, max_value=1e5))
 def test_rotation_invariance(v: Vector2, angle: float, n: int):
     """Check that rotating by angle and angle + n×360° have the same result."""
     rot_once = v.rotate(angle)
