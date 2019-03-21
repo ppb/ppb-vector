@@ -1,6 +1,7 @@
 lint_task:
   container:
     image: python:3.7-slim
+
   install_script:
     - pip install --upgrade-strategy eager -U -r dev-requirements.txt
     - pip install --upgrade-strategy eager -U -r lint-requirements.txt
@@ -17,6 +18,7 @@ Linux_task:
     matrix:
       - image: python:3.6-slim
       - image: python:3.7-slim
+
   install_script:
     - pip install --upgrade-strategy eager -U -r dev-requirements.txt
     - pip install -e .
