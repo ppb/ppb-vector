@@ -39,6 +39,7 @@ macOS_task:
     - pyenv install ${PYTHON}
     - pyenv global ${PYTHON}
     - pyenv rehash
+    - pip install --upgrade-strategy eager -U pip wheel setuptools
     - pip install --upgrade-strategy eager -U -r dev-requirements.txt
 
   script:
@@ -62,6 +63,7 @@ Windows_task:
     # Use it to install certifi
     - C:\python3\python.exe -m pip --cert C:\cacert.pem install certifi
     # END: Hacky bullshit.
+    - C:\python3\python.exe -m pip install --upgrade-strategy eager -U pip wheel setuptools
     - C:\python3\python.exe -m pip install --upgrade-strategy eager -U -r dev-requirements.txt
 
   script:
