@@ -4,6 +4,8 @@ lint_task:
   install_script:
     - pip install --upgrade-strategy eager -U -r dev-requirements.txt
     - pip install --upgrade-strategy eager -U -r lint-requirements.txt
+    - pip install -e .
+
   script:
     - python3 --version
     - pip list
@@ -17,6 +19,7 @@ Linux_task:
       - image: python:3.7-slim
   install_script:
     - pip install --upgrade-strategy eager -U -r dev-requirements.txt
+    - pip install -e .
 
   script:
     - python3 --version
@@ -41,6 +44,7 @@ macOS_task:
     - pyenv rehash
     - pip install --upgrade-strategy eager -U pip wheel setuptools
     - pip install --upgrade-strategy eager -U -r dev-requirements.txt
+    - pip install -e .
 
   script:
     - python3 --version
@@ -65,6 +69,7 @@ Windows_task:
     # END: Hacky bullshit.
     - C:\python3\python.exe -m pip install --upgrade-strategy eager -U pip wheel setuptools
     - C:\python3\python.exe -m pip install --upgrade-strategy eager -U -r dev-requirements.txt
+    - C:\python3\python.exe -m pip install -e .
 
   script:
     - C:\python3\python.exe --version
