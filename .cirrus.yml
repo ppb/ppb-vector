@@ -13,6 +13,29 @@ lint_task:
     - ./lint.sh
 
 
+
+FreeBSD_task:
+  freebsd_instance:
+    image: freebsd-12-0-release-amd64
+  env:
+    matrix:
+      - PYTHON: 3.6
+      - PYTHON: 3.7
+  install_script:
+    - PYVER=`echo $PYTHON | tr -d '.'`
+    - PYPKG=py${PYVER}
+    - PY=python${PYTHON}
+    - pkg install -y bash python${PYVER} ${PYPKG}-setuptools
+    - ${PY} -m ensurepip
+    - ${PY} -m pip install --upgrade-strategy eager -U -r dev-requirements.txt
+    - ${PY} -m pip install -e .
+
+  script:
+    - export PY=python${PYTHON}
+    - ${PY} --version
+    - ${PY} -m pip list
+    - ./test.sh
+
 Linux_task:
   container:
     matrix:
