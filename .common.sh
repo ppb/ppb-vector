@@ -6,9 +6,7 @@ function run() {
     echo
 }
 
-if [[ ! -v PY ]]; then
-    PY=python3
-fi
+PY=${PY-python3}
 
 if ! command -v $PY >/dev/null; then
     echo "Python interpreter '$PY' not found" >&2
