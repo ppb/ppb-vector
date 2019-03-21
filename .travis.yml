@@ -44,5 +44,5 @@ install:
   - pip list
 
 script:
-  - ./lint.sh
-  - ./test.sh
+  - PY=python ./lint.sh
+  - PY=python ./test.sh

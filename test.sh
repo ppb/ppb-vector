@@ -10,5 +10,5 @@ else
 fi
 
 
-run python -m doctest README.md
-run pytest "${PYTEST_OPTIONS[@]}"
+run ${PY} -m doctest README.md
+run ${PY} -m pytest "${PYTEST_OPTIONS[@]}"

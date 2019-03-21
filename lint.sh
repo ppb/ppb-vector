@@ -6,4 +6,4 @@ if [[ "${PYTHON-x}" =~ pypy-* ]]; then
     exit 0
 fi
 
-run mypy ppb_vector tests
+run ${PY} -m mypy ppb_vector tests
