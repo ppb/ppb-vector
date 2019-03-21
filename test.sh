@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 source .common.sh
 
-if [[ -v TRAVIS_OS_NAME ]]; then
+if [[ -v TRAVIS_OS_NAME ]] || [[ -v CI ]]; then
     IN_CI=1
     PYTEST_OPTIONS=( --hypothesis-profile ci )
 else

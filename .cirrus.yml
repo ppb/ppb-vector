@@ -1,0 +1,72 @@
+lint_task:
+  container:
+    image: python:3.7-slim
+  install_script:
+    - pip install --upgrade-strategy eager -U -r dev-requirements.txt
+    - pip install --upgrade-strategy eager -U -r lint-requirements.txt
+  script:
+    - python3 --version
+    - pip list
+    - ./lint.sh
+
+
+Linux_task:
+  container:
+    matrix:
+      - image: python:3.6-slim
+      - image: python:3.7-slim
+  install_script:
+    - pip install --upgrade-strategy eager -U -r dev-requirements.txt
+
+  script:
+    - python3 --version
+    - pip list
+    - ./test.sh
+
+macOS_task:
+  osx_instance:
+    image: mojave-base
+  env:
+    PATH: ${HOME}/.pyenv/shims:${PATH}
+    matrix:
+      - PYTHON: 3.6.8
+      - PYTHON: 3.7.2
+  install_script:
+    # Per the pyenv homebrew recommendations.
+    # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
+    - sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
+    - brew install openssl readline pyenv
+    - pyenv install ${PYTHON}
+    - pyenv global ${PYTHON}
+    - pyenv rehash
+    - pip install --upgrade-strategy eager -U -r dev-requirements.txt
+
+  script:
+    - python3 --version
+    - pip list
+    - ./test.sh
+
+Windows_task:
+  windows_container:
+    image: cirrusci/windowsservercore:2019
+    os_version: 2019
+  env:
+    matrix:
+      - PYTHON: 3.6.8
+      - PYTHON: 3.7.2
+  install_script:
+    - choco install -y python3 --version %PYTHON% --params "/InstallDir:C:\python3"
+    # BEGIN: Hacky bullshit to work around certificate errors with Python.
+    # Download cacert.pem
+    - powershell -command "& { (New-Object Net.WebClient).DownloadFile('https://curl.haxx.se/ca/cacert.pem', 'C:\cacert.pem') }"
+    # Use it to install certifi
+    - C:\python3\python.exe -m pip --cert C:\cacert.pem install certifi
+    # END: Hacky bullshit.
+    - C:\python3\python.exe -m pip install --upgrade-strategy eager -U -r dev-requirements.txt
+
+  script:
+    - C:\python3\python.exe --version
+    - C:\python3\python.exe -m pip list
+
+    - C:\python3\python.exe -m doctest README.md
+    - C:\python3\python.exe -m pytest --hypothesis-profile ci
