@@ -165,6 +165,9 @@ class Vector2:
     def __add__(self: Vector, other: VectorLike) -> Vector:
         """Add two vectors.
 
+        :param other: A :py:class:`Vector2` or a vector-like.
+          For a description of vector-likes, see :py:func:`convert`.
+
         >>> Vector2(1, 0) + (0, 1)
         Vector2(1.0, 1.0)
         """
@@ -178,6 +181,9 @@ class Vector2:
     def __sub__(self: Vector, other: VectorLike) -> Vector:
         """Subtract one vector from another.
 
+        :param other: A :py:class:`Vector2` or a vector-like.
+          For a description of vector-likes, see :py:func:`convert`.
+
         >>> Vector2(3, 3) - (1, 1)
         Vector2(2.0, 2.0)
         """
@@ -189,8 +195,10 @@ class Vector2:
         return rtype(self.x - other.x, self.y - other.y)
 
     def dot(self: Vector, other: VectorLike) -> float:
-        """
-        Return the dot product of two vectors.
+        """Return the dot product of two vectors.
+
+        :param other: A :py:class:`Vector2` or a vector-like.
+          For a description of vector-likes, see :py:func:`convert`.
         """
         other = Vector2.convert(other)
         return self.x * other.x + self.y * other.y
@@ -230,11 +238,13 @@ class Vector2:
            Vector2(1.0, 1.0)
 
 
-        :param other: If ``other`` is a vector (an instance of
-          :py:class:`Vector2`), return :py:meth:`self.dot(other) <dot>`.
+        :param other: If ``other`` is a vector-like, return
+          :py:meth:`self.dot(other) <dot>`.
 
           >>> Vector2(1, 1) * (-1, -1)
           -2.0
+
+          Vector-likes are defined in :py:meth:`convert`.
         """
         if isinstance(other, (float, int)):
             return self.scale_by(other)
@@ -318,6 +328,9 @@ class Vector2:
     def angle(self: Vector, other: VectorLike) -> float:
         """Compute the angle between two vectors, expressed in degrees.
 
+        :param other: A :py:class:`Vector2` or a vector-like.
+          For a description of vector-likes, see :py:func:`convert`.
+
         >>> Vector2(1, 0).angle( (0, 1) )
         90.0
 
@@ -342,6 +355,9 @@ class Vector2:
                 abs_tol: typing.SupportsFloat = 1e-09, rel_tol: typing.SupportsFloat = 1e-09,
                 rel_to: typing.Sequence[VectorLike] = ()) -> bool:
         """Perform an approximate comparison of two vectors.
+
+        :param other: A :py:class:`Vector2` or a vector-like.
+          For a description of vector-likes, see :py:func:`convert`.
 
         >>> Vector2(1, 0).isclose((1, 1e-10))
         True
@@ -476,6 +492,9 @@ class Vector2:
 
     def reflect(self: Vector, surface_normal: VectorLike) -> Vector:
         """Reflect a vector against a surface.
+
+        :param other: A :py:class:`Vector2` or a vector-like.
+          For a description of vector-likes, see :py:func:`convert`.
 
         Compute the reflection of a :py:class:`Vector2` on a surface going through the
         origin, described by its normal vector.
