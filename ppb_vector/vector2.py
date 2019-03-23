@@ -472,7 +472,12 @@ class Vector2:
         >>> Vector2(3, 4).normalize()
         Vector2(0.6, 0.8)
 
-        Note that :py:meth:`normalize()` is equivalent to :py:meth:`scale(1) <scale>`.
+        Note that :py:meth:`normalize()` is equivalent to :py:meth:`scale(1) <scale>`:
+
+        >>> Vector2(7, 24).normalize()
+        Vector2(0.28, 0.96)
+        >>> Vector2(7, 24).scale_to(1)
+        Vector2(0.28, 0.96)
         """
         return self.scale(1)
 
@@ -514,11 +519,6 @@ class Vector2:
 
         >>> Vector2(7, 24).scale_to(2)
         Vector2(0.56, 1.92)
-
-        >>> Vector2(7, 24).normalize()
-        Vector2(0.28, 0.96)
-        >>> Vector2(7, 24).scale_to(1)
-        Vector2(0.28, 0.96)
         """
         length = float(length)
         if length < 0:
