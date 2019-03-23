@@ -11,6 +11,14 @@ Welcome to ppb-vector's documentation!
    :special-members:
    :exclude-members: __weakref__, __init__
 
+    .. autoattribute:: x
+       
+       The X coordinate of the vector
+
+    .. autoattribute:: y
+       
+       The Y coordinate of the vector
+
 
 Indices and tables
 ==================
