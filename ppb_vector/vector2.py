@@ -53,14 +53,16 @@ def _find_lowest_vector(left: typing.Type, right: typing.Type) -> typing.Type:
 class Vector2:
     """The immutable, 2D vector class of the PursuedPyBear project.
 
-    `Vector2` is an immutable 2D Vector, which can be instantiated as expected:
+    :py:class:`Vector2` is an immutable 2D Vector, which can be instantiated as
+    expected:
 
         >>> from ppb_vector import Vector2
         >>> Vector2(3, 4)
         Vector2(3.0, 4.0)
 
-    `Vector2` implements many convenience features, as well as
+    :py:class:`Vector2` implements many convenience features, as well as
     useful mathematical operations for 2D geometry and linear algebra.
+
     """
     x: float
     y: float
@@ -114,11 +116,12 @@ class Vector2:
 
         A vector-like can be:
 
-        - a length-2 `Sequence`, whose contents are interpreted as the `x` and `y` coordinates;
-        - a length-2 `Mapping`, whose keys are `x` and `y`;
-        - or any instance of `Vector2` (or its subclasses).
+        - a length-2 :py:class:`Sequence`, whose contents are interpreted as
+          the `x` and `y` coordinates;
+        - a length-2 :py:class:`Mapping`, whose keys are `x` and `y`;
+        - or any instance of :py:class:`Vector2` (or its subclasses).
 
-        `convert` does not perform a copy when `value` already has the right type.
+        :py:meth:`convert` does not perform a copy when `value` already has the right type.
         """
         # Use Vector2.convert() instead of type(self).convert() so that
         # _find_lowest_vector() can resolve things well.
@@ -267,7 +270,7 @@ class Vector2:
     def __neg__(self: VectorOrSub) -> VectorOrSub:
         """Negate a vector.
 
-        Negating a `Vector2` produces one with identical length and opposite
+        Negating a :py:class:`Vector2` produces one with identical length and opposite
         direction. It is equivalent to multiplying it by -1.
 
         >>> -Vector2(1, 1)
@@ -281,10 +284,10 @@ class Vector2:
         >>> Vector2(1, 0).angle( (0, 1) )
         90.0
 
-        As with `rotate()`, angles are signed, and refer to a direct coordinate
-        system (i.e. positive rotations are counter-clockwise).
+        As with :py:meth:`rotate`, angles are signed, and refer to a direct
+        coordinate system (i.e. positive rotations are counter-clockwise).
 
-        `Vector2.angle` is guaranteed to produce an angle between -180° and 180°.
+        :py:meth:`angle` is guaranteed to produce an angle between -180° and 180°.
         """
         other = Vector2.convert(other)
 
@@ -354,7 +357,7 @@ class Vector2:
     def rotate(self: VectorOrSub, angle: typing.SupportsFloat) -> VectorOrSub:
         """Rotate a vector.
 
-        Rotate a vector in relation to the origin and return a new `Vector2`.
+        Rotate a vector in relation to the origin and return a new :py:class:`Vector2`.
 
         >>> Vector2(1, 0).rotate(90)
         Vector2(0.0, 1.0)
@@ -378,7 +381,7 @@ class Vector2:
         return self.scale(1)
 
     def truncate(self: VectorOrSub, max_length: typing.SupportsFloat) -> VectorOrSub:
-        """Scale a given `Vector2` down to a given length, if it is larger.
+        """Scale a given :py:class:`Vector2` down to a given length, if it is larger.
 
         >>> Vector2(7, 24).truncate(3)
         Vector2(0.84, 2.88)
@@ -409,7 +412,7 @@ class Vector2:
         return self.scale_to(max_length)
 
     def scale_to(self: VectorOrSub, length: typing.SupportsFloat) -> VectorOrSub:
-        """Scale a given `Vector2` to a certain length.
+        """Scale a given :py:class:`Vector2` to a certain length.
 
         >>> Vector2(7, 24).scale(2)
         Vector2(0.56, 1.92)
@@ -433,7 +436,7 @@ class Vector2:
     def reflect(self: VectorOrSub, surface_normal: VectorLike) -> VectorOrSub:
         """Reflect a vector against a surface.
 
-        Compute the reflection of a `Vector2` on a surface going through the
+        Compute the reflection of a :py:class:`Vector2` on a surface going through the
         origin, described by its normal vector.
 
         >>> Vector2(5, 3).reflect( (-1, 0) )
