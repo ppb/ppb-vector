@@ -474,10 +474,7 @@ class Vector2:
 
         Note that :py:meth:`normalize()` is equivalent to :py:meth:`scale(1) <scale>`:
 
-        >>> Vector2(7, 24).normalize()
-        Vector2(0.28, 0.96)
-        >>> Vector2(7, 24).scale_to(1)
-        Vector2(0.28, 0.96)
+        >>> assert Vector2(7, 24).normalize() == Vector2(7, 24).scale_to(1)
         """
         return self.scale(1)
 
