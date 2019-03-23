@@ -304,22 +304,21 @@ class Vector2:
     def isclose(self: VectorOrSub, other: VectorLike, *,
                 abs_tol: typing.SupportsFloat = 1e-09, rel_tol: typing.SupportsFloat = 1e-09,
                 rel_to: typing.Sequence[VectorLike] = ()) -> bool:
-        """
-        Determine whether two vectors are close in value.
+        """Determine whether two vectors are close in value.
 
-           rel_tol
-               maximum difference for being considered "close", relative to the
-               magnitude of the input values
-           rel_to
-               additional input values to consider in rel_tol
-           abs_tol
-               maximum difference for being considered "close", regardless of the
-               magnitude of the input values
+        :param rel_tol: maximum difference for being considered "close",
+            relative to the magnitude of the input values
 
-        Return True if self is close in value to other, and False otherwise.
+        :param rel_to: additional input values to consider in rel_tol
+
+        :param abs_tol: maximum difference for being considered "close",
+            regardless of the magnitude of the input values
+
+        Return True if `self` is close in value to `other`, and False otherwise.
 
         For the values to be considered close, the difference between them
         must be smaller than at least one of the tolerances.
+
         """
         abs_tol, rel_tol = float(abs_tol), float(rel_tol)
         if abs_tol < 0 or rel_tol < 0:
@@ -376,7 +375,7 @@ class Vector2:
         >>> Vector2(3, 4).normalize()
         Vector2(0.6, 0.8)
 
-        Note that `Vector2.normalize()` is equivalent to `Vector2.scale(1)`.
+        Note that :py:meth:`normalize()` is equivalent to :py:meth:`scale(1) <scale>`.
         """
         return self.scale(1)
 
@@ -389,8 +388,9 @@ class Vector2:
         It produces a vector with the same direction, but possibly a different
         length.
 
-        Note that `vector.scale(max_length)` is equivalent to
-        `vector.truncate(max_length)` when `max_length < vector.length`.
+        Note that :py:meth:`vector.scale(max_length) <scale>` is equivalent to
+        :py:meth:`vector.truncate(max_length) <truncate>` when
+        :py:meth:`max_length \< vector.length <length>`.
 
         >>> Vector2(3, 4).scale(4)
         Vector2(2.4, 3.2)
@@ -402,8 +402,9 @@ class Vector2:
         >>> Vector2(3, 4).truncate(6)
         Vector2(3.0, 4.0)
 
-        Note: `x.truncate(max_length)` may sometimes be slightly-larger than
-              `max_length`, due to floating-point rounding effects.
+        Note: :py:meth:`x.truncate(max_length) <truncate>` may sometimes be
+        slightly-larger than `max_length`, due to floating-point rounding
+        effects.
         """
         max_length = float(max_length)
         if self.length <= max_length:
@@ -431,6 +432,7 @@ class Vector2:
 
         return (length * self) / self.length
 
+    # TODO: Don't repeat in the documentation
     scale = scale_to
 
     def reflect(self: VectorOrSub, surface_normal: VectorLike) -> VectorOrSub:
