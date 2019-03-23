@@ -118,12 +118,12 @@ class Vector2:
         A vector-like can be:
 
         - a length-2 :py:class:`Sequence <collections.abc.Sequence>`, whose
-          contents are interpreted as the ``x`` and ``y`` coordinates;
+          contents are interpreted as the ``x`` and ``y`` coordinates like ``(4, 2)``
 
         - a length-2 :py:class:`Mapping <collections.abc.Mapping>`, whose keys
-          are ``x`` and ``y``; or
+          are ``x`` and ``y`` like ``{'x': 4, 'y': 2}``
 
-        - any instance of :py:class:`Vector2` (or its subclasses).
+        - any instance of :py:class:`Vector2` or any subclass.
 
         :py:meth:`convert` does not perform a copy when ``value`` already has the
         right type.
