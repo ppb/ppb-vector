@@ -503,8 +503,8 @@ class Vector2:
         :param other: A :py:class:`Vector2` or a vector-like.
           For a description of vector-likes, see :py:func:`convert`.
 
-        Compute the reflection of a :py:class:`Vector2` on a surface going through the
-        origin, described by its normal vector.
+        Compute the reflection of a :py:class:`Vector2` on a surface going
+        through the origin, described by its normal vector.
 
         >>> Vector2(5, 3).reflect( (-1, 0) )
         Vector2(-5.0, 3.0)
