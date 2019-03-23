@@ -9,11 +9,11 @@ __all__ = ('Vector2',)
 
 
 # Vector or subclass
-VectorOrSub = typing.TypeVar('VectorOrSub', bound='Vector2')
+Vector = typing.TypeVar('Vector', bound='Vector2')
 
 # Anything convertable to a Vector, including lists, tuples, and dicts
 VectorLike = typing.Union[
-    'Vector2',  # Or subclasses, unconnected to the VectorOrSub typevar above
+    'Vector2',  # Or subclasses, unconnected to the Vector typevar above
     typing.Tuple[typing.SupportsFloat, typing.SupportsFloat],
     typing.Sequence[typing.SupportsFloat],  # TODO: Length 2
     typing.Mapping[str, typing.SupportsFloat],  # TODO: Length 2, keys 'x', 'y'
@@ -112,7 +112,7 @@ class Vector2:
     update = dataclasses.replace
 
     @classmethod
-    def convert(cls: typing.Type[VectorOrSub], value: VectorLike) -> VectorOrSub:
+    def convert(cls: typing.Type[Vector], value: VectorLike) -> Vector:
         """Constructs a vector from a vector-like.
 
         A vector-like can be:
@@ -151,10 +151,10 @@ class Vector2:
     def asdict(self) -> typing.Mapping[str, float]:
         return {'x': self.x, 'y': self.y}
 
-    def __len__(self: VectorOrSub) -> int:
+    def __len__(self: Vector) -> int:
         return 2
 
-    def __add__(self: VectorOrSub, other: VectorLike) -> VectorOrSub:
+    def __add__(self: Vector, other: VectorLike) -> Vector:
         """Add two vectors.
 
         >>> Vector2(1, 0) + (0, 1)
@@ -167,7 +167,7 @@ class Vector2:
             return NotImplemented
         return rtype(self.x + other.x, self.y + other.y)
 
-    def __sub__(self: VectorOrSub, other: VectorLike) -> VectorOrSub:
+    def __sub__(self: Vector, other: VectorLike) -> Vector:
         """Subtract one vector from another.
 
         >>> Vector2(3, 3) - (1, 1)
@@ -180,14 +180,14 @@ class Vector2:
             return NotImplemented
         return rtype(self.x - other.x, self.y - other.y)
 
-    def dot(self: VectorOrSub, other: VectorLike) -> float:
+    def dot(self: Vector, other: VectorLike) -> float:
         """
         Return the dot product of two vectors.
         """
         other = Vector2.convert(other)
         return self.x * other.x + self.y * other.y
 
-    def scale_by(self: VectorOrSub, other: typing.SupportsFloat) -> VectorOrSub:
+    def scale_by(self: Vector, other: typing.SupportsFloat) -> Vector:
         """
         Scale by the given amount.
         """
@@ -195,10 +195,10 @@ class Vector2:
         return type(self)(self.x * other, self.y * other)
 
     @typing.overload
-    def __mul__(self: VectorOrSub, other: VectorLike) -> float: pass
+    def __mul__(self: Vector, other: VectorLike) -> float: pass
 
     @typing.overload
-    def __mul__(self: VectorOrSub, other: typing.SupportsFloat) -> VectorOrSub: pass
+    def __mul__(self: Vector, other: typing.SupportsFloat) -> Vector: pass
 
     def __mul__(self, other):
         """
@@ -213,20 +213,20 @@ class Vector2:
             return NotImplemented
 
     @typing.overload
-    def __rmul__(self: VectorOrSub, other: VectorLike) -> float: pass
+    def __rmul__(self: Vector, other: VectorLike) -> float: pass
 
     @typing.overload
-    def __rmul__(self: VectorOrSub, other: typing.SupportsFloat) -> VectorOrSub: pass
+    def __rmul__(self: Vector, other: typing.SupportsFloat) -> Vector: pass
 
     def __rmul__(self, other):
         return self.__mul__(other)
 
-    def __truediv__(self: VectorOrSub, other: typing.SupportsFloat) -> VectorOrSub:
+    def __truediv__(self: Vector, other: typing.SupportsFloat) -> Vector:
         """Perform a division between a vector and a scalar."""
         other = float(other)
         return type(self)(self.x / other, self.y / other)
 
-    def __getitem__(self: VectorOrSub, item: typing.Union[str, int]) -> float:
+    def __getitem__(self: Vector, item: typing.Union[str, int]) -> float:
         if hasattr(item, '__index__'):
             item = item.__index__()  # type: ignore
         if isinstance(item, str):
@@ -246,10 +246,10 @@ class Vector2:
         else:
             raise TypeError
 
-    def __repr__(self: VectorOrSub) -> str:
+    def __repr__(self: Vector) -> str:
         return f"{type(self).__name__}({self.x}, {self.y})"
 
-    def __eq__(self: VectorOrSub, other: typing.Any) -> bool:
+    def __eq__(self: Vector, other: typing.Any) -> bool:
         """Test wheter two vectors are equal.
 
         Vectors are equal if their coordinates are equal.
@@ -264,11 +264,11 @@ class Vector2:
         else:
             return self.x == other.x and self.y == other.y
 
-    def __iter__(self: VectorOrSub) -> typing.Iterator[float]:
+    def __iter__(self: Vector) -> typing.Iterator[float]:
         yield self.x
         yield self.y
 
-    def __neg__(self: VectorOrSub) -> VectorOrSub:
+    def __neg__(self: Vector) -> Vector:
         """Negate a vector.
 
         Negating a :py:class:`Vector2` produces one with identical length and opposite
@@ -279,7 +279,7 @@ class Vector2:
         """
         return self.scale_by(-1)
 
-    def angle(self: VectorOrSub, other: VectorLike) -> float:
+    def angle(self: Vector, other: VectorLike) -> float:
         """Compute the angle between two vectors, expressed in degrees.
 
         >>> Vector2(1, 0).angle( (0, 1) )
@@ -302,7 +302,7 @@ class Vector2:
 
         return rv
 
-    def isclose(self: VectorOrSub, other: VectorLike, *,
+    def isclose(self: Vector, other: VectorLike, *,
                 abs_tol: typing.SupportsFloat = 1e-09, rel_tol: typing.SupportsFloat = 1e-09,
                 rel_to: typing.Sequence[VectorLike] = ()) -> bool:
         """Determine whether two vectors are close in value.
@@ -354,7 +354,7 @@ class Vector2:
 
         return r_cos, r_sin
 
-    def rotate(self: VectorOrSub, angle: typing.SupportsFloat) -> VectorOrSub:
+    def rotate(self: Vector, angle: typing.SupportsFloat) -> Vector:
         """Rotate a vector.
 
         Rotate a vector in relation to the origin and return a new :py:class:`Vector2`.
@@ -370,7 +370,7 @@ class Vector2:
         y = self.x * r_sin + self.y * r_cos
         return type(self)(x, y)
 
-    def normalize(self: VectorOrSub) -> VectorOrSub:
+    def normalize(self: Vector) -> Vector:
         """Return a vector with the same direction, and unit length.
 
         >>> Vector2(3, 4).normalize()
@@ -380,7 +380,7 @@ class Vector2:
         """
         return self.scale(1)
 
-    def truncate(self: VectorOrSub, max_length: typing.SupportsFloat) -> VectorOrSub:
+    def truncate(self: Vector, max_length: typing.SupportsFloat) -> Vector:
         """Scale a given :py:class:`Vector2` down to a given length, if it is larger.
 
         >>> Vector2(7, 24).truncate(3)
@@ -413,7 +413,7 @@ class Vector2:
 
         return self.scale_to(max_length)
 
-    def scale_to(self: VectorOrSub, length: typing.SupportsFloat) -> VectorOrSub:
+    def scale_to(self: Vector, length: typing.SupportsFloat) -> Vector:
         """Scale a given :py:class:`Vector2` to a certain length.
 
         >>> Vector2(7, 24).scale(2)
@@ -436,7 +436,7 @@ class Vector2:
     # TODO: Don't repeat in the documentation
     scale = scale_to
 
-    def reflect(self: VectorOrSub, surface_normal: VectorLike) -> VectorOrSub:
+    def reflect(self: Vector, surface_normal: VectorLike) -> Vector:
         """Reflect a vector against a surface.
 
         Compute the reflection of a :py:class:`Vector2` on a surface going through the
