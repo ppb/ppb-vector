@@ -1,5 +1,5 @@
-PPB 2D Vector
-=============
+PPB's 2D Vector class
+=====================
 
 .. py:data:: ppb_vector.vector2.Vector
     :annotation: = typing.TypeVar('Vector', bound='Vector2')
