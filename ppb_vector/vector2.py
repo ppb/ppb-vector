@@ -325,8 +325,6 @@ class Vector2:
         :param other: A :py:class:`Vector2` or a vector-like.
           For a description of vector-likes, see :py:func:`convert`.
 
-        Vectors are equal if their coordinates are equal.
-
         >>> Vector2(1, 0) == (0, 1)
         False
         """
