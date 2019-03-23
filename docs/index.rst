@@ -12,12 +12,14 @@ Welcome to ppb-vector's documentation!
    :exclude-members: __weakref__, __init__, scale
 
     .. autoattribute:: x
+        :annotation: : float
        
-       The X coordinate of the vector
+        The X coordinate of the vector
 
     .. autoattribute:: y
+        :annotation: : float
        
-       The Y coordinate of the vector
+        The Y coordinate of the vector
 
 
 Indices and tables
