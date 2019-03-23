@@ -118,14 +118,15 @@ class Vector2:
         A vector-like can be:
 
         - a length-2 :py:class:`Sequence <collections.abc.Sequence>`, whose
-          contents are interpreted as the `x` and `y` coordinates;
+          contents are interpreted as the ``x`` and ``y`` coordinates;
 
         - a length-2 :py:class:`Mapping <collections.abc.Mapping>`, whose keys
-          are `x` and `y`; or
+          are ``x`` and ``y``; or
 
         - any instance of :py:class:`Vector2` (or its subclasses).
 
-        :py:meth:`convert` does not perform a copy when `value` already has the right type.
+        :py:meth:`convert` does not perform a copy when ``value`` already has the
+        right type.
         """
         # Use Vector2.convert() instead of type(self).convert() so that
         # _find_lowest_vector() can resolve things well.
@@ -410,7 +411,7 @@ class Vector2:
         Vector2(3.0, 4.0)
 
         Note: :py:meth:`x.truncate(max_length) <truncate>` may sometimes be
-        slightly-larger than `max_length`, due to floating-point rounding
+        slightly-larger than ``max_length``, due to floating-point rounding
         effects.
         """
         max_length = float(max_length)
