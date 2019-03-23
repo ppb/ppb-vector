@@ -204,8 +204,15 @@ class Vector2:
         return self.x * other.x + self.y * other.y
 
     def scale_by(self: Vector, scalar: typing.SupportsFloat) -> Vector:
-        """
-        Scale by the given amount.
+        """Scalar multiplication.
+
+        >>> Vector2(1, 2).scale_by(3)
+        Vector2(3.0, 6.0)
+
+        Can also be expressed with :py:meth:`* <__mul__>`:
+
+        >>> 3 * Vector(1, 2)
+        Vector2(3.0, 6.0)
         """
         scalar = float(scalar)
         return type(self)(scalar * self.x, scalar * self.y)
