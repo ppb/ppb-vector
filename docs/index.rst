@@ -16,7 +16,7 @@ In the following, :py:data:`Vector` is a type variable that denotes either
 .. autoclass:: ppb_vector.Vector2
    :members:
    :special-members:
-   :exclude-members: __init__, __weakref__, scale
+   :exclude-members: __init__, __repr__, __weakref__, scale
 
     .. autoattribute:: x
         :annotation: : float
