@@ -7,7 +7,7 @@ PPB 2D Vector
     In the following, :py:data:`Vector` is a type variable (an instance of
     :py:class:`TypeVar <typing.TypeVar>`) that denotes either
     :py:class:`Vector2` or any of its subclasses. Implicitely, it is the type of
-    ``self``-- the type of the returned value will be the same subclass if
+    ``self`` -- the type of the returned value will be the same subclass if
     called on a subclass
 
 
