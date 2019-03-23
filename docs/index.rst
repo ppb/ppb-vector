@@ -6,6 +6,13 @@
 Welcome to ppb-vector's documentation!
 ======================================
 
+.. py:data:: ppb_vector.vector2.Vector
+
+In the following, :py:data:`Vector` is a type variable that denotes either
+:py:class:`Vector2` or any of its subclasses. Implicitely, it is the type of
+``self``.
+
+
 .. autoclass:: ppb_vector.Vector2
    :members:
    :special-members:
