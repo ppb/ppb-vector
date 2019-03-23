@@ -64,9 +64,26 @@ class Vector2:
     useful mathematical operations for 2D geometry and linear algebra.
 
     :py:class:`Vector2` acts as an iterable and sequence, allowing usage like
-    unpacking (``x, y = Vector2(1, 2)``, ``myfunc( *Vector2(1, 2) )``).
+    unpacking and indexing:
+
+    >>> x, y = Vector2(1, 2)
+    >>> x
+    1.0
+
+    >>> print( *Vector2(1, 2) )
+    1.0 2.0
+
+    >>> v = Vector2(-3, -5)
+    >>> v[0]
+    -3.0
+
     It also acts mostly like a mapping, when it does not conflict with being a
-    sequence. The coordinates may be accessed by the keys ``"x"`` and ``"y"``.
+    sequence. In particular, the coordinates may be accessed by subscripting:
+
+    >>> v["y"]
+    -5.0
+    >>> v["x"]
+    -3.0
     """
     x: float
     y: float
