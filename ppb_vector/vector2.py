@@ -61,14 +61,6 @@ class Vector2:
 
     `Vector2` implements many convenience features, as well as
     useful mathematical operations for 2D geometry and linear algebra.
-
-    ## Installation
-
-    `Vector2` is part of the `ppb-vector` package; if you use pip, install using
-
-    ```bash
-    pip install 'ppb-vector'
-    ```
     """
     x: float
     y: float
