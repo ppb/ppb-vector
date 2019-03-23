@@ -10,9 +10,9 @@ class V(Vector2):
 
 
 @pytest.mark.parametrize("coerce", [tuple, list])
-@given(x=vectors())
-def test_ctor_roundtrip(coerce, x: Vector2):
-    assert x == Vector2(*coerce(x))
+@given(v=vectors())
+def test_ctor_roundtrip(coerce, v: Vector2):
+    assert v == Vector2(*coerce(v))
 
 
 @pytest.mark.parametrize("cls", [Vector2, V])
