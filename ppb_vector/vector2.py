@@ -190,12 +190,12 @@ class Vector2:
         other = Vector2.convert(other)
         return self.x * other.x + self.y * other.y
 
-    def scale_by(self: Vector, other: typing.SupportsFloat) -> Vector:
+    def scale_by(self: Vector, scalar: typing.SupportsFloat) -> Vector:
         """
         Scale by the given amount.
         """
         other = float(other)
-        return type(self)(self.x * other, self.y * other)
+        return type(self)(scalar * self.x, scalar * self.y)
 
     @typing.overload
     def __mul__(self: Vector, other: VectorLike) -> float: pass
