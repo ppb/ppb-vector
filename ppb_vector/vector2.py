@@ -194,7 +194,7 @@ class Vector2:
         """
         Scale by the given amount.
         """
-        other = float(other)
+        scalar = float(scalar)
         return type(self)(scalar * self.x, scalar * self.y)
 
     @typing.overload
