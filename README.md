@@ -26,34 +26,6 @@ See the [online documentation] for an overview of the functionality.
 [online documentation]: https://ppb-vector.readthedocs.io/en/latest/
 
 
-## Convenience functions
-
-### Unpacking
-
-    >>> x, y = Vector2(1, 3)
-    >>> print(x)
-    1.0
-    >>> print(y)
-    3.0
-    
-### Access Values
-
-Convenient access to `Vector2` members via dot notation, indexes, or keys.
-
-    >>> my_vector = Vector2(2, 3)
-    >>> my_vector.x
-    2.0
-    >>> my_vector[1]
-    3.0
-    >>> my_vector["x"]
-    2.0
-
-Also iterable for translation between Vector2 and other sequence types.
-
-    >>> tuple(Vector2(2, 3))
-    (2.0, 3.0)
-
-
 ## Mathematical operators
 
 In addition to `Vector2`s, operators also accept, as second operand,
