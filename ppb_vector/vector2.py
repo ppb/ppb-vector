@@ -195,7 +195,7 @@ class Vector2:
         return rtype(self.x - other.x, self.y - other.y)
 
     def dot(self: Vector, other: VectorLike) -> float:
-        """Return the dot product of two vectors.
+        """Dot product of two vectors.
 
         :param other: A :py:class:`Vector2` or a vector-like.
           For a description of vector-likes, see :py:func:`convert`.
