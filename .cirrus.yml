@@ -1,0 +1,72 @@
+lint_task:
+  container:
+    image: python:3.7-slim
+
+  install_script:
+    - pip install --upgrade-strategy eager -U -r dev-requirements.txt
+    - pip install --upgrade-strategy eager -U -r lint-requirements.txt
+    - pip install -e .
+
+  script:
+    - python3 --version
+    - pip list
+    - ./lint.sh
+
+
+Linux_task:
+  container:
+    matrix:
+      - image: python:3.6-slim
+      - image: python:3.7-slim
+
+  install_script:
+    - pip install --upgrade-strategy eager -U -r dev-requirements.txt
+    - pip install -e .
+
+  script:
+    - python3 --version
+    - pip list
+    - ./test.sh
+
+macOS_task:
+  osx_instance:
+    image: mojave-base
+  env:
+    PATH: ${HOME}/.pyenv/shims:${PATH}
+    matrix:
+      - PYTHON: 3.6.8
+      - PYTHON: 3.7.2
+  install_script:
+    # Per the pyenv homebrew recommendations.
+    # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
+    - sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
+    - brew install openssl readline pyenv
+    - pyenv install ${PYTHON}
+    - pyenv global ${PYTHON}
+    - pyenv rehash
+    - pip install --upgrade-strategy eager -U pip wheel setuptools
+    - pip install --upgrade-strategy eager -U -r dev-requirements.txt
+    - pip install -e .
+
+  script:
+    - python3 --version
+    - pip list
+    - ./test.sh
+
+Windows_task:
+  windows_container:
+    os_version: 2019
+    matrix:
+      - image: python:3.6-windowsservercore-1809
+      - image: python:3.7-windowsservercore-1809
+
+  install_script:
+    - C:\Python\python.exe -m pip install --upgrade-strategy eager -U -r dev-requirements.txt
+    - C:\Python\python.exe -m pip install -e .
+
+  script:
+    - C:\Python\python.exe --version
+    - C:\Python\python.exe -m pip list
+
+    - C:\Python\python.exe -m doctest README.md
+    - C:\Python\python.exe -m pytest --hypothesis-profile ci

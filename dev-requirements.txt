@@ -1,5 +1,4 @@
 hypothesis
-mypy==0.641
 perf
 pympler
 pytest~=3.8

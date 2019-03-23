@@ -1,13 +1,7 @@
 #!/usr/bin/env bash
-set -euo pipefail
+source .common.sh
 
-function run() {
-    echo '$' "$@"
-    "$@"
-    echo
-}
-
-if [[ -v TRAVIS_OS_NAME ]]; then
+if [[ "${TRAVIS_OS_NAME-x}" == x ]] || [[ "${CI+x}" == x ]]; then
     IN_CI=1
     PYTEST_OPTIONS=( --hypothesis-profile ci )
 else
@@ -16,6 +10,5 @@ else
 fi
 
 
-run python -m doctest README.md
-[[ "${PYTHON-x}" =~ pypy-* ]] || run mypy ppb_vector tests
-run pytest "${PYTEST_OPTIONS[@]}"
+run ${PY} -m doctest README.md
+run ${PY} -m pytest "${PYTEST_OPTIONS[@]}"
