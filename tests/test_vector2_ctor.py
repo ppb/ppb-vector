@@ -13,7 +13,10 @@ class V(Vector2):
 @pytest.mark.parametrize("coerce", [tuple, list])
 @given(v=vectors())
 def test_ctor_roundtrip(cls, coerce, v: Vector2):
-    assert v == cls(*coerce(v))
+    w = cls(*coerce(v))
+
+    assert v == w
+    assert isinstance(w, cls)
 
 
 @pytest.mark.parametrize("cls", [Vector2, V])
