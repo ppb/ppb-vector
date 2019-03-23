@@ -90,27 +90,3 @@ Multiply a `Vector2` by another `Vector2` to get the dot product.
 
     >>> Vector2(1, 1) * (-1, -1)
     -2.0
-
-## Methods
-
-Useful functions for game development.
-
-### isclose(vector)
-
-Perform an approximate comparison of two vectors.
-
-    >>> Vector2(1, 0).isclose((1, 1e-10))
-    True
-
-`Vector2.isclose` takes optional, keyword arguments, akin to those of
-`math.isclose`:
-- `abs_tol` (absolute tolerance) is the minimum magnitude (of the difference
-  vector) under which two inputs are considered close, without consideration for
-  (the magnitude of) the input values.
-- `rel_tol` (relative tolerance) is the relative error: if the length of the
-  difference vector is less than `rel_tol * input.length` for any `input`,
-  the two vectors are considered close.
-- `rel_to` is an iterable of additional vector-likes whose length (times
-  `rel_tol`) is compared to the length of the difference vector.
-
-By default, `abs_tol = 1e-3`, `rel_tol = 1e-6`, and `rel_to = []`.

@@ -308,21 +308,24 @@ class Vector2:
     def isclose(self: Vector, other: VectorLike, *,
                 abs_tol: typing.SupportsFloat = 1e-09, rel_tol: typing.SupportsFloat = 1e-09,
                 rel_to: typing.Sequence[VectorLike] = ()) -> bool:
-        """Determine whether two vectors are close in value.
+        """Perform an approximate comparison of two vectors.
 
-        :param rel_tol: maximum difference for being considered "close",
-            relative to the magnitude of the input values
+        >>> Vector2(1, 0).isclose((1, 1e-10))
+        True
 
-        :param rel_to: additional input values to consider in rel_tol
+        :py:meth:`isclose` takes optional, keyword arguments, akin to those of
+        :py:func:`math.isclose`:
 
-        :param abs_tol: maximum difference for being considered "close",
-            regardless of the magnitude of the input values
+        :param abs_tol: the absolute tolerance is the minimum magnitude (of the
+            difference vector) under which two inputs are considered close,
+            without consideration for (the magnitude of) the input values.
 
-        Return True if `self` is close in value to `other`, and False otherwise.
+        :param rel_tol: the relative tolerance: if the length of the difference
+            vector is less than ``rel_tol * input.length`` for any ``input``, the
+            two vectors are considered close.
 
-        For the values to be considered close, the difference between them
-        must be smaller than at least one of the tolerances.
-
+        :param rel_to: an iterable of additional vector-likes which are
+            considered to be inputs, for the purpose of the relative tolerance.
         """
         abs_tol, rel_tol = float(abs_tol), float(rel_tol)
         if abs_tol < 0 or rel_tol < 0:
