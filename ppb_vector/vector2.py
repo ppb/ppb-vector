@@ -211,7 +211,7 @@ class Vector2:
 
         Can also be expressed with :py:meth:`* <__mul__>`:
 
-        >>> 3 * Vector(1, 2)
+        >>> 3 * Vector2(1, 2)
         Vector2(3.0, 6.0)
         """
         scalar = float(scalar)
