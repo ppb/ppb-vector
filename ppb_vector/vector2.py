@@ -419,12 +419,12 @@ class Vector2:
     def scale_to(self: Vector, length: typing.SupportsFloat) -> Vector:
         """Scale a given :py:class:`Vector2` to a certain length.
 
-        >>> Vector2(7, 24).scale(2)
+        >>> Vector2(7, 24).scale_to(2)
         Vector2(0.56, 1.92)
 
         >>> Vector2(7, 24).normalize()
         Vector2(0.28, 0.96)
-        >>> Vector2(7, 24).scale(1)
+        >>> Vector2(7, 24).scale_to(1)
         Vector2(0.28, 0.96)
         """
         length = float(length)
@@ -436,7 +436,6 @@ class Vector2:
 
         return (length * self) / self.length
 
-    # TODO: Don't repeat in the documentation
     scale = scale_to
 
     def reflect(self: Vector, surface_normal: VectorLike) -> Vector:

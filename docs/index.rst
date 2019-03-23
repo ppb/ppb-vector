@@ -9,7 +9,7 @@ Welcome to ppb-vector's documentation!
 .. autoclass:: ppb_vector.Vector2
    :members:
    :special-members:
-   :exclude-members: __weakref__, __init__
+   :exclude-members: __weakref__, __init__, scale
 
     .. autoattribute:: x
        
