@@ -56,9 +56,9 @@ class Vector2:
     :py:class:`Vector2` is an immutable 2D Vector, which can be instantiated as
     expected:
 
-        >>> from ppb_vector import Vector2
-        >>> Vector2(3, 4)
-        Vector2(3.0, 4.0)
+    >>> from ppb_vector import Vector2
+    >>> Vector2(3, 4)
+    Vector2(3.0, 4.0)
 
     :py:class:`Vector2` implements many convenience features, as well as
     useful mathematical operations for 2D geometry and linear algebra.
