@@ -226,7 +226,11 @@ class Vector2:
         return self.__mul__(other)
 
     def __truediv__(self: Vector, other: typing.SupportsFloat) -> Vector:
-        """Perform a division between a vector and a scalar."""
+        """Perform a division between a vector and a scalar.
+
+        >>> Vector2(3, 3) / 3
+        Vector2(1.0, 1.0)
+        """
         other = float(other)
         return type(self)(self.x / other, self.y / other)
 
