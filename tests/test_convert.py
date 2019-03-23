@@ -37,7 +37,7 @@ def test_convert_dict(vector: Vector2):
 @pytest.mark.parametrize("coerce", [tuple, list, Vector2.asdict])
 @given(x=vectors())
 def test_convert_roundtrip(coerce, x: Vector2):
-    assert x == Vector2(coerce(x))
+    assert x == Vector2.convert(coerce(x))
 
 
 @pytest.mark.parametrize("coerce", [tuple, list])
