@@ -108,6 +108,7 @@ class Vector2:
         except ValueError:
             raise TypeError(f"{type(y).__name__} object not convertable to float")
 
+    #: Return a new :py:class:`Vector2` replacing specified fields with new values.
     update = dataclasses.replace
 
     @classmethod
