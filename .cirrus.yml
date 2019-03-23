@@ -1,3 +1,14 @@
+docs_task:
+  container:
+    image: python:3.7-slim
+
+  install_script:
+    - pip install --upgrade-strategy eager -U -r docs-requirements.txt
+    - pip install -e .
+
+  script:
+    - make -C docs/ html
+
 lint_task:
   container:
     image: python:3.7-slim
