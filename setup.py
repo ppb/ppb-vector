@@ -11,7 +11,7 @@ setup(
     version='1.0',
     packages=['ppb_vector'],
     url='http://github.com/pathunstrom/ppb-vector',
-    license='',
+    license='Artistic',
     author='Piper Thunstrom',
     author_email='pathunstrom@gmail.com',
     description='A basic game development Vector2 class.',
@@ -23,6 +23,7 @@ setup(
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
+        'License :: OSI Approved :: Artistic License'
         'Topic :: Software Development :: Libraries',
         'Topic :: Scientific/Engineering :: Mathematics',
         'Programming Language :: Python :: 3',
