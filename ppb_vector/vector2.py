@@ -180,6 +180,16 @@ class Vector2:
         return hypot(self.x, self.y)
 
     def asdict(self) -> typing.Mapping[str, float]:
+        """Convert a vector to a vector-like dictionary.
+
+        >>> v = Vector2(42, 69)
+        >>> v.asdict()
+        {'x': 42.0, 'y': 69.0}
+
+        The conversion can be reversed by :py:meth:`convert`:
+
+        >>> assert v == Vector2.convert(v.asdict())
+        """
         return {'x': self.x, 'y': self.y}
 
     def __len__(self: Vector) -> int:
