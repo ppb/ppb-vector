@@ -63,6 +63,10 @@ class Vector2:
     :py:class:`Vector2` implements many convenience features, as well as
     useful mathematical operations for 2D geometry and linear algebra.
 
+    :py:class:`Vector2` acts as an iterable and sequence, allowing usage like
+    unpacking (``x, y = Vector2(1, 2)``, ``myfunc( *Vector2(1, 2) )``).
+    It also acts mostly like a mapping, when it does not conflict with being a
+    sequence. The coordinates may be accessed by the keys ``"x"`` and ``"y"``.
     """
     x: float
     y: float
