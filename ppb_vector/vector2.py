@@ -399,8 +399,7 @@ class Vector2:
         :param other: A :py:class:`Vector2` or a vector-like.
           For a description of vector-likes, see :py:func:`convert`.
 
-        >>> Vector2(1, 0).isclose((1, 1e-10))
-        True
+        >>> assert Vector2(1, 0).isclose((1, 1e-10))
 
         :py:meth:`isclose` takes optional, keyword arguments, akin to those of
         :py:func:`math.isclose`:
