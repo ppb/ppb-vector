@@ -65,9 +65,14 @@ class Vector2:
 
     :py:class:`Vector2` implements :py:class:`Sequence
     <collections.abc.Sequence>` (and subsequently :py:class:`Iterable
-    <collections.abc.Iterable>`), allowing usage like indexing, and unpacking:
+    <collections.abc.Iterable>`), allowing usage like converting, indexing, and unpacking:
 
     >>> v = Vector2(-3, -5)
+    >>> list(v)
+    [-3.0, -5.0]
+    >>> tuple(v)
+    (-3.0, -5.0)
+
     >>> v[0]
     -3.0
 
