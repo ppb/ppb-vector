@@ -205,8 +205,32 @@ class Vector2:
     def __mul__(self: Vector, other: typing.SupportsFloat) -> Vector: pass
 
     def __mul__(self, other):
-        """
-        Performs a dot product or scale based on other.
+        """Performs a dot product or scalar product, based on the parameter type.
+
+        :param other: If ``other`` is a scalar (an instance of
+          :py:class:`typing.SupportsFloat`), return
+          :py:meth:`self.scale_by(other) <scale_by>`.
+
+           >>> 3 * Vector2(1, 1)
+           Vector2(3.0, 3.0)
+
+           >>> Vector2(1, 1) * 3
+           Vector2(3.0, 3.0)
+
+           >>> Vector2(1, 1).scale_by(3)
+           Vector2(3.0, 3.0)
+
+          It is also possible to divide a :py:class:`Vector2` by a scalar:
+
+           >>> Vector2(3, 3) / 3
+           Vector2(1.0, 1.0)
+
+
+        :param other: If ``other`` is a vector (an instance of
+          :py:class:`Vector2`), return :py:meth:`self.dot(other) <dot>`.
+
+          >>> Vector2(1, 1) * (-1, -1)
+          -2.0
         """
         if isinstance(other, (float, int)):
             return self.scale_by(other)

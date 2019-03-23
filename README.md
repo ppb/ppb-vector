@@ -63,30 +63,3 @@ vector-like objects such as `tuple`, `list`, and `dict`.
 
     >>> Vector2(1, 1) * {"x": 3, "y": 5}
     8.0
-
-
-### Scalar Multiplication
-
-Multiply a `Vector2` by a scalar to get a scaled `Vector2`:
-
-    >>> 3 * Vector2(1, 1)
-    Vector2(3.0, 3.0)
-
-    >>> Vector2(1, 1) * 3
-    Vector2(3.0, 3.0)
-
-    >>> Vector2(1, 1).scale_by(3)
-    Vector2(3.0, 3.0)
-
-
-It is also possible to divide a `Vector2` by a scalar:
-
-    >>> Vector2(3, 3) / 3
-    Vector2(1.0, 1.0)
-
-### Dot Product
-
-Multiply a `Vector2` by another `Vector2` to get the dot product.
-
-    >>> Vector2(1, 1) * (-1, -1)
-    -2.0
