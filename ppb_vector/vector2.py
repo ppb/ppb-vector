@@ -63,9 +63,8 @@ class Vector2:
     :py:class:`Vector2` implements many convenience features, as well as
     useful mathematical operations for 2D geometry and linear algebra.
 
-    :py:class:`Vector2` implements :py:class:`Sequence
-    <collections.abc.Sequence>` (and subsequently :py:class:`Iterable
-    <collections.abc.Iterable>`), allowing usage like converting, indexing, and unpacking:
+    :py:class:`Vector2` acts as an iterable and a sequence, allowing usage like
+    converting, indexing, and unpacking:
 
     >>> v = Vector2(-3, -5)
     >>> list(v)
