@@ -65,23 +65,6 @@ vector-like objects such as `tuple`, `list`, and `dict`.
     8.0
 
 
-### Addition
-
-    >>> Vector2(1, 0) + (0, 1)
-    Vector2(1.0, 1.0)
-
-### Subtraction
-
-    >>> Vector2(3, 3) - (1, 1)
-    Vector2(2.0, 2.0)
-
-### Equality
-
-Vectors are equal if their coordinates are equal.
-
-    >>> Vector2(1, 0) == (0, 1)
-    False
-
 ### Scalar Multiplication
 
 Multiply a `Vector2` by a scalar to get a scaled `Vector2`:
