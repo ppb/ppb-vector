@@ -322,6 +322,9 @@ class Vector2:
     def __eq__(self: Vector, other: typing.Any) -> bool:
         """Test wheter two vectors are equal.
 
+        :param other: A :py:class:`Vector2` or a vector-like.
+          For a description of vector-likes, see :py:func:`convert`.
+
         Vectors are equal if their coordinates are equal.
 
         >>> Vector2(1, 0) == (0, 1)
