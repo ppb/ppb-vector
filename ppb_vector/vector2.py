@@ -410,7 +410,7 @@ class Vector2:
         return type(self)(x, y)
 
     def normalize(self: Vector) -> Vector:
-        """Return a vector with the same direction, and unit length.
+        """Return a vector with the same direction and unit length.
 
         >>> Vector2(3, 4).normalize()
         Vector2(0.6, 0.8)
