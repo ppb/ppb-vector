@@ -51,6 +51,19 @@ def _find_lowest_vector(left: typing.Type, right: typing.Type) -> typing.Type:
 
 @dataclass(eq=False, frozen=True, init=False, repr=False)
 class Vector2:
+    """The immutable, 2D vector class of the PursuedPyBear project.
+
+    :py:class:`Vector2` is an immutable 2D Vector, which can be instantiated as
+    expected:
+
+        >>> from ppb_vector import Vector2
+        >>> Vector2(3, 4)
+        Vector2(3.0, 4.0)
+
+    :py:class:`Vector2` implements many convenience features, as well as
+    useful mathematical operations for 2D geometry and linear algebra.
+
+    """
     x: float
     y: float
 
@@ -99,8 +112,16 @@ class Vector2:
 
     @classmethod
     def convert(cls: typing.Type[VectorOrSub], value: VectorLike) -> VectorOrSub:
-        """
-        Constructs a vector from a vector-like. Does not perform a copy.
+        """Constructs a vector from a vector-like.
+
+        A vector-like can be:
+
+        - a length-2 :py:class:`Sequence`, whose contents are interpreted as
+          the `x` and `y` coordinates;
+        - a length-2 :py:class:`Mapping`, whose keys are `x` and `y`;
+        - or any instance of :py:class:`Vector2` (or its subclasses).
+
+        :py:meth:`convert` does not perform a copy when `value` already has the right type.
         """
         # Use Vector2.convert() instead of type(self).convert() so that
         # _find_lowest_vector() can resolve things well.
@@ -117,6 +138,11 @@ class Vector2:
 
     @property
     def length(self) -> float:
+        """Compute the length of a vector.
+
+        >>> Vector2(45, 60).length
+        75.0
+        """
         # Surprisingly, caching this value provides no descernable performance
         # benefit, according to microbenchmarks.
         return hypot(self.x, self.y)
@@ -128,6 +154,11 @@ class Vector2:
         return 2
 
     def __add__(self: VectorOrSub, other: VectorLike) -> VectorOrSub:
+        """Add two vectors.
+
+        >>> Vector2(1, 0) + (0, 1)
+        Vector2(1.0, 1.0)
+        """
         rtype = _find_lowest_vector(type(other), type(self))
         try:
             other = Vector2.convert(other)
@@ -136,6 +167,11 @@ class Vector2:
         return rtype(self.x + other.x, self.y + other.y)
 
     def __sub__(self: VectorOrSub, other: VectorLike) -> VectorOrSub:
+        """Subtract one vector from another.
+
+        >>> Vector2(3, 3) - (1, 1)
+        Vector2(2.0, 2.0)
+        """
         rtype = _find_lowest_vector(type(other), type(self))
         try:
             other = Vector2.convert(other)
@@ -213,6 +249,13 @@ class Vector2:
         return f"{type(self).__name__}({self.x}, {self.y})"
 
     def __eq__(self: VectorOrSub, other: typing.Any) -> bool:
+        """Test wheter two vectors are equal.
+
+        Vectors are equal if their coordinates are equal.
+
+        >>> Vector2(1, 0) == (0, 1)
+        False
+        """
         try:
             other = Vector2.convert(other)
         except (TypeError, ValueError):
@@ -225,9 +268,27 @@ class Vector2:
         yield self.y
 
     def __neg__(self: VectorOrSub) -> VectorOrSub:
+        """Negate a vector.
+
+        Negating a :py:class:`Vector2` produces one with identical length and opposite
+        direction. It is equivalent to multiplying it by -1.
+
+        >>> -Vector2(1, 1)
+        Vector2(-1.0, -1.0)
+        """
         return self.scale_by(-1)
 
     def angle(self: VectorOrSub, other: VectorLike) -> float:
+        """Compute the angle between two vectors, expressed in degrees.
+
+        >>> Vector2(1, 0).angle( (0, 1) )
+        90.0
+
+        As with :py:meth:`rotate`, angles are signed, and refer to a direct
+        coordinate system (i.e. positive rotations are counter-clockwise).
+
+        :py:meth:`angle` is guaranteed to produce an angle between -180° and 180°.
+        """
         other = Vector2.convert(other)
 
         rv = degrees(atan2(other.x, -other.y) - atan2(self.x, -self.y))
@@ -294,6 +355,15 @@ class Vector2:
         return r_cos, r_sin
 
     def rotate(self: VectorOrSub, angle: typing.SupportsFloat) -> VectorOrSub:
+        """Rotate a vector.
+
+        Rotate a vector in relation to the origin and return a new :py:class:`Vector2`.
+
+        >>> Vector2(1, 0).rotate(90)
+        Vector2(0.0, 1.0)
+
+        Positive rotation is counter/anti-clockwise.
+        """
         r_cos, r_sin = Vector2._trig(angle)
 
         x = self.x * r_cos - self.y * r_sin
@@ -301,9 +371,40 @@ class Vector2:
         return type(self)(x, y)
 
     def normalize(self: VectorOrSub) -> VectorOrSub:
+        """Return a vector with the same direction, and unit length.
+
+        >>> Vector2(3, 4).normalize()
+        Vector2(0.6, 0.8)
+
+        Note that `Vector2.normalize()` is equivalent to `Vector2.scale(1)`.
+        """
         return self.scale(1)
 
     def truncate(self: VectorOrSub, max_length: typing.SupportsFloat) -> VectorOrSub:
+        """Scale a given :py:class:`Vector2` down to a given length, if it is larger.
+
+        >>> Vector2(7, 24).truncate(3)
+        Vector2(0.84, 2.88)
+
+        It produces a vector with the same direction, but possibly a different
+        length.
+
+        Note that `vector.scale(max_length)` is equivalent to
+        `vector.truncate(max_length)` when `max_length < vector.length`.
+
+        >>> Vector2(3, 4).scale(4)
+        Vector2(2.4, 3.2)
+        >>> Vector2(3, 4).truncate(4)
+        Vector2(2.4, 3.2)
+
+        >>> Vector2(3, 4).scale(6)
+        Vector2(3.6, 4.8)
+        >>> Vector2(3, 4).truncate(6)
+        Vector2(3.0, 4.0)
+
+        Note: `x.truncate(max_length)` may sometimes be slightly-larger than
+              `max_length`, due to floating-point rounding effects.
+        """
         max_length = float(max_length)
         if self.length <= max_length:
             return self
@@ -311,8 +412,15 @@ class Vector2:
         return self.scale_to(max_length)
 
     def scale_to(self: VectorOrSub, length: typing.SupportsFloat) -> VectorOrSub:
-        """
-        Scale the vector to the given length
+        """Scale a given :py:class:`Vector2` to a certain length.
+
+        >>> Vector2(7, 24).scale(2)
+        Vector2(0.56, 1.92)
+
+        >>> Vector2(7, 24).normalize()
+        Vector2(0.28, 0.96)
+        >>> Vector2(7, 24).scale(1)
+        Vector2(0.28, 0.96)
         """
         length = float(length)
         if length < 0:
@@ -326,8 +434,16 @@ class Vector2:
     scale = scale_to
 
     def reflect(self: VectorOrSub, surface_normal: VectorLike) -> VectorOrSub:
-        """
-        Calculate the reflection of the vector against a given surface normal
+        """Reflect a vector against a surface.
+
+        Compute the reflection of a :py:class:`Vector2` on a surface going through the
+        origin, described by its normal vector.
+
+        >>> Vector2(5, 3).reflect( (-1, 0) )
+        Vector2(-5.0, 3.0)
+
+        >>> Vector2(5, 3).reflect( Vector2(-1, -2).normalize() )
+        Vector2(0.5999999999999996, -5.800000000000001)
         """
         surface_normal = Vector2.convert(surface_normal)
         if not isclose(surface_normal.length, 1):

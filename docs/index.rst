@@ -6,10 +6,8 @@
 Welcome to ppb-vector's documentation!
 ======================================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
+.. autoclass:: ppb_vector.Vector2
+   :members:
 
 
 Indices and tables
