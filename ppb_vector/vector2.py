@@ -65,7 +65,11 @@ class Vector2:
 
     :py:class:`Vector2` implements :py:class:`Sequence
     <collections.abc.Sequence>` (and subsequently :py:class:`Iterable
-    <collections.abc.Iterable>`), allowing usage like unpacking and indexing:
+    <collections.abc.Iterable>`), allowing usage like indexing, and unpacking:
+
+    >>> v = Vector2(-3, -5)
+    >>> v[0]
+    -3.0
 
     >>> x, y = Vector2(1, 2)
     >>> x
@@ -73,10 +77,6 @@ class Vector2:
 
     >>> print( *Vector2(1, 2) )
     1.0 2.0
-
-    >>> v = Vector2(-3, -5)
-    >>> v[0]
-    -3.0
 
     It also acts mostly like a mapping, when it does not conflict with being a
     sequence. In particular, the coordinates may be accessed by subscripting:
