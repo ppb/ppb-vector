@@ -1,4 +1,5 @@
 lint_task:
+  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   container:
     image: python:3.7-slim
 
@@ -15,6 +16,7 @@ lint_task:
 
 
 FreeBSD_task:
+  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   freebsd_instance:
     image: freebsd-12-0-release-amd64
   env:
@@ -37,6 +39,7 @@ FreeBSD_task:
     - ./test.sh
 
 Linux_task:
+  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   allow_failures: $CIRRUS_TASK_NAME =~ '.*-rc-.*'
   container:
     matrix:
@@ -56,6 +59,7 @@ Linux_task:
     - ./test.sh
 
 macOS_task:
+  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   osx_instance:
     image: mojave-base
   env:
@@ -81,6 +85,7 @@ macOS_task:
     - ./test.sh
 
 Windows_task:
+  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   allow_failures: $CIRRUS_TASK_NAME =~ '.*-rc-.*'
   windows_container:
     os_version: 2019
