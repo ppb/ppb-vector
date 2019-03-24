@@ -38,3 +38,9 @@ def test_scalar_division(x: Vector2, scalar: float):
     """Test that (x / λ) = (1 / λ) * x"""
     assume(abs(scalar) > 1e-100)
     assert (x / scalar).isclose((1 / scalar) * x)
+
+@given(x=vectors(), scalar=floats())
+def test_scalar_inverse(x: Vector2, scalar: float):
+    """Test that (x / λ) = (1 / λ) * x"""
+    assume(abs(scalar) > 1e-100)
+    assert x.isclose(scalar * x / scalar)
