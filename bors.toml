@@ -1,4 +1,5 @@
 status = [
+  "docs",
   "FreeBSD PYTHON:3.6",
   "FreeBSD PYTHON:3.7",
   "lint",
