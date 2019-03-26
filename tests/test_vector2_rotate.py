@@ -16,43 +16,43 @@ data_exact = [
     (Vector2(1, 1), 180, Vector2(-1, -1)),
 ]
 
+
 @pytest.mark.parametrize("input, angle, expected", data_exact,
-                         ids=[str(angle) for _, angle, _ in data_exact],
-)
+                         ids=[str(angle) for _, angle, _ in data_exact])
 def test_exact_rotations(input, angle, expected):
     assert input.rotate(angle) == expected
     assert input.angle(expected) == angle
 
 
 # angle (in degrees) -> (sin, cos)
-## values from 0 to 45°
-## lifted from https://en.wikibooks.org/wiki/Trigonometry/Selected_Angles_Reference
+#  values from 0 to 45°
+#  lifted from https://en.wikibooks.org/wiki/Trigonometry/Selected_Angles_Reference
 remarkable_angles = {
-    15: ((sqrt(6) - sqrt(2))/4, (sqrt(6) + sqrt(2))/4),
-    22.5: (sqrt(2 - sqrt(2))/2, sqrt(2 + sqrt(2))/2),
-    30: (0.5, sqrt(3)/2),
-    45: (sqrt(2)/2, sqrt(2)/2),
+    15: ((sqrt(6) - sqrt(2)) / 4, (sqrt(6) + sqrt(2)) / 4),
+    22.5: (sqrt(2 - sqrt(2)) / 2, sqrt(2 + sqrt(2)) / 2),
+    30: (0.5, sqrt(3) / 2),
+    45: (sqrt(2) / 2, sqrt(2) / 2),
 }
 
-## extend up to 90°
+#  extend up to 90°
 remarkable_angles.update({
     90 - angle: (cos_t, sin_t)
     for angle, (sin_t, cos_t) in remarkable_angles.items()
 })
 
-## extend up to 180°
+#  extend up to 180°
 remarkable_angles.update({
     angle + 90: (cos_t, -sin_t)
     for angle, (sin_t, cos_t) in remarkable_angles.items()
 })
 
-## extend up to 360°
+#  extend up to 360°
 remarkable_angles.update({
     angle + 180: (-sin_t, -cos_t)
     for angle, (sin_t, cos_t) in remarkable_angles.items()
 })
 
-## extend to negative angles
+#  extend to negative angles
 remarkable_angles.update({
     -angle: (-sin_t, cos_t)
     for angle, (sin_t, cos_t) in remarkable_angles.items()
@@ -60,8 +60,7 @@ remarkable_angles.update({
 
 
 @pytest.mark.parametrize("angle, trig", remarkable_angles.items(),
-                          ids=[str(x) for x in remarkable_angles]
-)
+                         ids=[str(x) for x in remarkable_angles])
 def test_remarkable_angles(angle, trig):
     _angle = math.radians(angle)
     sin_t, cos_t = trig
@@ -79,11 +78,14 @@ data_close = [
     for (angle, (sin_t, cos_t)) in remarkable_angles.items()
 ]
 
+data_close_ids = [
+    f"(1,0).rotate({x})" for x in remarkable_angles
+] + [
+    f"(1,1).rotate({x})" for x in remarkable_angles
+]
 
-@pytest.mark.parametrize("input, angle, expected", data_close,
-                         ids=[f"(1,0).rotate({x})" for x in remarkable_angles] +
-                             [f"(1,1).rotate({x})" for x in remarkable_angles],
-)
+
+@pytest.mark.parametrize("input, angle, expected", data_close, ids=data_close_ids)
 def test_close_rotations(input, angle, expected):
     assert input.rotate(angle).isclose(expected)
     assert angle_isclose(input.angle(expected), angle)
@@ -111,7 +113,7 @@ def test_trig_stability(angle):
 def test_trig_invariance(angle: float, n: int):
     """Test that cos(θ), sin(θ) ≃ cos(θ + n*360°), sin(θ + n*360°)"""
     r_cos, r_sin = Vector2._trig(angle)
-    n_cos, n_sin = Vector2._trig(angle + 360*n)
+    n_cos, n_sin = Vector2._trig(angle + 360 * n)
 
     note(f"δcos: {r_cos - n_cos}")
     assert isclose(r_cos, n_cos, rel_to=[n / 1e9])

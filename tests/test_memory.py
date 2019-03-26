@@ -20,8 +20,7 @@ class DummyVector:
 
 
 @pytest.mark.skipif(sys.implementation.name != 'cpython',
-                    reason="PyPy optimises __slots__ automatically.",
-)
+                    reason="PyPy optimises __slots__ automatically.")
 @given(x=floats(), y=floats())
 def test_object_size(x, y):
     """Check that Vector2 is 2 times smaller than a naïve version."""

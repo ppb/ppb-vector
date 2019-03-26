@@ -487,7 +487,7 @@ class Vector2:
 
         Note that :py:meth:`vector.scale(max_length) <scale>` is equivalent to
         :py:meth:`vector.truncate(max_length) <truncate>` when
-        :py:meth:`max_length \< vector.length <length>`.
+        :py:meth:`max_length ≨ vector.length <length>`.
 
         >>> Vector2(3, 4).scale(4)
         Vector2(2.4, 3.2)
