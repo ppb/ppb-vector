@@ -21,6 +21,8 @@ class DummyVector:
 
 @pytest.mark.skipif(sys.implementation.name != 'cpython',
                     reason="PyPy optimises __slots__ automatically.")
+@pytest.mark.skipif(sys.implementation.version.minor > 7,
+                    reason="Pympler 0.6 is broken under Python 3.8.  See pympler#74")
 @given(x=floats(), y=floats())
 def test_object_size(x, y):
     """Check that Vector2 is 2 times smaller than a naïve version."""
