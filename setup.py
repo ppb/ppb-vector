@@ -22,7 +22,7 @@ setup(
     version='0.4.0rc1',
     packages=['ppb_vector'],
     url='http://github.com/pathunstrom/ppb-vector',
-    license='',
+    license='Artistic-2.0',
     author='Piper Thunstrom',
     author_email='pathunstrom@gmail.com',
     description='A basic game development Vector2 class.',
