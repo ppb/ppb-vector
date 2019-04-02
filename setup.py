@@ -6,6 +6,17 @@ def readme():
         return file.read()
 
 
+def requirements(section=None):
+    """Helper for loading dependencies from requirements files."""
+    if section is None:
+        filename = "requirements.txt"
+    else:
+        filename = f"requirements-{section}.txt"
+
+    with open(filename) as file:
+        return [line.strip() for line in file]
+
+
 setup(
     name='ppb-vector',
     version='0.4.0rc1',
@@ -18,6 +29,7 @@ setup(
     install_requires=[
         "dataclasses; python_version < '3.7'",
     ],
+    tests_require=requirements('tests'),
     long_description=readme(),
     long_description_content_type="text/markdown",
     classifiers=[
