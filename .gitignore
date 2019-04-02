@@ -4,3 +4,4 @@ __pycache__/
 .hypothesis/
 /.mypy_cache/
 /tests/*.json
+/.eggs/
