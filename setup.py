@@ -26,9 +26,7 @@ setup(
     author='Piper Thunstrom',
     author_email='pathunstrom@gmail.com',
     description='A basic game development Vector2 class.',
-    install_requires=[
-        "dataclasses; python_version < '3.7'",
-    ],
+    install_requires=requirements(),
     tests_require=requirements('tests'),
     long_description=readme(),
     long_description_content_type="text/markdown",
