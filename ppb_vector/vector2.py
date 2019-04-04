@@ -160,13 +160,13 @@ class Vector2:
     update = dataclasses.replace
 
     @staticmethod
-    def _unpack(value: VectorLike) -> Vector:
+    def _unpack(value: VectorLike) -> typing.Tuple[float, float]:
         if isinstance(value, Vector2):
-            return (value.x, value.y)
+            return value.x, value.y
         elif isinstance(value, Sequence) and len(value) == 2:
-            return (value[0], value[1])
+            return float(value[0]), float(value[1])
         elif isinstance(value, Mapping) and 'x' in value and 'y' in value and len(value) == 2:
-            return (value['x'], value['y'])
+            return float(value['x']), float(value['y'])
         else:
             raise ValueError(f"Cannot use {value} as a vector-like")
 
