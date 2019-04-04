@@ -97,12 +97,25 @@ class Vector2:
     __slots__ = ('x', 'y', '__weakref__')
 
     @typing.overload
-    def __init__(self, x: typing.SupportsFloat, y: typing.SupportsFloat): pass
+    def __new__(cls, x: typing.SupportsFloat, y: typing.SupportsFloat): pass
 
     @typing.overload
-    def __init__(self, other: VectorLike): pass
+    def __new__(cls, other: VectorLike): pass
 
-    def __init__(self, *args, **kwargs):
+    def __new__(cls, *args, **kwargs):
+        """
+        Make a vector from coordinates, or convert a vector-like.
+
+        A vector-like can be:
+
+        - a length-2 :py:class:`Sequence <collections.abc.Sequence>`, whose
+          contents are interpreted as the ``x`` and ``y`` coordinates like ``(4, 2)``
+
+        - a length-2 :py:class:`Mapping <collections.abc.Mapping>`, whose keys
+          are ``x`` and ``y`` like ``{'x': 4, 'y': 2}``
+
+        - any instance of :py:class:`Vector2` or any subclass.
+        """
         if args and kwargs:
             raise TypeError("Got a mix of positional and keyword arguments")
 
@@ -116,9 +129,16 @@ class Vector2:
         if kwargs:
             x, y = kwargs['x'], kwargs['y']
         elif len(args) == 1:
-            x, y = Vector2.convert(args[0])
+            value = args[0]
+            if isinstance(value, cls):
+                # Short circuit if already a valid instance
+                return value
+
+            x, y = Vector2._unpack(args[0])
         elif len(args) == 2:
             x, y = args
+
+        self = super().__new__(cls)
 
         try:
             # The @dataclass decorator made the class frozen, so we need to
@@ -134,36 +154,19 @@ class Vector2:
         except ValueError:
             raise TypeError(f"{type(y).__name__} object not convertable to float")
 
+        return self
+
     #: Return a new :py:class:`Vector2` replacing specified fields with new values.
     update = dataclasses.replace
 
-    @classmethod
-    def convert(cls: typing.Type[Vector], value: VectorLike) -> Vector:
-        """Constructs a vector from a vector-like.
-
-        A vector-like can be:
-
-        - a length-2 :py:class:`Sequence <collections.abc.Sequence>`, whose
-          contents are interpreted as the ``x`` and ``y`` coordinates like ``(4, 2)``
-
-        - a length-2 :py:class:`Mapping <collections.abc.Mapping>`, whose keys
-          are ``x`` and ``y`` like ``{'x': 4, 'y': 2}``
-
-        - any instance of :py:class:`Vector2` or any subclass.
-
-        :py:meth:`convert` does not perform a copy when ``value`` already has the
-        right type.
-        """
-        # Use Vector2.convert() instead of type(self).convert() so that
-        # _find_lowest_vector() can resolve things well.
-        if isinstance(value, cls):
-            return value
-        elif isinstance(value, Vector2):
-            return cls(value.x, value.y)
+    @staticmethod
+    def _unpack(value: VectorLike) -> Vector:
+        if isinstance(value, Vector2):
+            return (value.x, value.y)
         elif isinstance(value, Sequence) and len(value) == 2:
-            return cls(value[0], value[1])
+            return (value[0], value[1])
         elif isinstance(value, Mapping) and 'x' in value and 'y' in value and len(value) == 2:
-            return cls(value['x'], value['y'])
+            return (value['x'], value['y'])
         else:
             raise ValueError(f"Cannot use {value} as a vector-like")
 
@@ -185,9 +188,9 @@ class Vector2:
         >>> v.asdict()
         {'x': 42.0, 'y': 69.0}
 
-        The conversion can be reversed by :py:meth:`convert`:
+        The conversion can be reversed by constructing:
 
-        >>> assert v == Vector2.convert(v.asdict())
+        >>> assert v == Vector2(v.asdict())
         """
         return {'x': self.x, 'y': self.y}
 
@@ -198,42 +201,42 @@ class Vector2:
         """Add two vectors.
 
         :param other: A :py:class:`Vector2` or a vector-like.
-          For a description of vector-likes, see :py:func:`convert`.
+          For a description of vector-likes, see :py:func:`__new__`.
 
         >>> Vector2(1, 0) + (0, 1)
         Vector2(1.0, 1.0)
         """
         rtype = _find_lowest_vector(type(other), type(self))
         try:
-            other = Vector2.convert(other)
+            otherx, othery = Vector2._unpack(other)
         except ValueError:
             return NotImplemented
-        return rtype(self.x + other.x, self.y + other.y)
+        return rtype(self.x + otherx, self.y + othery)
 
     def __sub__(self: Vector, other: VectorLike) -> Vector:
         """Subtract one vector from another.
 
         :param other: A :py:class:`Vector2` or a vector-like.
-          For a description of vector-likes, see :py:func:`convert`.
+          For a description of vector-likes, see :py:func:`__new__`.
 
         >>> Vector2(3, 3) - (1, 1)
         Vector2(2.0, 2.0)
         """
         rtype = _find_lowest_vector(type(other), type(self))
         try:
-            other = Vector2.convert(other)
+            otherx, othery = Vector2._unpack(other)
         except ValueError:
             return NotImplemented
-        return rtype(self.x - other.x, self.y - other.y)
+        return rtype(self.x - otherx, self.y - othery)
 
     def dot(self: Vector, other: VectorLike) -> float:
         """Dot product of two vectors.
 
         :param other: A :py:class:`Vector2` or a vector-like.
-          For a description of vector-likes, see :py:func:`convert`.
+          For a description of vector-likes, see :py:func:`__new__`.
         """
-        other = Vector2.convert(other)
-        return self.x * other.x + self.y * other.y
+        otherx, othery = Vector2._unpack(other)
+        return self.x * otherx + self.y * othery
 
     def scale_by(self: Vector, scalar: typing.SupportsFloat) -> Vector:
         """Scalar multiplication.
@@ -338,17 +341,17 @@ class Vector2:
         """Test wheter two vectors are equal.
 
         :param other: A :py:class:`Vector2` or a vector-like.
-          For a description of vector-likes, see :py:func:`convert`.
+          For a description of vector-likes, see :py:func:`__new__`.
 
         >>> Vector2(1, 0) == (0, 1)
         False
         """
         try:
-            other = Vector2.convert(other)
+            otherx, othery = Vector2._unpack(other)
         except (TypeError, ValueError):
             return NotImplemented
         else:
-            return self.x == other.x and self.y == other.y
+            return self.x == otherx and self.y == othery
 
     def __iter__(self: Vector) -> typing.Iterator[float]:
         yield self.x
@@ -369,7 +372,7 @@ class Vector2:
         """Compute the angle between two vectors, expressed in degrees.
 
         :param other: A :py:class:`Vector2` or a vector-like.
-          For a description of vector-likes, see :py:func:`convert`.
+          For a description of vector-likes, see :py:func:`__new__`.
 
         >>> Vector2(1, 0).angle( (0, 1) )
         90.0
@@ -379,9 +382,9 @@ class Vector2:
 
         :py:meth:`angle` is guaranteed to produce an angle between -180° and 180°.
         """
-        other = Vector2.convert(other)
+        otherx, othery = Vector2._unpack(other)
 
-        rv = degrees(atan2(other.x, -other.y) - atan2(self.x, -self.y))
+        rv = degrees(atan2(otherx, -othery) - atan2(self.x, -self.y))
         # This normalizes the value to (-180, +180], which is the opposite of
         # what Python usually does but is normal for angles
         if rv <= -180:
@@ -397,7 +400,7 @@ class Vector2:
         """Perform an approximate comparison of two vectors.
 
         :param other: A :py:class:`Vector2` or a vector-like.
-          For a description of vector-likes, see :py:func:`convert`.
+          For a description of vector-likes, see :py:func:`__new__`.
 
         >>> assert Vector2(1, 0).isclose((1, 1e-10))
 
@@ -419,12 +422,12 @@ class Vector2:
         if abs_tol < 0 or rel_tol < 0:
             raise ValueError("Vector2.isclose takes non-negative tolerances")
 
-        other = Vector2.convert(other)
+        other = Vector2(other)
 
         rel_length = max(
             self.length,
             other.length,
-            *map(lambda v: Vector2.convert(v).length, rel_to),
+            *map(lambda v: Vector2(v).length, rel_to),
         )
 
         diff = (self - other).length
@@ -530,7 +533,7 @@ class Vector2:
         """Reflect a vector against a surface.
 
         :param other: A :py:class:`Vector2` or a vector-like.
-          For a description of vector-likes, see :py:func:`convert`.
+          For a description of vector-likes, see :py:func:`__new__`.
 
         Compute the reflection of a :py:class:`Vector2` on a surface going
         through the origin, described by its normal vector.
@@ -541,7 +544,7 @@ class Vector2:
         >>> Vector2(5, 3).reflect( Vector2(-1, -2).normalize() )
         Vector2(0.5999999999999996, -5.800000000000001)
         """
-        surface_normal = Vector2.convert(surface_normal)
+        surface_normal = Vector2(surface_normal)
         if not isclose(surface_normal.length, 1):
             raise ValueError("Reflection requires a normalized vector.")
 
