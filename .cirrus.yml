@@ -5,7 +5,7 @@ docs_task:
 
   install_script:
     - apt update && apt install make
-    - pip install --upgrade-strategy eager -U -r docs-requirements.txt
+    - pip install --upgrade-strategy eager -U -r requirements-docs.txt
     - pip install -e .
 
   script:
@@ -17,8 +17,8 @@ lint_task:
     image: python:3.7-slim
 
   install_script:
-    - pip install --upgrade-strategy eager -U -r dev-requirements.txt
-    - pip install --upgrade-strategy eager -U -r lint-requirements.txt
+    - pip install --upgrade-strategy eager -U -r requirements-tests.txt
+    - pip install --upgrade-strategy eager -U -r requirements-lint.txt
     - pip install -e .
 
   script:
@@ -42,7 +42,7 @@ FreeBSD_task:
     - PY=python${PYTHON}
     - pkg install -y bash python${PYVER} ${PYPKG}-setuptools
     - ${PY} -m ensurepip
-    - ${PY} -m pip install --upgrade-strategy eager -U -r dev-requirements.txt
+    - ${PY} -m pip install --upgrade-strategy eager -U -r requirements-tests.txt
     - ${PY} -m pip install -e .
 
   script:
@@ -62,7 +62,7 @@ Linux_task:
       - image: pypy:3.6-slim
 
   install_script:
-    - pip install --upgrade-strategy eager -U -r dev-requirements.txt
+    - pip install --upgrade-strategy eager -U -r requirements-tests.txt
     - pip install -e .
 
   script:
@@ -89,7 +89,7 @@ macOS_task:
     - pyenv global ${PYTHON}
     - pyenv rehash
     - pip install --upgrade-strategy eager -U pip wheel setuptools
-    - pip install --upgrade-strategy eager -U -r dev-requirements.txt
+    - pip install --upgrade-strategy eager -U -r requirements-tests.txt
     - pip install -e .
 
   script:
@@ -108,7 +108,7 @@ Windows_task:
       - image: python:3.8-rc-windowsservercore-1809
 
   install_script:
-    - C:\Python\python.exe -m pip install --upgrade-strategy eager -U -r dev-requirements.txt
+    - C:\Python\python.exe -m pip install --upgrade-strategy eager -U -r requirements-tests.txt
     - C:\Python\python.exe -m pip install -e .
 
   script:
