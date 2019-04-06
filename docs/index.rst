@@ -30,10 +30,12 @@ PPB's 2D Vector class
 Inheriting from :py:class:`ppb_vector.Vector2`
 ----------------------------------------------
 
-As :py:class:`ppb_vector.Vector2` implements :py:meth:`object.__new__`, subclasses that define
-additional attributes should redefine it. The simplest way to do so looks like
-so: ::
+As :py:class:`ppb_vector.Vector2` is a :py:func:`dataclasses.dataclass
+<dataclass>` that implements :py:meth:`object.__new__`, subclasses that define
+additional attributes should be frozen dataclasses, redefine ``__new__``, and not
+define ``__init__``. The simplest way to do so looks like so: ::
 
+  @dataclass(frozen=True, init=False)
   class LabeledVector(Vector2):
       """Subclass of Vector2 that defines an additional attribute."""
       label: str

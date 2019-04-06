@@ -7,6 +7,7 @@ from ppb_vector import Vector2
 from utils import *
 
 
+@dataclass(frozen=True, init=False)
 class LabeledVector(Vector2):
     """Subclass of Vector2 that defines an additional attribute."""
     label: str
