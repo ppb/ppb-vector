@@ -208,10 +208,10 @@ class Vector2:
         """
         rtype = _find_lowest_vector(type(other), type(self))
         try:
-            otherx, othery = Vector2._unpack(other)
+            other_x, other_y = Vector2._unpack(other)
         except ValueError:
             return NotImplemented
-        return rtype(self.x + otherx, self.y + othery)
+        return rtype(self.x + other_x, self.y + other_y)
 
     def __sub__(self: Vector, other: VectorLike) -> Vector:
         """Subtract one vector from another.
@@ -224,10 +224,10 @@ class Vector2:
         """
         rtype = _find_lowest_vector(type(other), type(self))
         try:
-            otherx, othery = Vector2._unpack(other)
+            other_x, other_y = Vector2._unpack(other)
         except ValueError:
             return NotImplemented
-        return rtype(self.x - otherx, self.y - othery)
+        return rtype(self.x - other_x, self.y - other_y)
 
     def dot(self: Vector, other: VectorLike) -> float:
         """Dot product of two vectors.
@@ -235,8 +235,8 @@ class Vector2:
         :param other: A :py:class:`Vector2` or a vector-like.
           For a description of vector-likes, see :py:func:`__new__`.
         """
-        otherx, othery = Vector2._unpack(other)
-        return self.x * otherx + self.y * othery
+        other_x, other_y = Vector2._unpack(other)
+        return self.x * other_x + self.y * other_y
 
     def scale_by(self: Vector, scalar: typing.SupportsFloat) -> Vector:
         """Scalar multiplication.
@@ -347,11 +347,11 @@ class Vector2:
         False
         """
         try:
-            otherx, othery = Vector2._unpack(other)
+            other_x, other_y = Vector2._unpack(other)
         except (TypeError, ValueError):
             return NotImplemented
         else:
-            return self.x == otherx and self.y == othery
+            return self.x == other_x and self.y == other_y
 
     def __iter__(self: Vector) -> typing.Iterator[float]:
         yield self.x
@@ -382,9 +382,9 @@ class Vector2:
 
         :py:meth:`angle` is guaranteed to produce an angle between -180° and 180°.
         """
-        otherx, othery = Vector2._unpack(other)
+        other_x, other_y = Vector2._unpack(other)
 
-        rv = degrees(atan2(otherx, -othery) - atan2(self.x, -self.y))
+        rv = degrees(atan2(other_x, -other_y) - atan2(self.x, -self.y))
         # This normalizes the value to (-180, +180], which is the opposite of
         # what Python usually does but is normal for angles
         if rv <= -180:
