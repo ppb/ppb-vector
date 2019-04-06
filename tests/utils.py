@@ -78,7 +78,7 @@ BOOL_OPS = [Vector2.__eq__, Vector2.isclose]
 SCALAR_OPS = [Vector2.rotate, Vector2.scale_by, Vector2.scale_to, Vector2.truncate]
 
 # List of operations that (Vector2) -> Vector2
-UNARY_OPS = [Vector2.__neg__, Vector2.convert, Vector2.normalize]
+UNARY_OPS = [Vector2.__neg__, Vector2, Vector2.normalize]
 
 # List of (Vector2) -> scalar operations
 UNARY_SCALAR_OPS = [

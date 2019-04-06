@@ -14,7 +14,7 @@ class V(Vector2):
 )
 @pytest.mark.parametrize("cls", [Vector2, V])  # type: ignore
 def test_convert_class(cls, vector_like):
-    vector = cls.convert(vector_like)
+    vector = cls(vector_like)
     assert isinstance(vector, cls)
     assert vector == vector_like
 

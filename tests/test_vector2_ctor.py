@@ -22,3 +22,19 @@ def test_ctor_vector_like(cls, x: Vector2):
 @given(x=floats(), y=floats())
 def test_ctor_coordinates(cls, x: float, y: float):
     assert cls(x, y) == cls((x, y))
+
+
+@pytest.mark.parametrize("cls", [Vector2, V])
+def test_ctor_noncopy_same(cls):
+    v = cls(1, 2)
+    assert cls(v) is v
+
+
+def test_ctor_noncopy_subclass():
+    v = V(1, 2)
+    assert Vector2(v) is v
+
+
+def test_ctor_noncopy_superclass():
+    v = Vector2(1, 2)
+    assert V(v) is not v
