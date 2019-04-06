@@ -134,7 +134,7 @@ class Vector2:
                 # Short circuit if already a valid instance
                 return value
 
-            x, y = Vector2._unpack(args[0])
+            x, y = Vector2._unpack(value)
         elif len(args) == 2:
             x, y = args
 
