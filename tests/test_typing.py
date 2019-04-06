@@ -40,7 +40,6 @@ def test_binop_different(op, x: Vector2, y: Vector2):
 @given(x=st.builds(V1, vectors()), y=st.builds(V1, units()))
 def test_binop_subclass(op, x: V1, y: V1):
     assert isinstance(op(V11(x), y), V11)
-    assert isinstance(op(x, V11(y)), V11)
 
 
 @pytest.mark.parametrize("op", SCALAR_OPS)

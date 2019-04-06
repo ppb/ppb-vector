@@ -209,12 +209,12 @@ class Vector2:
         >>> Vector2(1, 0) + (0, 1)
         Vector2(1.0, 1.0)
         """
-        rtype = _find_lowest_vector(type(other), type(self))
         try:
             other_x, other_y = Vector2._unpack(other)
         except ValueError:
             return NotImplemented
-        return rtype(self.x + other_x, self.y + other_y)
+
+        return self.update(x=self.x + other_x, y=self.y + other_y)
 
     def __sub__(self: Vector, other: VectorLike) -> Vector:
         """Subtract one vector from another.
@@ -225,12 +225,12 @@ class Vector2:
         >>> Vector2(3, 3) - (1, 1)
         Vector2(2.0, 2.0)
         """
-        rtype = _find_lowest_vector(type(other), type(self))
         try:
             other_x, other_y = Vector2._unpack(other)
         except ValueError:
             return NotImplemented
-        return rtype(self.x - other_x, self.y - other_y)
+
+        return self.update(x=self.x - other_x, y=self.y - other_y)
 
     def dot(self: Vector, other: VectorLike) -> float:
         """Dot product of two vectors.
@@ -253,7 +253,7 @@ class Vector2:
         Vector2(3.0, 6.0)
         """
         scalar = float(scalar)
-        return type(self)(scalar * self.x, scalar * self.y)
+        return self.update(x=scalar * self.x, y=scalar * self.y)
 
     @typing.overload
     def __mul__(self: Vector, other: VectorLike) -> float: pass
@@ -315,7 +315,7 @@ class Vector2:
         Vector2(1.0, 1.0)
         """
         other = float(other)
-        return type(self)(self.x / other, self.y / other)
+        return self.update(x=self.x / other, y=self.y / other)
 
     def __getitem__(self: Vector, item: typing.Union[str, int]) -> float:
         if hasattr(item, '__index__'):
@@ -468,7 +468,7 @@ class Vector2:
 
         x = self.x * r_cos - self.y * r_sin
         y = self.x * r_sin + self.y * r_cos
-        return type(self)(x, y)
+        return self.update(x=x, y=y)
 
     def normalize(self: Vector) -> Vector:
         """Return a vector with the same direction and unit length.
