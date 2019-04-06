@@ -27,12 +27,33 @@ PPB's 2D Vector class
         The Y coordinate of the vector
 
 
-Inheriting from :py:class:`Vector2`
------------------------------------
+Inheriting from :py:class:`ppb_vector.Vector2`
+----------------------------------------------
 
-Subclasses of :py:class:`Vector2` should provide a constructor that expects
-2 parameters (the cartesian coordinates :py:attribute:`Vector2.x` and ``y``).
+As :py:class:`ppb_vector.Vector2` implements :py:meth:`object.__new__`, subclasses that define
+additional attributes should redefine it. The simplest way to do so looks like
+so: ::
 
-As such, this precludes building subclasses where additional properties are
-preserved by vector operations, such as a ``ColoredVector``, without redefining
-all methods.
+  class LabeledVector(Vector2):
+      """Subclass of Vector2 that defines an additional attribute."""
+      label: str
+  
+      def __new__(cls, x, y, label):
+          self = super().__new__(cls, x, y)
+          object.__setattr__(self, 'label', label)
+          return self
+
+
+Using :py:meth:`object.__setattr__` is necessary because the class is frozen by
+the :py:func:`dataclasses.dataclass` decorator, and as such assigning attributes
+raises an exception.
+
+Some methods return another vector: binary operators (:py:meth:`+
+<ppb_vector.Vector2.__add__>`, :py:meth:`- <ppb_vector.Vector2.__sub__>`,
+:py:meth:`ppb_vector.Vector2.reflect`), scalar operators
+(:py:meth:`ppb_vector.Vector2.rotate`, :py:meth:`ppb_vector.Vector2.scale_by`,
+:py:meth:`ppb_vector.Vector2.scale_to`, :py:meth:`ppb_vector.Vector2.truncate`),
+and unary operators (:py:meth:`- <ppb_vector.Vector2.__neg__>`, :py:meth:`ppb_vector.Vector2.normalize`).
+Those methods return an instance of the subclass (see :py:data:`ppb_vector.vector2.Vector`), and
+preserve all attributes of ``self`` except the cartesian coordinates (``x`` and
+``y``).
