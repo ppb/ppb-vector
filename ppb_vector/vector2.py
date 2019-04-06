@@ -1,5 +1,4 @@
 import dataclasses
-import functools
 import typing
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
@@ -18,35 +17,6 @@ VectorLike = typing.Union[
     typing.Sequence[typing.SupportsFloat],  # TODO: Length 2
     typing.Mapping[str, typing.SupportsFloat],  # TODO: Length 2, keys 'x', 'y'
 ]
-
-
-@functools.lru_cache()
-def _find_lowest_type(left: typing.Type, right: typing.Type) -> typing.Type:
-    """
-    Guess which is the more specific type.
-    """
-    # Basically, see what classes are unique in each type's MRO and return who
-    # has the most.
-    lmro = set(left.__mro__)
-    rmro = set(right.__mro__)
-    if len(lmro) > len(rmro):
-        return left
-    elif len(rmro) > len(lmro):
-        return right
-    else:
-        # They're equal, just arbitrarily pick one
-        return left
-
-
-def _find_lowest_vector(left: typing.Type, right: typing.Type) -> typing.Type:
-    if left is right:
-        return left
-    elif not issubclass(left, Vector2):
-        return right
-    elif not issubclass(right, Vector2):
-        return left
-    else:
-        return _find_lowest_type(left, right)
 
 
 @dataclass(eq=False, frozen=True, init=False, repr=False)
