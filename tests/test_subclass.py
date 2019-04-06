@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 import pytest  # type: ignore
-from hypothesis import given, strategies as st
+from hypothesis import assume, given, strategies as st
 
 from ppb_vector import Vector2
 from utils import *
@@ -19,7 +19,7 @@ class LabeledVector(Vector2):
 
 
 @pytest.mark.parametrize("op", BINARY_OPS)
-@given(v=vectors(), label_v=st.text(), w=vectors(), label_w=st.text())
+@given(v=vectors(), label_v=st.text(), w=units(), label_w=st.text())
 def test_subclass_binops_both(op, v: Vector2, label_v: str, w: Vector2, label_w: str):
     """Test that binary operators preserve attributes when applied to another LabelledVector."""
     v = LabeledVector(*v, label_v)
@@ -31,7 +31,7 @@ def test_subclass_binops_both(op, v: Vector2, label_v: str, w: Vector2, label_w:
 
 
 @pytest.mark.parametrize("op", BINARY_OPS)
-@given(v=vectors(), label=st.text(), w=vectors())
+@given(v=vectors(), label=st.text(), w=units())
 def test_subclass_binops_one(op, v: Vector2, label: str, w: Vector2):
     """Test that binary operators preserve extra attributes when applied to a Vector2."""
     v = LabeledVector(*v, label)
@@ -42,9 +42,10 @@ def test_subclass_binops_one(op, v: Vector2, label: str, w: Vector2):
 
 
 @pytest.mark.parametrize("op", SCALAR_OPS)
-@given(v=vectors(), label=st.text(), scalar=floats())
+@given(v=vectors(), label=st.text(), scalar=lengths())
 def test_subclass_scalar(op, v: Vector2, label: str, scalar: float):
     """Test that scalar operators preserve extra attributes."""
+    assume(scalar != 0 and v.length != 0)
     v = LabeledVector(*v, label)
     u = op(v, scalar)
 
@@ -56,6 +57,7 @@ def test_subclass_scalar(op, v: Vector2, label: str, scalar: float):
 @given(v=vectors(), label=st.text())
 def test_subclass_unary(op, v: Vector2, label: str):
     """Test that unary operators preserve extra attributes."""
+    assume(v.length != 0)
     v = LabeledVector(*v, label)
     u = op(v)
 
