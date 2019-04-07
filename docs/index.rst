@@ -27,13 +27,20 @@ PPB's 2D Vector class
         The Y coordinate of the vector
 
 
-Inheriting from :py:class:`ppb_vector.Vector2`
-----------------------------------------------
+Inheriting from :py:class:`Vector2<ppb_vector.Vector2>`
+-------------------------------------------------------
 
-As :py:class:`ppb_vector.Vector2` is a :py:func:`dataclasses.dataclass
-<dataclass>` that implements :py:meth:`object.__new__`, subclasses that define
-additional attributes should be frozen dataclasses, redefine ``__new__``, and not
-define ``__init__``. The simplest way to do so looks like so: ::
+.. py:currentmodule:: ppb_vector
+
+Subclasses that do not add attributes need not, and should not, define
+:py:meth:`__init__<object.__init__>` or :py:meth:`__new__<object.__new__>`.
+
+As :py:class:`Vector2` is a
+:py:func:`dataclass<dataclasses.dataclass>` that implements
+:py:meth:`__new__<object.__new__>`, subclasses that define additional attributes
+should be frozen dataclasses, redefine :py:meth:`__new__<object.__new__>`, and
+not define :py:meth:`__init__<object.__init__>`. The simplest way to do so looks
+like so: ::
 
   @dataclass(frozen=True, init=False)
   class LabeledVector(Vector2):
@@ -47,15 +54,16 @@ define ``__init__``. The simplest way to do so looks like so: ::
 
 
 Using :py:meth:`object.__setattr__` is necessary because the class is frozen by
-the :py:func:`dataclasses.dataclass` decorator, and as such assigning attributes
-raises an exception.
+the :py:func:`dataclass<dataclasses.dataclass>` decorator, and as such assigning
+attributes raises an exception.
 
-Some methods return another vector: binary operators (:py:meth:`+
-<ppb_vector.Vector2.__add__>`, :py:meth:`- <ppb_vector.Vector2.__sub__>`,
-:py:meth:`ppb_vector.Vector2.reflect`), scalar operators
-(:py:meth:`ppb_vector.Vector2.rotate`, :py:meth:`ppb_vector.Vector2.scale_by`,
-:py:meth:`ppb_vector.Vector2.scale_to`, :py:meth:`ppb_vector.Vector2.truncate`),
-and unary operators (:py:meth:`- <ppb_vector.Vector2.__neg__>`, :py:meth:`ppb_vector.Vector2.normalize`).
-Those methods return an instance of the subclass (see :py:data:`ppb_vector.vector2.Vector`), and
-preserve all attributes of ``self`` except the cartesian coordinates (``x`` and
-``y``).
+Some methods return another vector: binary operators
+(:py:meth:`+<Vector2.__add__>`, :py:meth:`- <Vector2.__sub__>`,
+:py:meth:`reflect<Vector2.reflect>`), scalar operators
+(:py:meth:`rotate<Vector2.rotate>`, :py:meth:`scale_by<Vector2.scale_by>`,
+:py:meth:`scale_to<Vector2.scale_to>`, :py:meth:`truncate<Vector2.truncate>`),
+and unary operators (:py:meth:`-<Vector2.__neg__>`,
+:py:meth:`normalize<Vector2.normalize>`). Those methods return an instance of
+the subclass (see :py:data:`Vector<vector2.Vector>`), and preserve all
+attributes of ``self`` except the cartesian coordinates (:py:attr:`x<Vector2.x>`
+and :py:attr:`y<Vector2.y>`).
