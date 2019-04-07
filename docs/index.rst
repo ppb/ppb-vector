@@ -32,6 +32,9 @@ Inheriting from :py:class:`Vector2<ppb_vector.Vector2>`
 
 .. py:currentmodule:: ppb_vector
 
+Subclasses interface contract
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Subclasses that do not add attributes need not, and should not, define
 :py:meth:`__init__<object.__init__>` or :py:meth:`__new__<object.__new__>`.
 
@@ -67,3 +70,17 @@ and unary operators (:py:meth:`-<Vector2.__neg__>`,
 the subclass (see :py:data:`Vector<vector2.Vector>`), and preserve all
 attributes of ``self`` except the cartesian coordinates (:py:attr:`x<Vector2.x>`
 and :py:attr:`y<Vector2.y>`).
+
+
+Performance considerations
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:py:class:`Vector2` defines :py:data:`__slots__<object.__slots__>`,
+replacing the attributes dictionary with preallocated space.
+Subclasses aren't required to define :py:data:`__slots__<object.__slots__>`, in
+which case instances will use an attributes dictionary.
+
+It is however recommended to do so, for performance and memory-efficiency
+reasons (under CPython). In this case, :py:data:`__slots__<object.__slots__>`
+should be a class variable, whose value is an iterator listing the attributes
+added by the class; the iterator may be empty.
