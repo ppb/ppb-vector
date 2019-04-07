@@ -22,8 +22,8 @@ class LabeledVector(Vector2):
 @given(v=vectors(), label_v=st.text(), w=units(), label_w=st.text())
 def test_subclass_binops_both(op, v: Vector2, label_v: str, w: Vector2, label_w: str):
     """Test that binary operators preserve attributes when applied to another LabelledVector."""
-    v = LabeledVector(*v, label_v)
-    w = LabeledVector(*w, label_w)
+    v = LabeledVector(*v, label_v)  # type: ignore
+    w = LabeledVector(*w, label_w)  # type: ignore
     u = op(v, w)
 
     assert isinstance(u, LabeledVector)
@@ -34,7 +34,7 @@ def test_subclass_binops_both(op, v: Vector2, label_v: str, w: Vector2, label_w:
 @given(v=vectors(), label=st.text(), w=units())
 def test_subclass_binops_one(op, v: Vector2, label: str, w: Vector2):
     """Test that binary operators preserve extra attributes when applied to a Vector2."""
-    v = LabeledVector(*v, label)
+    v = LabeledVector(*v, label)  # type: ignore
     u = op(v, w)
 
     assert isinstance(u, LabeledVector)
@@ -46,7 +46,7 @@ def test_subclass_binops_one(op, v: Vector2, label: str, w: Vector2):
 def test_subclass_scalar(op, v: Vector2, label: str, scalar: float):
     """Test that scalar operators preserve extra attributes."""
     assume(scalar != 0 and v.length != 0)
-    v = LabeledVector(*v, label)
+    v = LabeledVector(*v, label)  # type: ignore
     u = op(v, scalar)
 
     assert isinstance(u, LabeledVector)
@@ -58,7 +58,7 @@ def test_subclass_scalar(op, v: Vector2, label: str, scalar: float):
 def test_subclass_unary(op, v: Vector2, label: str):
     """Test that unary operators preserve extra attributes."""
     assume(v.length != 0)
-    v = LabeledVector(*v, label)
+    v = LabeledVector(*v, label)  # type: ignore
     u = op(v)
 
     assert isinstance(u, LabeledVector)
