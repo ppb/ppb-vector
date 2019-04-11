@@ -18,6 +18,17 @@ class LabeledVector(Vector2):
         return self
 
 
+@given(v=vectors(), label_v=st.text())
+def test_subclass_copy(v: Vector2, label_v: str):
+    """Test that instances of the subclass can be copied."""
+    from copy import copy, deepcopy
+    v = LabeledVector(*v, label_v)  # type: ignore
+    w = copy(v)
+
+    assert v == w == deepcopy(v)
+    assert w.label == label_v
+
+
 @pytest.mark.parametrize("op", BINARY_OPS)
 @given(v=vectors(), label_v=st.text(), w=units(), label_w=st.text())
 def test_subclass_binops_both(op, v: Vector2, label_v: str, w: Vector2, label_w: str):
