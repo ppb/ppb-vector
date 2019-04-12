@@ -44,4 +44,4 @@ def test_ctor_noncopy_superclass():
 @given(v=vectors())
 def test_ctor_copy(v: Vector2):
     """Test that Vector2 instances can be copied."""
-    assert v == pickle.dumps(pickle.loads(v))
+    assert v == pickle.loads(pickle.dumps(v))
