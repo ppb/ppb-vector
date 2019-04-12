@@ -83,6 +83,15 @@ class Vector:
 
         - any instance of :py:class:`Vector` or any subclass.
         """
+        if args and len(args) == 1:
+            value = args[0]
+            if isinstance(value, cls):
+                # Short circuit when a valid instance is provided
+                return value
+
+        return super().__new__(cls)
+
+    def __init__(self, *args, **kwargs):
         if args and kwargs:
             raise TypeError("Got a mix of positional and keyword arguments")
 
@@ -95,17 +104,18 @@ class Vector:
 
         if kwargs:
             x, y = kwargs['x'], kwargs['y']
+
         elif len(args) == 1:
             value = args[0]
-            if isinstance(value, cls):
-                # Short circuit if already a valid instance
-                return value
+            # Early return if the argument is a vector:
+            #  __new__ returned the same vector, no need to (re)set x and y
+            if isinstance(value, type(self)):
+                return
 
             x, y = Vector._unpack(value)
+
         elif len(args) == 2:
             x, y = args
-
-        self = super().__new__(cls)
 
         try:
             # The @dataclass decorator made the class frozen, so we need to
@@ -120,8 +130,6 @@ class Vector:
             object.__setattr__(self, 'y', float(y))
         except ValueError:
             raise TypeError(f"{type(y).__name__} object not convertable to float")
-
-        return self
 
     def __reduce__(self):
         return Vector.__new__, (Vector, self.x, self.y)
