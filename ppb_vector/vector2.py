@@ -116,6 +116,15 @@ class Vector2:
 
         - any instance of :py:class:`Vector2` or any subclass.
         """
+        if args and len(args) == 1:
+            value = args[0]
+            if isinstance(value, cls):
+                # Short circuit when a valid instance is provided
+                return value
+
+        return super().__new__(cls)
+
+    def __init__(self, *args, **kwargs):
         if args and kwargs:
             raise TypeError("Got a mix of positional and keyword arguments")
 
@@ -128,17 +137,18 @@ class Vector2:
 
         if kwargs:
             x, y = kwargs['x'], kwargs['y']
+
         elif len(args) == 1:
             value = args[0]
-            if isinstance(value, cls):
-                # Short circuit if already a valid instance
-                return value
+            # Early return if the argument is a vector:
+            #  __new__ returned the same vector, no need to (re)set x and y
+            if isinstance(args[0], type(self)):
+                return
 
             x, y = Vector2._unpack(value)
+
         elif len(args) == 2:
             x, y = args
-
-        self = super().__new__(cls)
 
         try:
             # The @dataclass decorator made the class frozen, so we need to
@@ -154,10 +164,8 @@ class Vector2:
         except ValueError:
             raise TypeError(f"{type(y).__name__} object not convertable to float")
 
-        return self
-
     def __reduce__(self):
-        return type(self).__new__, (type(self), self.x, self.y)
+        return type(self), (self.x, self.y)
 
     #: Return a new :py:class:`Vector2` replacing specified fields with new values.
     update = dataclasses.replace
