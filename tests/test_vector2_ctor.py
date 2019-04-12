@@ -1,4 +1,5 @@
 import pytest  # type: ignore
+import pickle
 from hypothesis import given
 
 from ppb_vector import Vector2
@@ -38,3 +39,9 @@ def test_ctor_noncopy_subclass():
 def test_ctor_noncopy_superclass():
     v = Vector2(1, 2)
     assert V(v) is not v
+
+
+@given(v=vectors())
+def test_ctor_copy(v: Vector2):
+    """Test that Vector2 instances can be copied."""
+    assert v == pickle.dumps(pickle.loads(v))
