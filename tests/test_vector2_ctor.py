@@ -1,5 +1,6 @@
-import pytest  # type: ignore
 import pickle
+
+import pytest  # type: ignore
 from hypothesis import given
 
 from ppb_vector import Vector2
