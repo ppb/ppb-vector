@@ -156,6 +156,9 @@ class Vector2:
 
         return self
 
+    def __reduce__(self):
+        return type(self).__new__, (type(self), self.x, self.y)
+
     #: Return a new :py:class:`Vector2` replacing specified fields with new values.
     update = dataclasses.replace
 

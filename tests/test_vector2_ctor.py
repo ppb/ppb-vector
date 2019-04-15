@@ -1,3 +1,5 @@
+import pickle
+
 import pytest  # type: ignore
 from hypothesis import given
 
@@ -38,3 +40,13 @@ def test_ctor_noncopy_subclass():
 def test_ctor_noncopy_superclass():
     v = Vector2(1, 2)
     assert V(v) is not v
+
+
+@pytest.mark.parametrize("cls", [Vector2, V])
+@given(v=vectors())
+def test_ctor_pickle(cls, v: Vector2):
+    """Round-trip Vector2 and subclasses through `pickle.{dumps,loads}`."""
+    w = pickle.loads(pickle.dumps(cls(v)))
+
+    assert v == w
+    assert isinstance(w, cls)
