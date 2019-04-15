@@ -66,26 +66,28 @@ def isclose(
 
 
 # List of operations that (Vector, Vector) -> Vector
-BINARY_OPS = [Vector.__add__, Vector.__sub__, Vector.reflect]
+BINARY_OPS = frozenset({Vector.__add__, Vector.__sub__, Vector.reflect})
 
 # List of (Vector, Vector) -> scalar operations
-BINARY_SCALAR_OPS = [Vector.angle, Vector.dot]
+BINARY_SCALAR_OPS = frozenset({Vector.angle, Vector.dot})
 
 # List of (Vector, Vector) -> bool operations
-BOOL_OPS = [Vector.__eq__, Vector.isclose]
+BOOL_OPS = frozenset({Vector.__eq__, Vector.isclose})
 
 # List of operations that (Vector, Real) -> Vector
-SCALAR_OPS = [Vector.rotate, Vector.scale_by, Vector.scale_to, Vector.truncate]
+SCALAR_OPS = frozenset({
+    Vector.rotate, Vector.scale_by, Vector.scale_to, Vector.truncate,
+})
 
 # List of operations that (Vector) -> Vector
-UNARY_OPS = [Vector.__neg__, Vector, Vector.normalize]
+UNARY_OPS = frozenset({Vector.__neg__, Vector, Vector.normalize})
 
 # List of (Vector) -> scalar operations
-UNARY_SCALAR_OPS = [
+UNARY_SCALAR_OPS = frozenset({
     Vector.length.fget,  # type: ignore
     # mypy fails to typecheck properties' attributes:
     #  https://github.com/python/mypy/issues/220
-]
+})
 
 
 # Sequence of vector-likes equivalent to the input vector (def. to the x vector)
