@@ -44,5 +44,5 @@ def test_ctor_noncopy_superclass():
 
 @given(v=vectors())
 def test_ctor_pickle(v: Vector2):
-    """Test that Vector2 instances can be pickled."""
+    """Round-trip vectors through `pickle.{dumps,loads}`."""
     assert v == pickle.loads(pickle.dumps(v))
