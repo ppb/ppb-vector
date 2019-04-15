@@ -75,7 +75,7 @@ def test_subclass_scalar(op, v: Vector2, label: str, scalar: float):
     assert u.label == label
 
 
-@pytest.mark.parametrize("op", UNARY_OPS)
+@pytest.mark.parametrize("op", UNARY_OPS - set([Vector2]))
 @given(v=vectors(), label=st.text())
 def test_subclass_unary(op, v: Vector2, label: str):
     """Test that unary operators preserve extra attributes."""
