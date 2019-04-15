@@ -42,7 +42,11 @@ def test_ctor_noncopy_superclass():
     assert V(v) is not v
 
 
+@pytest.mark.parametrize("cls", [Vector2, V])
 @given(v=vectors())
-def test_ctor_pickle(v: Vector2):
-    """Round-trip vectors through `pickle.{dumps,loads}`."""
-    assert v == pickle.loads(pickle.dumps(v))
+def test_ctor_pickle(cls, v: Vector2):
+    """Round-trip Vector2 and subclasses through `pickle.{dumps,loads}`."""
+    w = pickle.loads(pickle.dumps(cls(v)))
+
+    assert v == w
+    assert isinstance(w, cls)
