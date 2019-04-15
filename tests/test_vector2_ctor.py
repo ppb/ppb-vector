@@ -52,8 +52,13 @@ def test_ctor_pickle(cls, v: Vector2):
     assert isinstance(w, cls)
 
 
+@pytest.mark.parametrize("cls", [Vector2, V])
 @given(v=vectors())
-def test_ctor_copy(v: Vector2):
+def test_ctor_copy(cls, v: Vector2):
     """Test that Vector2 instances can be copied."""
     from copy import copy, deepcopy
+    v = cls(v)
+
     assert v == copy(v) == deepcopy(v)
+    assert isinstance(copy(v), cls)
+    assert isinstance(deepcopy(v), cls)
