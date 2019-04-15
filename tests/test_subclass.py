@@ -12,10 +12,9 @@ class LabeledVector(Vector2):
     """Subclass of Vector2 that defines an additional attribute."""
     label: str
 
-    def __new__(cls, x, y, label):
-        self = super().__new__(cls, x, y)
+    def __init__(self, x, y, label):
+        Vector2.__init__(self, x, y)
         object.__setattr__(self, 'label', label)
-        return self
 
 
 @given(v=vectors(), label_v=st.text())
