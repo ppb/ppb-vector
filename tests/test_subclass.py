@@ -29,6 +29,17 @@ def test_subclass_copy(v: Vector2, label_v: str):
     assert w.label == label_v
 
 
+@given(v=vectors(), label_v=st.text())
+def test_ctor_pickle(v: Vector2, label_v: str):
+    """Round-trip instances of the subclass through `pickle.{dumps,loads}`."""
+    import pickle
+    v = LabeledVector(*v, label_v)  # type: ignore
+    w = pickle.loads(pickle.dumps(v))
+
+    assert v == w
+    assert isinstance(w, LabeledVector)
+
+
 @pytest.mark.parametrize("op", BINARY_OPS)
 @given(v=vectors(), label_v=st.text(), w=units(), label_w=st.text())
 def test_subclass_binops_both(op, v: Vector2, label_v: str, w: Vector2, label_w: str):
