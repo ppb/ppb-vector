@@ -142,7 +142,7 @@ class Vector2:
             value = args[0]
             # Early return if the argument is a vector:
             #  __new__ returned the same vector, no need to (re)set x and y
-            if isinstance(args[0], type(self)):
+            if isinstance(value, type(self)):
                 return
 
             x, y = Vector2._unpack(value)
