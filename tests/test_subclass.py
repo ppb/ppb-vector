@@ -13,7 +13,7 @@ class LabeledVector(Vector2):
     label: str
 
     def __init__(self, x, y, label):
-        Vector2.__init__(self, x, y)
+        super().__init__(x, y)
         object.__setattr__(self, 'label', label)
 
 
