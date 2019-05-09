@@ -5,17 +5,12 @@ from ppb_vector import Vector
 from utils import vector_likes, vectors
 
 
-class V(Vector):
-    pass
-
-
 @pytest.mark.parametrize(
     "vector_like", vector_likes(), ids=lambda x: type(x).__name__,
 )
-@pytest.mark.parametrize("cls", [Vector, V])  # type: ignore
-def test_convert_class(cls, vector_like):
-    vector = cls(vector_like)
-    assert isinstance(vector, cls)
+def test_convert_class(vector_like):
+    vector = Vector(vector_like)
+    assert isinstance(vector, Vector)
     assert vector == vector_like
 
 
