@@ -1,6 +1,5 @@
 import pickle
 
-import pytest  # type: ignore
 from hypothesis import given
 
 from ppb_vector import Vector
@@ -12,7 +11,6 @@ def test_ctor_vector_like(x: Vector):
     for x_like in vector_likes(x):
         vector = Vector(x_like)
         assert vector == x == x_like
-        assert isinstance(vector, cls)
 
 
 @given(x=floats(), y=floats())
