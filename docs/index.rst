@@ -30,9 +30,4 @@ PPB's 2D Vector class
 Inheriting from :py:class:`Vector2`
 -----------------------------------
 
-Subclasses of :py:class:`Vector2` should provide a constructor that expects
-2 parameters (the cartesian coordinates :py:attribute:`Vector2.x` and ``y``).
-
-As such, this precludes building subclasses where additional properties are
-preserved by vector operations, such as a ``ColoredVector``, without redefining
-all methods.
+:py:class:`Vector2` does not support inheritance.
