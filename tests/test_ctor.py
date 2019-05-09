@@ -6,11 +6,11 @@ from ppb_vector import Vector
 from utils import vector_likes, vectors
 
 
-@given(x=vectors())
-def test_ctor_vector_like(x: Vector):
-    for x_like in vector_likes(x):
-        vector = Vector(x_like)
-        assert vector == x == x_like
+@given(v=vectors())
+def test_ctor_vector_like(v: Vector):
+    for v_like in vector_likes(v):
+        vector = Vector(v_like)
+        assert vector == v == v_like
 
 
 @given(v=vectors())
