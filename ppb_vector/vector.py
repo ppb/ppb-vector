@@ -124,7 +124,7 @@ class Vector:
         return self
 
     def __reduce__(self):
-        return type(self).__new__, (type(self), self.x, self.y)
+        return Vector.__new__, (Vector, self.x, self.y)
 
     #: Return a new :py:class:`Vector` replacing specified fields with new values.
     update = dataclasses.replace
@@ -220,7 +220,7 @@ class Vector:
         Vector(3.0, 6.0)
         """
         scalar = float(scalar)
-        return type(self)(scalar * self.x, scalar * self.y)
+        return Vector(scalar * self.x, scalar * self.y)
 
     @typing.overload
     def __mul__(self, other: VectorLike) -> float: pass
@@ -282,7 +282,7 @@ class Vector:
         Vector(1.0, 1.0)
         """
         other = float(other)
-        return type(self)(self.x / other, self.y / other)
+        return Vector(self.x / other, self.y / other)
 
     def __getitem__(self, item: typing.Union[str, int]) -> float:
         if hasattr(item, '__index__'):
@@ -305,7 +305,7 @@ class Vector:
             raise TypeError
 
     def __repr__(self) -> str:
-        return f"{type(self).__name__}({self.x}, {self.y})"
+        return f"Vector({self.x}, {self.y})"
 
     def __eq__(self, other: typing.Any) -> bool:
         """Test wheter two vectors are equal.
@@ -435,7 +435,7 @@ class Vector:
 
         x = self.x * r_cos - self.y * r_sin
         y = self.x * r_sin + self.y * r_cos
-        return type(self)(x, y)
+        return Vector(x, y)
 
     def normalize(self) -> 'Vector':
         """Return a vector with the same direction and unit length.
@@ -493,7 +493,7 @@ class Vector:
             raise ValueError("Vector.scale_to takes non-negative lengths.")
 
         if length == 0:
-            return type(self)(0, 0)
+            return Vector(0, 0)
 
         return (length * self) / self.length
 
