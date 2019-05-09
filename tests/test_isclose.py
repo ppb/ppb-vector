@@ -84,11 +84,10 @@ def test_isclose_rel_error(x, direction, rel_tol):
     assert not x.isclose(negative, abs_tol=0, rel_tol=rel_tol)
 
 
-def test_isclose_negative_tolerances():
-    zero = Vector(0, 0)
+@given(v=vectors())
+def test_isclose_negative_tolerances(v: Vector):
+    with raises(ValueError):
+        v.isclose(v, abs_tol=-1)
 
     with raises(ValueError):
-        zero.isclose(zero, abs_tol=-1)
-
-    with raises(ValueError):
-        zero.isclose(zero, rel_tol=-1)
+        v.isclose(v, rel_tol=-1)
