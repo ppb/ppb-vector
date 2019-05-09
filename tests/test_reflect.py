@@ -1,10 +1,10 @@
-from math import isclose, isinf
+from math import isinf
 
 import pytest  # type: ignore
 from hypothesis import assume, given, note
 
 from ppb_vector import Vector
-from utils import angle_isclose, units, vectors
+from utils import angle_isclose, isclose, units, vectors
 
 
 reflect_data = (

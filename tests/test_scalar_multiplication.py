@@ -1,10 +1,8 @@
-from math import isclose
-
 from hypothesis import assume, given, strategies as st
 from pytest import raises  # type: ignore
 
 from ppb_vector import Vector
-from utils import floats, vectors
+from utils import floats, isclose, vectors
 
 
 @given(scalar=floats(), vector=vectors())

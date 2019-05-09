@@ -1,9 +1,7 @@
-from math import isclose
-
 from hypothesis import assume, given
 
 from ppb_vector import Vector
-from utils import angle_isclose, floats, lengths, vectors
+from utils import angle_isclose, floats, isclose, lengths, vectors
 
 
 @given(x=vectors(), length=floats())

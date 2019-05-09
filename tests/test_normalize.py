@@ -1,8 +1,6 @@
-from math import isclose
-
 from hypothesis import assume, given
 
-from utils import vectors
+from utils import isclose, vectors
 
 
 @given(x=vectors())
