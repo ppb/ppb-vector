@@ -53,13 +53,15 @@ FreeBSD_task:
 
 Linux_task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
-  allow_failures: $CIRRUS_TASK_NAME =~ '.*-rc-.*'
-  container:
+  env:
     matrix:
-      - image: python:3.6-slim
-      - image: python:3.7-slim
-      - image: python:3.8-rc-slim
-      - image: pypy:3.6-slim
+      - IMAGE: python:3.6-slim
+      - IMAGE: python:3.7-slim
+      - IMAGE: python:3.8-rc-slim
+      - IMAGE: pypy:3.6-slim
+  allow_failures: $IMAGE =~ '.*-rc-.*'
+  container:
+    image: $IMAGE
 
   install_script:
     - pip install --upgrade-strategy eager -U -r requirements-tests.txt
@@ -99,13 +101,15 @@ macOS_task:
 
 Windows_task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
-  allow_failures: $CIRRUS_TASK_NAME =~ '.*-rc-.*'
+  env:
+    matrix:
+      - IMAGE: python:3.6-windowsservercore-1809
+      - IMAGE: python:3.7-windowsservercore-1809
+      - IMAGE: python:3.8-rc-windowsservercore-1809
+  allow_failures: $IMAGE =~ '.*-rc-.*'
   windows_container:
     os_version: 2019
-    matrix:
-      - image: python:3.6-windowsservercore-1809
-      - image: python:3.7-windowsservercore-1809
-      - image: python:3.8-rc-windowsservercore-1809
+    image: $IMAGE
 
   install_script:
     - C:\Python\python.exe -m pip install --upgrade-strategy eager -U -r requirements-tests.txt
