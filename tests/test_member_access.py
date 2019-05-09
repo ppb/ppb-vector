@@ -1,18 +1,14 @@
 from hypothesis import given
-import pytest  # type: ignore
 
 from ppb_vector import Vector
-from utils import vectors
+from utils import floats, vectors
 
 
-@pytest.fixture()
-def vector():
-    return Vector(10, 20)
-
-
-def test_class_member_access(vector):
-    assert vector.x == 10
-    assert vector.y == 20
+@given(x=floats(), y=floats())
+def test_class_member_access(x: float, y: float):
+    v = Vector(x, y)
+    assert v.x == x
+    assert v.y == y
 
 
 @given(v=vectors())
