@@ -20,8 +20,6 @@ from utils import angle_isclose, floats, vectors
 def test_angle(left, right, expected):
     lr = left.angle(right)
     rl = right.angle(left)
-    assert -180 < lr <= 180
-    assert -180 < rl <= 180
     assert angle_isclose(lr, expected)
     assert angle_isclose(rl, -expected)
 
