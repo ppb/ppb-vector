@@ -1,3 +1,3 @@
-from ppb_vector.vector2 import Vector  # noqa
+from ppb_vector.vector import Vector  # noqa
 
 Vector2 = Vector
