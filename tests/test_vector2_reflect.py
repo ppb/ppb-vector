@@ -3,16 +3,16 @@ from math import isclose, isinf
 import pytest  # type: ignore
 from hypothesis import assume, given, note
 
-from ppb_vector import Vector2
+from ppb_vector import Vector
 from utils import angle_isclose, units, vectors
 
 
 reflect_data = (
-    (Vector2(1, 1), Vector2(0, -1), Vector2(1, -1)),
-    (Vector2(1, 1), Vector2(-1, 0), Vector2(-1, 1)),
-    (Vector2(0, 1), Vector2(0, -1), Vector2(0, -1)),
-    (Vector2(-1, -1), Vector2(1, 0), Vector2(1, -1)),
-    (Vector2(-1, -1), Vector2(-1, 0), Vector2(1, -1)),
+    (Vector(1, 1), Vector(0, -1), Vector(1, -1)),
+    (Vector(1, 1), Vector(-1, 0), Vector(-1, 1)),
+    (Vector(0, 1), Vector(0, -1), Vector(0, -1)),
+    (Vector(-1, -1), Vector(1, 0), Vector(1, -1)),
+    (Vector(-1, -1), Vector(-1, 0), Vector(1, -1)),
 )
 
 
@@ -22,8 +22,8 @@ def test_reflect(initial_vector, surface_normal, expected_vector):
 
 
 @given(initial=vectors(), normal=units())
-def test_reflect_prop(initial: Vector2, normal: Vector2):
-    """Test several properties of Vector2.reflect
+def test_reflect_prop(initial: Vector, normal: Vector):
+    """Test several properties of Vector.reflect
 
     * initial.reflect(normal).reflect(normal) == initial
       i.e. reflection is its own inverse

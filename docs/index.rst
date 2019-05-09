@@ -1,7 +1,7 @@
 PPB's 2D Vector class
 =====================
 
-.. autoclass:: ppb_vector.Vector2
+.. autoclass:: ppb_vector.Vector
    :members:
    :special-members:
    :exclude-members: __init__, __repr__, __weakref__, scale
@@ -17,7 +17,7 @@ PPB's 2D Vector class
         The Y coordinate of the vector
 
 
-Inheriting from :py:class:`Vector2`
+Inheriting from :py:class:`Vector`
 -----------------------------------
 
-:py:class:`Vector2` does not support inheritance.
+:py:class:`Vector` does not support inheritance.

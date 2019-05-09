@@ -1,11 +1,11 @@
 import pytest  # type: ignore
 
-from ppb_vector import Vector2
+from ppb_vector import Vector
 
 
 @pytest.fixture()
 def vector():
-    return Vector2(10, 20)
+    return Vector(10, 20)
 
 
 def test_vector2_class_member_access(vector):
