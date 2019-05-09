@@ -8,80 +8,80 @@ from ppb_vector import Vector
 from utils import lengths, units, vectors
 
 
-@given(x=vectors(), abs_tol=floats(min_value=0), rel_tol=floats(min_value=0))
-def test_isclose_to_self(x, abs_tol, rel_tol):
-    assert x.isclose(x, abs_tol=abs_tol, rel_tol=rel_tol)
+@given(v=vectors(), abs_tol=floats(min_value=0), rel_tol=floats(min_value=0))
+def test_isclose_to_self(v, abs_tol, rel_tol):
+    assert v.isclose(v, abs_tol=abs_tol, rel_tol=rel_tol)
 
 
 EPSILON = 1e-8
 
 
-@given(x=vectors(max_magnitude=1e30), direction=units(), abs_tol=lengths(max_value=1e30))
-def test_isclose_abs_error(x, direction, abs_tol):
-    """Test x.isclose(rel_tol=0) near the boundary between “close” and “not close”
+@given(v=vectors(max_magnitude=1e30), direction=units(), abs_tol=lengths(max_value=1e30))
+def test_isclose_abs_error(v, direction, abs_tol):
+    """Test v.isclose(rel_tol=0) near the boundary between “close” and “not close”
 
-    - x + (1 - ε) * abs_tol * direction should be close
-    - x + (1 + ε) * abs_tol * direction shouldn't be close
+    - v + (1 - ε) * abs_tol * direction should be close
+    - v + (1 + ε) * abs_tol * direction shouldn't be close
     """
-    assume(abs_tol > EPSILON * x.length)
-    note(f"|x|: {x.length}")
+    assume(abs_tol > EPSILON * v.length)
+    note(f"|v|: {v.length}")
 
     error = abs_tol * direction
-    positive = x + (1 - sqrt(EPSILON)) * error
-    note(f"positive example: {positive} = x + {positive - x}")
-    assert x.isclose(positive, abs_tol=abs_tol, rel_tol=0)
+    positive = v + (1 - sqrt(EPSILON)) * error
+    note(f"positive example: {positive} = v + {positive - v}")
+    assert v.isclose(positive, abs_tol=abs_tol, rel_tol=0)
 
-    negative = x + (1 + sqrt(EPSILON)) * abs_tol * direction
-    note(f"negative example: {negative} = x + {negative - x}")
-    assert not x.isclose(negative, abs_tol=abs_tol, rel_tol=0)
+    negative = v + (1 + sqrt(EPSILON)) * abs_tol * direction
+    note(f"negative example: {negative} = v + {negative - v}")
+    assert not v.isclose(negative, abs_tol=abs_tol, rel_tol=0)
 
 
 @given(
-    x=vectors(max_magnitude=1e30),
+    v=vectors(max_magnitude=1e30),
     direction=units(),
     rel_tol=floats(min_value=EPSILON, max_value=1 - sqrt(EPSILON)),
 )
-def test_isclose_rel_error(x, direction, rel_tol):
-    """Test x.isclose(abs_tol=0) near the boundary between “close” and “not close”
+def test_isclose_rel_error(v, direction, rel_tol):
+    """Test v.isclose(abs_tol=0) near the boundary between “close” and “not close”
 
-    - x + (1 - ε) * |x| * rel_tol * direction should always be close
+    - v + (1 - ε) * |v| * rel_tol * direction should always be close
     - We can also generate an example that isn't close,
       though the formula is somewhat complicated.
     """
-    assume(x.length > EPSILON)
-    note(f"|x| = {x.length}")
+    assume(v.length > EPSILON)
+    note(f"|v| = {v.length}")
     error = rel_tol * direction
 
-    positive = x + (1 - sqrt(EPSILON)) * x.length * error
+    positive = v + (1 - sqrt(EPSILON)) * v.length * error
     note(
-        f"positive example: {positive} = x + {positive - x} = "
-        f"x + {(positive - x).length / x.length} * |x| * direction",
+        f"positive example: {positive} = v + {positive - v} = "
+        f"v + {(positive - v).length / v.length} * |v| * direction",
     )
 
-    assert x.isclose(positive, abs_tol=0, rel_tol=rel_tol)
+    assert v.isclose(positive, abs_tol=0, rel_tol=rel_tol)
 
-    # In x.isclose(negative), the allowed relative error is relative to |x|
+    # In v.isclose(negative), the allowed relative error is relative to |v|
     # and |negative|, so the acceptable errors grow larger as negative does.
     #
-    # We must account for this; given negative = x + δ error = x + δ rel_tol direction,
-    # we want to pick δ>0 s.t. |x-negative|/rel_tol = δ > max(|x|, |negative|),
-    # i.e. δ > |x| and δ² > negative² = (x + δ error)²
-    # δ² > x² + rel_tol² δ² + 2δ x·error
-    # (1 - rel_tol²) δ² - 2 x·error δ > x²
+    # We must account for this; given negative = v + δ error = v + δ rel_tol direction,
+    # we want to pick δ>0 s.t. |v-negative|/rel_tol = δ > max(|v|, |negative|),
+    # i.e. δ > |v| and δ² > negative² = (v + δ error)²
+    # δ² > v² + rel_tol² δ² + 2δ v·error
+    # (1 - rel_tol²) δ² - 2 v·error δ > v²
     #              a δ² - 2 b       δ > c  with :
     a = 1 - rel_tol * rel_tol
-    b = x * error
-    c = x * x
+    b = v * error
+    c = v * v
     δ = (b + sqrt(a * c + b * b)) / a
     note(f"δ: {δ}")
 
-    negative = x + (1 + sqrt(EPSILON)) * max(x.length, δ) * error
+    negative = v + (1 + sqrt(EPSILON)) * max(v.length, δ) * error
     note(
-        f"negative example: {negative} = x + {negative - x} = "
-        f"x + {(negative - x).length / x.length} * |x| * direction",
+        f"negative example: {negative} = v + {negative - v} = "
+        f"v + {(negative - v).length / v.length} * |v| * direction",
     )
 
-    assert not x.isclose(negative, abs_tol=0, rel_tol=rel_tol)
+    assert not v.isclose(negative, abs_tol=0, rel_tol=rel_tol)
 
 
 @given(v=vectors())
