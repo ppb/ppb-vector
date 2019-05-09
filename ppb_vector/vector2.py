@@ -1,5 +1,4 @@
 import dataclasses
-import functools
 import typing
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
@@ -8,9 +7,6 @@ from math import atan2, copysign, cos, degrees, hypot, isclose, radians, sin, sq
 __all__ = ('Vector2',)
 
 
-# Vector or subclass
-Vector = typing.TypeVar('Vector', bound='Vector2')
-
 # Anything convertable to a Vector, including lists, tuples, and dicts
 VectorLike = typing.Union[
     'Vector2',  # Or subclasses, unconnected to the Vector typevar above
@@ -18,35 +14,6 @@ VectorLike = typing.Union[
     typing.Sequence[typing.SupportsFloat],  # TODO: Length 2
     typing.Mapping[str, typing.SupportsFloat],  # TODO: Length 2, keys 'x', 'y'
 ]
-
-
-@functools.lru_cache()
-def _find_lowest_type(left: typing.Type, right: typing.Type) -> typing.Type:
-    """
-    Guess which is the more specific type.
-    """
-    # Basically, see what classes are unique in each type's MRO and return who
-    # has the most.
-    lmro = set(left.__mro__)
-    rmro = set(right.__mro__)
-    if len(lmro) > len(rmro):
-        return left
-    elif len(rmro) > len(lmro):
-        return right
-    else:
-        # They're equal, just arbitrarily pick one
-        return left
-
-
-def _find_lowest_vector(left: typing.Type, right: typing.Type) -> typing.Type:
-    if left is right:
-        return left
-    elif not issubclass(left, Vector2):
-        return right
-    elif not issubclass(right, Vector2):
-        return left
-    else:
-        return _find_lowest_type(left, right)
 
 
 @dataclass(eq=False, frozen=True, init=False, repr=False)
@@ -197,10 +164,10 @@ class Vector2:
         """
         return {'x': self.x, 'y': self.y}
 
-    def __len__(self: Vector) -> int:
+    def __len__(self) -> int:
         return 2
 
-    def __add__(self: Vector, other: VectorLike) -> Vector:
+    def __add__(self, other: VectorLike) -> 'Vector2':
         """Add two vectors.
 
         :param other: A :py:class:`Vector2` or a vector-like.
@@ -209,14 +176,14 @@ class Vector2:
         >>> Vector2(1, 0) + (0, 1)
         Vector2(1.0, 1.0)
         """
-        rtype = _find_lowest_vector(type(other), type(self))
         try:
             other_x, other_y = Vector2._unpack(other)
         except ValueError:
             return NotImplemented
-        return rtype(self.x + other_x, self.y + other_y)
 
-    def __sub__(self: Vector, other: VectorLike) -> Vector:
+        return Vector2(self.x + other_x, self.y + other_y)
+
+    def __sub__(self, other: VectorLike) -> 'Vector2':
         """Subtract one vector from another.
 
         :param other: A :py:class:`Vector2` or a vector-like.
@@ -225,14 +192,14 @@ class Vector2:
         >>> Vector2(3, 3) - (1, 1)
         Vector2(2.0, 2.0)
         """
-        rtype = _find_lowest_vector(type(other), type(self))
         try:
             other_x, other_y = Vector2._unpack(other)
         except ValueError:
             return NotImplemented
-        return rtype(self.x - other_x, self.y - other_y)
 
-    def dot(self: Vector, other: VectorLike) -> float:
+        return Vector2(self.x - other_x, self.y - other_y)
+
+    def dot(self, other: VectorLike) -> float:
         """Dot product of two vectors.
 
         :param other: A :py:class:`Vector2` or a vector-like.
@@ -241,7 +208,7 @@ class Vector2:
         other_x, other_y = Vector2._unpack(other)
         return self.x * other_x + self.y * other_y
 
-    def scale_by(self: Vector, scalar: typing.SupportsFloat) -> Vector:
+    def scale_by(self, scalar: typing.SupportsFloat) -> 'Vector2':
         """Scalar multiplication.
 
         >>> Vector2(1, 2).scale_by(3)
@@ -256,10 +223,10 @@ class Vector2:
         return type(self)(scalar * self.x, scalar * self.y)
 
     @typing.overload
-    def __mul__(self: Vector, other: VectorLike) -> float: pass
+    def __mul__(self, other: VectorLike) -> float: pass
 
     @typing.overload
-    def __mul__(self: Vector, other: typing.SupportsFloat) -> Vector: pass
+    def __mul__(self, other: typing.SupportsFloat) -> 'Vector2': pass
 
     def __mul__(self, other):
         """Performs a dot product or scalar product, based on the parameter type.
@@ -300,15 +267,15 @@ class Vector2:
             return NotImplemented
 
     @typing.overload
-    def __rmul__(self: Vector, other: VectorLike) -> float: pass
+    def __rmul__(self, other: VectorLike) -> float: pass
 
     @typing.overload
-    def __rmul__(self: Vector, other: typing.SupportsFloat) -> Vector: pass
+    def __rmul__(self, other: typing.SupportsFloat) -> 'Vector2': pass
 
     def __rmul__(self, other):
         return self.__mul__(other)
 
-    def __truediv__(self: Vector, other: typing.SupportsFloat) -> Vector:
+    def __truediv__(self, other: typing.SupportsFloat) -> 'Vector2':
         """Perform a division between a vector and a scalar.
 
         >>> Vector2(3, 3) / 3
@@ -317,7 +284,7 @@ class Vector2:
         other = float(other)
         return type(self)(self.x / other, self.y / other)
 
-    def __getitem__(self: Vector, item: typing.Union[str, int]) -> float:
+    def __getitem__(self, item: typing.Union[str, int]) -> float:
         if hasattr(item, '__index__'):
             item = item.__index__()  # type: ignore
         if isinstance(item, str):
@@ -337,10 +304,10 @@ class Vector2:
         else:
             raise TypeError
 
-    def __repr__(self: Vector) -> str:
+    def __repr__(self) -> str:
         return f"{type(self).__name__}({self.x}, {self.y})"
 
-    def __eq__(self: Vector, other: typing.Any) -> bool:
+    def __eq__(self, other: typing.Any) -> bool:
         """Test wheter two vectors are equal.
 
         :param other: A :py:class:`Vector2` or a vector-like.
@@ -356,11 +323,11 @@ class Vector2:
         else:
             return self.x == other_x and self.y == other_y
 
-    def __iter__(self: Vector) -> typing.Iterator[float]:
+    def __iter__(self) -> typing.Iterator[float]:
         yield self.x
         yield self.y
 
-    def __neg__(self: Vector) -> Vector:
+    def __neg__(self) -> 'Vector2':
         """Negate a vector.
 
         Negating a :py:class:`Vector2` produces one with identical length and opposite
@@ -371,7 +338,7 @@ class Vector2:
         """
         return self.scale_by(-1)
 
-    def angle(self: Vector, other: VectorLike) -> float:
+    def angle(self, other: VectorLike) -> float:
         """Compute the angle between two vectors, expressed in degrees.
 
         :param other: A :py:class:`Vector2` or a vector-like.
@@ -397,7 +364,7 @@ class Vector2:
 
         return rv
 
-    def isclose(self: Vector, other: VectorLike, *,
+    def isclose(self, other: VectorLike, *,
                 abs_tol: typing.SupportsFloat = 1e-09, rel_tol: typing.SupportsFloat = 1e-09,
                 rel_to: typing.Sequence[VectorLike] = ()) -> bool:
         """Perform an approximate comparison of two vectors.
@@ -454,7 +421,7 @@ class Vector2:
 
         return r_cos, r_sin
 
-    def rotate(self: Vector, angle: typing.SupportsFloat) -> Vector:
+    def rotate(self, angle: typing.SupportsFloat) -> 'Vector2':
         """Rotate a vector.
 
         Rotate a vector in relation to the origin and return a new :py:class:`Vector2`.
@@ -470,7 +437,7 @@ class Vector2:
         y = self.x * r_sin + self.y * r_cos
         return type(self)(x, y)
 
-    def normalize(self: Vector) -> Vector:
+    def normalize(self) -> 'Vector2':
         """Return a vector with the same direction and unit length.
 
         >>> Vector2(3, 4).normalize()
@@ -482,7 +449,7 @@ class Vector2:
         """
         return self.scale(1)
 
-    def truncate(self: Vector, max_length: typing.SupportsFloat) -> Vector:
+    def truncate(self, max_length: typing.SupportsFloat) -> 'Vector2':
         """Scale a given :py:class:`Vector2` down to a given length, if it is larger.
 
         >>> Vector2(7, 24).truncate(3)
@@ -515,7 +482,7 @@ class Vector2:
 
         return self.scale_to(max_length)
 
-    def scale_to(self: Vector, length: typing.SupportsFloat) -> Vector:
+    def scale_to(self, length: typing.SupportsFloat) -> 'Vector2':
         """Scale a given :py:class:`Vector2` to a certain length.
 
         >>> Vector2(7, 24).scale_to(2)
@@ -532,7 +499,7 @@ class Vector2:
 
     scale = scale_to
 
-    def reflect(self: Vector, surface_normal: VectorLike) -> Vector:
+    def reflect(self, surface_normal: VectorLike) -> 'Vector2':
         """Reflect a vector against a surface.
 
         :param other: A :py:class:`Vector2` or a vector-like.
