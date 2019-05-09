@@ -1,5 +1,3 @@
-from math import isclose
-
 import pytest  # type: ignore
 from hypothesis import assume, given
 
@@ -24,8 +22,8 @@ def test_angle(left, right, expected):
     rl = right.angle(left)
     assert -180 < lr <= 180
     assert -180 < rl <= 180
-    assert isclose(lr, expected)
-    assert isclose(rl, 180 if expected == 180 else -expected)
+    assert angle_isclose(lr, expected)
+    assert angle_isclose(rl, -expected)
 
 
 @given(left=vectors(), right=vectors())
