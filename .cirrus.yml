@@ -55,14 +55,14 @@ task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   env:
     matrix:
-      - IMAGE_TAG: 3.6-slim
-      - IMAGE_TAG: 3.7-slim
-      - IMAGE_TAG: 3.8-rc-slim
-      - IMAGE_TAG: 3.6-slim
-  name: "Linux $IMAGE_TAG"
-  allow_failures: $IMAGE_TAG =~ '.*-rc-.*'
+      - IMAGE: python:3.6-slim
+      - IMAGE: python:3.7-slim
+      - IMAGE: python:3.8-rc-slim
+      - IMAGE: pypy:3.6-slim
+  name: "Linux $IMAGE"
+  allow_failures: $IMAGE =~ '.*-rc-.*'
   container:
-    image: python:$IMAGE_TAG
+    image: $IMAGE
 
   install_script:
     - pip install --upgrade-strategy eager -U -r requirements-tests.txt
@@ -104,14 +104,14 @@ task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   env:
     matrix:
-      - IMAGE_TAG: 3.6-windowsservercore-1809
-      - IMAGE_TAG: 3.7-windowsservercore-1809
-      - IMAGE_TAG: 3.8-rc-windowsservercore-1809
+      - IMAGE: python:3.6-windowsservercore-1809
+      - IMAGE: python:3.7-windowsservercore-1809
+      - IMAGE: python:3.8-rc-windowsservercore-1809
   allow_failures: $IMAGE =~ '.*-rc-.*'
-  name: "Windows $IMAGE_TAG"
+  name: "Windows $IMAGE"
   windows_container:
     os_version: 2019
-    image: python:$IMAGE_TAG
+    image: $IMAGE
 
   install_script:
     - C:\Python\python.exe -m pip install --upgrade-strategy eager -U -r requirements-tests.txt
