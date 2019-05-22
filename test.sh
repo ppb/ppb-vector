@@ -10,5 +10,5 @@ else
 fi
 
 
-run ${PY} -m doctest README.md ppb_vector/vector.py
+run ${PY} -m doctest README.md ppb_vector/__init__.py
 run ${PY} -m pytest "${PYTEST_OPTIONS[@]}"
