@@ -3,10 +3,10 @@ from typing import Sequence, Union
 import hypothesis.strategies as st
 from hypothesis import note
 
-from ppb_vector import Vector2
+from ppb_vector import Vector
 
 
-UNIT_X, UNIT_Y = Vector2(1, 0), Vector2(0, 1)
+UNIT_X, UNIT_Y = Vector(1, 0), Vector(0, 1)
 
 
 def angles():
@@ -23,7 +23,7 @@ def lengths(min_value=0, max_value=1e75):
 
 def vectors(max_magnitude=1e75):
     return st.builds(
-        Vector2,
+        Vector,
         st.floats(min_value=-max_magnitude, max_value=max_magnitude),
         st.floats(min_value=-max_magnitude, max_value=max_magnitude),
     )
@@ -44,7 +44,7 @@ def isclose(
     abs_tol: float = 1e-9,
     rel_tol: float = 1e-9,
     rel_exp: float = 1,
-    rel_to: Sequence[Union[float, Vector2]] = (),
+    rel_to: Sequence[Union[float, Vector]] = (),
 ):
     if rel_exp < 1:
         raise ValueError(f"Expected rel_exp >= 1, got {rel_exp}")
@@ -54,7 +54,7 @@ def isclose(
         abs(x),
         abs(y),
         *(abs(z) ** rel_exp for z in rel_to if isinstance(z, float)),
-        *(z.length ** rel_exp for z in rel_to if isinstance(z, Vector2)),
+        *(z.length ** rel_exp for z in rel_to if isinstance(z, Vector)),
     )
     note(f"rel_max = {rel_max}")
     if rel_max > 0:
@@ -65,29 +65,29 @@ def isclose(
     return diff <= rel_max * rel_tol or diff <= abs_tol
 
 
-# List of operations that (Vector2, Vector2) -> Vector2
-BINARY_OPS = [Vector2.__add__, Vector2.__sub__, Vector2.reflect]
+# List of operations that (Vector, Vector) -> Vector
+BINARY_OPS = [Vector.__add__, Vector.__sub__, Vector.reflect]
 
-# List of (Vector2, Vector2) -> scalar operations
-BINARY_SCALAR_OPS = [Vector2.angle, Vector2.dot]
+# List of (Vector, Vector) -> scalar operations
+BINARY_SCALAR_OPS = [Vector.angle, Vector.dot]
 
-# List of (Vector2, Vector2) -> bool operations
-BOOL_OPS = [Vector2.__eq__, Vector2.isclose]
+# List of (Vector, Vector) -> bool operations
+BOOL_OPS = [Vector.__eq__, Vector.isclose]
 
-# List of operations that (Vector2, Real) -> Vector2
-SCALAR_OPS = [Vector2.rotate, Vector2.scale_by, Vector2.scale_to, Vector2.truncate]
+# List of operations that (Vector, Real) -> Vector
+SCALAR_OPS = [Vector.rotate, Vector.scale_by, Vector.scale_to, Vector.truncate]
 
-# List of operations that (Vector2) -> Vector2
-UNARY_OPS = [Vector2.__neg__, Vector2, Vector2.normalize]
+# List of operations that (Vector) -> Vector
+UNARY_OPS = [Vector.__neg__, Vector, Vector.normalize]
 
-# List of (Vector2) -> scalar operations
+# List of (Vector) -> scalar operations
 UNARY_SCALAR_OPS = [
-    Vector2.length.fget,  # type: ignore
+    Vector.length.fget,  # type: ignore
     # mypy fails to typecheck properties' attributes:
     #  https://github.com/python/mypy/issues/220
 ]
 
 
 # Sequence of vector-likes equivalent to the input vector (def. to the x vector)
-def vector_likes(v: Vector2 = UNIT_X):
+def vector_likes(v: Vector = UNIT_X):
     return ((v.x, v.y), [v.x, v.y], {"x": v.x, "y": v.y})

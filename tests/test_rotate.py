@@ -5,15 +5,15 @@ import hypothesis.strategies as st
 import pytest  # type: ignore
 from hypothesis import assume, example, given, note
 
-from ppb_vector import Vector2
+from ppb_vector import Vector
 from utils import angle_isclose, angles, floats, isclose, vectors
 
 
 data_exact = [
-    (Vector2(1, 1), -90, Vector2(1, -1)),
-    (Vector2(1, 1), 0, Vector2(1, 1)),
-    (Vector2(1, 1), 90, Vector2(-1, 1)),
-    (Vector2(1, 1), 180, Vector2(-1, -1)),
+    (Vector(1, 1), -90, Vector(1, -1)),
+    (Vector(1, 1), 0, Vector(1, 1)),
+    (Vector(1, 1), 90, Vector(-1, 1)),
+    (Vector(1, 1), 180, Vector(-1, -1)),
 ]
 
 
@@ -71,10 +71,10 @@ def test_remarkable_angles(angle, trig):
 
 
 data_close = [
-    (Vector2(1, 0), angle, Vector2(cos_t, sin_t))
+    (Vector(1, 0), angle, Vector(cos_t, sin_t))
     for (angle, (sin_t, cos_t)) in remarkable_angles.items()
 ] + [
-    (Vector2(1, 1), angle, Vector2(cos_t - sin_t, cos_t + sin_t))
+    (Vector(1, 1), angle, Vector(cos_t - sin_t, cos_t + sin_t))
     for (angle, (sin_t, cos_t)) in remarkable_angles.items()
 ]
 
@@ -93,7 +93,7 @@ def test_close_rotations(input, angle, expected):
 
 def test_for_exception():
     with pytest.raises(TypeError):
-        Vector2("gibberish", 1).rotate(180)
+        Vector("gibberish", 1).rotate(180)
 
 
 @given(angle=angles())
@@ -103,7 +103,7 @@ def test_trig_stability(angle):
     We are testing that this equation holds, as otherwise rotations
     would (slightly) change the length of vectors they are applied to.
     """
-    r_cos, r_sin = Vector2._trig(angle)
+    r_cos, r_sin = Vector._trig(angle)
 
     # Don't use exponents here. Multiplication is generally more stable.
     assert math.isclose(r_cos * r_cos + r_sin * r_sin, 1, rel_tol=1e-18)
@@ -112,8 +112,8 @@ def test_trig_stability(angle):
 @given(angle=angles(), n=st.integers(min_value=0, max_value=1e5))
 def test_trig_invariance(angle: float, n: int):
     """Test that cos(θ), sin(θ) ≃ cos(θ + n*360°), sin(θ + n*360°)"""
-    r_cos, r_sin = Vector2._trig(angle)
-    n_cos, n_sin = Vector2._trig(angle + 360 * n)
+    r_cos, r_sin = Vector._trig(angle)
+    n_cos, n_sin = Vector._trig(angle + 360 * n)
 
     note(f"δcos: {r_cos - n_cos}")
     assert isclose(r_cos, n_cos, rel_to=[n / 1e9])
@@ -122,7 +122,7 @@ def test_trig_invariance(angle: float, n: int):
 
 
 @given(v=vectors(), angle=angles(), n=st.integers(min_value=0, max_value=1e5))
-def test_rotation_invariance(v: Vector2, angle: float, n: int):
+def test_rotation_invariance(v: Vector, angle: float, n: int):
     """Check that rotating by angle and angle + n×360° have the same result."""
     rot_once = v.rotate(angle)
     rot_many = v.rotate(angle + 360 * n)
@@ -146,7 +146,7 @@ def test_rotation_angle(initial, angle):
 @given(angle=angles(), loops=st.integers(min_value=0, max_value=500))
 def test_rotation_stability(angle, loops):
     """Rotating loops times by angle is equivalent to rotating by loops*angle."""
-    initial = Vector2(1, 0)
+    initial = Vector(1, 0)
 
     fellswoop = initial.rotate(angle * loops)
     note(f"One Fell Swoop: {fellswoop}")
@@ -184,7 +184,7 @@ def test_rotation_stability2(initial, angles):
 # * x * l == -y
 # * Rotation must not be an multiple of 90deg
 # * Must be sufficiently large
-@example(x=Vector2(1e10, 1e10), y=Vector2(1e19, 1e19), scalar=-1e9, angle=45)
+@example(x=Vector(1e10, 1e10), y=Vector(1e19, 1e19), scalar=-1e9, angle=45)
 def test_rotation_linearity(x, y, scalar, angle):
     """(l*x + y).rotate is equivalent to l*x.rotate + y.rotate"""
     inner = (scalar * x + y).rotate(angle)

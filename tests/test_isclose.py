@@ -4,7 +4,7 @@ from hypothesis import assume, example, given, note
 from hypothesis.strategies import floats
 from pytest import raises  # type: ignore
 
-from ppb_vector import Vector2
+from ppb_vector import Vector
 from utils import lengths, units, vectors
 
 
@@ -42,13 +42,13 @@ def test_isclose_abs_error(x, direction, abs_tol):
     rel_tol=floats(min_value=EPSILON, max_value=1 - sqrt(EPSILON)),
 )
 @example(
-    x=Vector2(0.503_057_595_580_003_3, 4183.540_331_936_798),
-    direction=Vector2(-0.210_806_916_039_135_68, -0.977_527_720_399_82),
+    x=Vector(0.503_057_595_580_003_3, 4183.540_331_936_798),
+    direction=Vector(-0.210_806_916_039_135_68, -0.977_527_720_399_82),
     rel_tol=1.000_004_462_650_204_7e-08,
 )
 @example(
-    x=Vector2(0.336_348_726_648_339, 4183.540_331_936_798),
-    direction=Vector2(-0.210_806_915_936_694_1, -0.977_527_720_421_911_9),
+    x=Vector(0.336_348_726_648_339, 4183.540_331_936_798),
+    direction=Vector(-0.210_806_915_936_694_1, -0.977_527_720_421_911_9),
     rel_tol=1.000_000_910_291_832_8e-08,
 )
 def test_isclose_rel_error(x, direction, rel_tol):
@@ -95,7 +95,7 @@ def test_isclose_rel_error(x, direction, rel_tol):
 
 
 def test_isclose_negative_tolerances():
-    zero = Vector2(0, 0)
+    zero = Vector(0, 0)
 
     with raises(ValueError):
         zero.isclose(zero, abs_tol=-1)

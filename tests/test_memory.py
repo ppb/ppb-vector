@@ -4,7 +4,7 @@ import weakref
 import pytest  # type: ignore
 from hypothesis import given
 
-from ppb_vector import Vector2
+from ppb_vector import Vector
 from utils import floats, vectors
 
 
@@ -23,13 +23,13 @@ class DummyVector:
                     reason="PyPy optimises __slots__ automatically.")
 @given(x=floats(), y=floats())
 def test_object_size(x, y):
-    """Check that Vector2 is 2 times smaller than a naïve version."""
+    """Check that Vector is 2 times smaller than a naïve version."""
     from pympler.asizeof import asizeof as sizeof  # type: ignore
 
-    assert sizeof(Vector2(x, y)) < sizeof(DummyVector(x, y)) / 2
+    assert sizeof(Vector(x, y)) < sizeof(DummyVector(x, y)) / 2
 
 
 @given(v=vectors())
 def test_weak_ref(v):
-    """Check that weak references can be made to Vector2s."""
+    """Check that weak references can be made to Vectors."""
     assert weakref.ref(v) is not None

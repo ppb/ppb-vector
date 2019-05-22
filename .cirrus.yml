@@ -121,5 +121,5 @@ task:
     - C:\Python\python.exe --version
     - C:\Python\python.exe -m pip list
 
-    - C:\Python\python.exe -m doctest README.md
+    - C:\Python\python.exe -m doctest README.md ppb_vector/__init__.py
     - C:\Python\python.exe -m pytest --hypothesis-profile ci
