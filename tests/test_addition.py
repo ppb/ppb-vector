@@ -1,6 +1,8 @@
 import pytest  # type: ignore
+from hypothesis import given
 
 from ppb_vector import Vector
+from utils import vector_likes, vectors
 
 
 def test_addition_vectors():
@@ -47,3 +49,9 @@ data = [
 @pytest.mark.parametrize("test_input, expected", data)
 def test_multiples_values(test_input, expected):
     assert (test_input[0] + test_input[1]) == expected
+
+
+@given(x=vectors(), y=vectors())
+def test_addition_reverse(x: Vector, y: Vector):
+    for y_like in vector_likes(y):
+        assert y_like + x == x + y
