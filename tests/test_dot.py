@@ -3,7 +3,7 @@ from math import sqrt
 from hypothesis import assume, given, note
 
 from ppb_vector import Vector
-from utils import angles, floats, isclose, vectors
+from utils import angles, floats, isclose, vector_likes, vectors
 
 
 @given(vector=vectors())
@@ -75,3 +75,9 @@ def test_dot_from_angle(x: Vector, y: Vector):
     note(f"algebraic: {x * y}")
     note(f"geometric: {geometric}")
     assert isclose(x * y, geometric, rel_to=(x, y), rel_exp=2)
+
+
+@given(x=vectors(), y=vectors())
+def test_dot_rmul(x: Vector, y: Vector):
+    for x_like in vector_likes(x):
+        assert x_like * y == x * y

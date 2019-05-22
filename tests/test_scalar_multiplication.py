@@ -45,3 +45,8 @@ def test_scalar_inverse(x: Vector, scalar: float):
     """Test that (λ * x / λ) ≃ x"""
     assume(abs(scalar) > 1e-100)
     assert x.isclose(scalar * x / scalar)
+
+
+@given(x=vectors(), scalar=floats())
+def test_scalar_rmul(x: Vector, scalar: float):
+    assert scalar * x == x.scale_by(scalar)
