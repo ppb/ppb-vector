@@ -18,8 +18,8 @@ def test_ctor_coordinates(x: float, y: float):
     assert Vector(x, y) == Vector((x, y))
 
 
-def test_ctor_noncopy_same():
-    v = Vector(1, 2)
+@given(v=vectors())
+def test_ctor_noncopy_same(v: Vector):
     assert Vector(v) is v
 
 
