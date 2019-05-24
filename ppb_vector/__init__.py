@@ -132,7 +132,7 @@ class Vector:
             raise TypeError(f"{type(y).__name__} object not convertable to float")
 
     def __reduce__(self):
-        return Vector.__new__, (Vector, self.x, self.y)
+        return Vector, (self.x, self.y)
 
     #: Return a new :py:class:`Vector` replacing specified fields with new values.
     update = dataclasses.replace
