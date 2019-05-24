@@ -124,7 +124,7 @@ class Vector:
         return self
 
     def __reduce__(self):
-        return Vector.__new__, (Vector, self.x, self.y)
+        return Vector, (self.x, self.y)
 
     #: Return a new :py:class:`Vector` replacing specified fields with new values.
     update = dataclasses.replace
