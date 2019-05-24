@@ -30,3 +30,10 @@ def test_ctor_pickle(v: Vector):
 
     assert v == w
     assert isinstance(w, Vector)
+
+
+@given(v=vectors())
+def test_ctor_copy(v: Vector):
+    """Test that Vector instances can be copied."""
+    from copy import copy, deepcopy
+    assert v == copy(v) == deepcopy(v)
