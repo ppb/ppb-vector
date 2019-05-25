@@ -183,6 +183,9 @@ class Vector:
 
         return Vector(self.x + other_x, self.y + other_y)
 
+    def __radd__(self, other: VectorLike) -> 'Vector':
+        return self + other
+
     def __sub__(self, other: VectorLike) -> 'Vector':
         """Subtract one vector from another.
 
