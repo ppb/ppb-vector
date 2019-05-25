@@ -16,4 +16,4 @@ for f in UNARY_OPS | UNARY_SCALAR_OPS:  # type: ignore
     r.bench_func(f.__name__, f, x)
 
 for f in SCALAR_OPS:  # type: ignore
-    r.bench_func(f.__name__, f, x, scalar)
+    r.bench_func(f.__name__, f, x, scalar)  # type: ignore
