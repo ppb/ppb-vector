@@ -1,6 +1,7 @@
 from math import isclose
 
-from hypothesis import assume, given
+from hypothesis import assume, given, strategies as st
+from pytest import raises  # type: ignore
 
 from ppb_vector import Vector
 from utils import floats, vectors
@@ -50,3 +51,23 @@ def test_scalar_inverse(x: Vector, scalar: float):
 @given(x=vectors(), scalar=floats())
 def test_scalar_rmul(x: Vector, scalar: float):
     assert scalar * x == x.scale_by(scalar)
+
+
+@given(x=vectors(), scalar=st.integers())
+def test_integer_multiplication(x: Vector, scalar: int):
+    assert scalar * x == float(scalar) * x
+
+
+@given(x=vectors(), scalar=st.integers())
+def test_integer_division(x: Vector, scalar: int):
+    assume(scalar != 0)
+    assert x / scalar == x / float(scalar)
+
+
+@given(x=vectors())
+def test_division_by_zero(x: Vector):
+    with raises(ZeroDivisionError):
+        x / 0
+
+    with raises(ZeroDivisionError):
+        x / 0.
