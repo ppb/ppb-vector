@@ -7,16 +7,19 @@ from ppb_vector import Vector
 from utils import floats, isclose, vectors
 
 
-@pytest.mark.parametrize(
-    "x, y, expected",
-    [(6,   8, 10),
-     (8,   6, 10),
-     (0,   0, 0),
-     (-6, -8, 10),
-     (1,   2, 2.23606797749979)],
-)
-def test_length(x, y, expected):
-    vector = Vector(x, y)
+data = [
+    ((6,   8), 10),
+    ((8,   6), 10),
+    ((0,   0), 0),
+    ((-6, -8), 10),
+    ((1,   2), 2.23606797749979),
+]
+
+
+@pytest.mark.parametrize("v, expected", data,
+                         ids=[f"{v}" for v, _ in data])
+def test_length(v, expected):
+    vector = Vector(v)
     assert vector.length == expected
 
 
