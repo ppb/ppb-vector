@@ -19,6 +19,7 @@ data = [
 ]
 
 
-@pytest.mark.parametrize("x, y, expected", data)
+@pytest.mark.parametrize("x, y, expected", data,
+                         ids=[f"{x} + {y}" for x, y, expected in data])
 def test_multiples_values(x, y, expected):
     assert (Vector(x) - y) == expected
