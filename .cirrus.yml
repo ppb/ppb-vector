@@ -26,6 +26,26 @@ lint_task:
     - pip list
     - ./lint.sh
 
+upload_task:
+  only_if: $CIRRUS_BRANCH == 'master' && $CIRRUS_RELEASE != ""
+  env:
+    PYPI_REPOSITORY: "https://test.pypi.org/legacy/"
+    PYPI_USER: pursuedpybot
+    PYPI_PASSWORD: "ENCRYPTED[31855ff9a080d4be75462409aa237fd116237b333f28cbfdadf0b3e3a15e2c9d542c4ab26d14323765b7e23072bcd126]"
+    GITHUB_TOKEN: "ENCRYPTED[6975bc1548d212e17af0529b0041745c188388461f0481c858db317ad2417c3a36014a019b3d6797e62f938098400d6c]"
+
+  container:
+    image: python:3.7-slim
+
+  install_script:
+    - pip install --upgrade-strategy eager -U -r requirements-upload.txt
+
+  script:
+    - ./setup.py sdist bdist_wheel
+    - ls -Al dist
+    - tar -tf dist/*.tar.*
+    - unzip -l dist/*.whl
+    - ./.ci/upload-build.sh
 
 
 FreeBSD_task:
