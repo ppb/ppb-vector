@@ -3,9 +3,9 @@ from hypothesis import assume, given
 from utils import isclose, vectors
 
 
-@given(x=vectors())
-def test_normalize_length(x):
-    """x.normalize().length == 1 and x == x.length * x.normalize()"""
-    assume(x != (0, 0))
-    assert isclose(x.normalize().length, 1)
-    assert x.isclose(x.length * x.normalize())
+@given(v=vectors())
+def test_normalize_length(v):
+    """v.normalize().length == 1 and v == v.length * v.normalize()"""
+    assume(v != (0, 0))
+    assert isclose(v.normalize().length, 1)
+    assert v.isclose(v.length * v.normalize())
