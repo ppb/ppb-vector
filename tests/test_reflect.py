@@ -1,4 +1,4 @@
-from math import isinf
+from math import isinf, isnan
 
 import pytest  # type: ignore
 from hypothesis import assume, given, note
@@ -19,6 +19,12 @@ reflect_data = (
 @pytest.mark.parametrize("initial, surface_normal, expected", reflect_data)
 def test_reflect(initial, surface_normal, expected):
     assert initial.reflect(surface_normal).isclose(expected)
+
+
+@given(initial=vectors(), normal=units())
+def test_reflect_nan_inf(initial: Vector, normal: Vector):
+    """Test that reflection doesn't produce NaN or ±∞."""
+    assert not any(isinf(c) or isnan(c) for c in initial.reflect(normal))
 
 
 @given(initial=vectors(), normal=units())
@@ -49,7 +55,6 @@ def test_reflect_prop(initial: Vector, normal: Vector):
     note(f"angle(normal, initial): {normal.angle(initial)}")
     note(f"angle(normal, reflected): {normal.angle(reflected)}")
     note(f"Reflected: {reflected}")
-    assert not any(map(isinf, reflected))
     note(f"initial ⋅ normal: {initial * normal}")
     note(f"reflected ⋅ normal: {reflected * normal}")
     assert isclose((initial * normal), -(reflected * normal))
