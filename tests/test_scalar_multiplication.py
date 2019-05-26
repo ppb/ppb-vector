@@ -5,67 +5,67 @@ from ppb_vector import Vector
 from utils import floats, isclose, vectors
 
 
-@given(scalar=floats(), vector=vectors())
-def test_scalar_coordinates(scalar: float, vector: Vector):
-    assert scalar * vector.x == (scalar * vector).x
-    assert scalar * vector.y == (scalar * vector).y
+@given(scalar=floats(), v=vectors())
+def test_scalar_coordinates(scalar: float, v: Vector):
+    assert scalar * v.x == (scalar * v).x
+    assert scalar * v.y == (scalar * v).y
 
 
-@given(scalar1=floats(), scalar2=floats(), x=vectors())
-def test_scalar_associative(scalar1: float, scalar2: float, x: Vector):
-    """(scalar1 * scalar2) * x == scalar1 * (scalar2 * x)"""
-    left = (scalar1 * scalar2) * x
-    right = scalar1 * (scalar2 * x)
+@given(scalar1=floats(), scalar2=floats(), v=vectors())
+def test_scalar_associative(scalar1: float, scalar2: float, v: Vector):
+    """(scalar1 * scalar2) * v == scalar1 * (scalar2 * v)"""
+    left = (scalar1 * scalar2) * v
+    right = scalar1 * (scalar2 * v)
     assert left.isclose(right)
 
 
-@given(scalar=floats(), x=vectors(), y=vectors())
-def test_scalar_linear(scalar: float, x: Vector, y: Vector):
-    assert (scalar * (x + y)).isclose(
-        scalar * x + scalar * y,
-        rel_to=[x, y, scalar * x, scalar * y],
+@given(scalar=floats(), v=vectors(), w=vectors())
+def test_scalar_linear(scalar: float, v: Vector, w: Vector):
+    assert (scalar * (v + w)).isclose(
+        scalar * v + scalar * w,
+        rel_to=[v, w, scalar * v, scalar * w],
     )
 
 
-@given(scalar=floats(), x=vectors())
-def test_scalar_length(scalar: float, x: Vector):
-    assert isclose((scalar * x).length, abs(scalar) * x.length)
+@given(scalar=floats(), v=vectors())
+def test_scalar_length(scalar: float, v: Vector):
+    assert isclose((scalar * v).length, abs(scalar) * v.length)
 
 
-@given(x=vectors(), scalar=floats())
-def test_scalar_division(x: Vector, scalar: float):
-    """Test that (x / λ) = (1 / λ) * x"""
+@given(v=vectors(), scalar=floats())
+def test_scalar_division(v: Vector, scalar: float):
+    """Test that (v / λ) = (1 / λ) * v"""
     assume(abs(scalar) > 1e-100)
-    assert (x / scalar).isclose((1 / scalar) * x)
+    assert (v / scalar).isclose((1 / scalar) * v)
 
 
-@given(x=vectors(), scalar=floats())
-def test_scalar_inverse(x: Vector, scalar: float):
-    """Test that (λ * x / λ) ≃ x"""
+@given(v=vectors(), scalar=floats())
+def test_scalar_inverse(v: Vector, scalar: float):
+    """Test that (λ * v / λ) ≃ v"""
     assume(abs(scalar) > 1e-100)
-    assert x.isclose(scalar * x / scalar)
+    assert v.isclose(scalar * v / scalar)
 
 
-@given(x=vectors(), scalar=floats())
-def test_scalar_rmul(x: Vector, scalar: float):
-    assert scalar * x == x.scale_by(scalar)
+@given(v=vectors(), scalar=floats())
+def test_scalar_rmul(v: Vector, scalar: float):
+    assert scalar * v == v.scale_by(scalar)
 
 
-@given(x=vectors(), scalar=st.integers())
-def test_integer_multiplication(x: Vector, scalar: int):
-    assert scalar * x == float(scalar) * x
+@given(v=vectors(), scalar=st.integers())
+def test_integer_multiplication(v: Vector, scalar: int):
+    assert scalar * v == float(scalar) * v
 
 
-@given(x=vectors(), scalar=st.integers())
-def test_integer_division(x: Vector, scalar: int):
+@given(v=vectors(), scalar=st.integers())
+def test_integer_division(v: Vector, scalar: int):
     assume(scalar != 0)
-    assert x / scalar == x / float(scalar)
+    assert v / scalar == v / float(scalar)
 
 
-@given(x=vectors())
-def test_division_by_zero(x: Vector):
+@given(v=vectors())
+def test_division_by_zero(v: Vector):
     with raises(ZeroDivisionError):
-        x / 0
+        v / 0
 
     with raises(ZeroDivisionError):
-        x / 0.
+        v / 0.
