@@ -164,7 +164,6 @@ def test_rotation_stability2(initial, angles):
     # Increase the tolerance on this comparison,
     # as stepwise rotations induce rounding errors
     assert fellswoop.isclose(stepwise, rel_tol=1e-6)
-
     assert math.isclose(fellswoop.length, initial.length, rel_tol=1e-15)
 
 
