@@ -8,17 +8,18 @@ from utils import angle_isclose, isclose, units, vectors
 
 
 reflect_data = (
-    (Vector(1, 1), Vector(0, -1), Vector(1, -1)),
-    (Vector(1, 1), Vector(-1, 0), Vector(-1, 1)),
-    (Vector(0, 1), Vector(0, -1), Vector(0, -1)),
-    (Vector(-1, -1), Vector(1, 0), Vector(1, -1)),
-    (Vector(-1, -1), Vector(-1, 0), Vector(1, -1)),
+    [(1, 1),   (0, -1), (1, -1)],
+    [(1, 1),   (-1, 0), (-1, 1)],
+    [(0, 1),   (0, -1), (0, -1)],
+    [(-1, -1), (1, 0),  (1, -1)],
+    [(-1, -1), (-1, 0), (1, -1)],
 )
 
 
-@pytest.mark.parametrize("initial, surface_normal, expected", reflect_data)
+@pytest.mark.parametrize("initial, surface_normal, expected", reflect_data,
+                         ids=[f"{v}.reflect({normal})" for v, normal, _ in reflect_data])
 def test_reflect(initial, surface_normal, expected):
-    assert initial.reflect(surface_normal).isclose(expected)
+    assert Vector(initial).reflect(surface_normal).isclose(expected)
 
 
 @given(initial=vectors(), normal=units())
