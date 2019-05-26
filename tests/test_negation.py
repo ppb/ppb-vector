@@ -4,16 +4,16 @@ from ppb_vector import Vector
 from utils import vectors
 
 
-@given(vector=vectors())
-def test_negation_scalar(vector: Vector):
-    assert -vector == (-1) * vector
+@given(v=vectors())
+def test_negation_scalar(v: Vector):
+    assert -v == (-1) * v
 
 
-@given(vector=vectors())
-def test_negation_involutive(vector: Vector):
-    assert vector == -(-vector)
+@given(v=vectors())
+def test_negation_involutive(v: Vector):
+    assert v == -(-v)
 
 
-@given(vector=vectors())
-def test_negation_addition(vector: Vector):
-    assert vector + (-vector) == (0, 0)
+@given(v=vectors())
+def test_negation_addition(v: Vector):
+    assert v + (-v) == (0, 0)
