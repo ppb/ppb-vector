@@ -16,9 +16,9 @@ reflect_data = (
 )
 
 
-@pytest.mark.parametrize("initial_vector, surface_normal, expected_vector", reflect_data)
-def test_reflect(initial_vector, surface_normal, expected_vector):
-    assert initial_vector.reflect(surface_normal).isclose(expected_vector)
+@pytest.mark.parametrize("initial, surface_normal, expected", reflect_data)
+def test_reflect(initial, surface_normal, expected):
+    assert initial.reflect(surface_normal).isclose(expected)
 
 
 @given(initial=vectors(), normal=units())
