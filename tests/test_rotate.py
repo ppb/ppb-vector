@@ -129,13 +129,7 @@ def test_rotation_invariance(v: Vector, angle: float, n: int):
 def test_rotation_angle(initial, angle):
     """initial.angle( initial.rotate(angle) ) == angle"""
     assume(initial.length > 1e-5)
-    rotated = initial.rotate(angle)
-    note(f"Rotated: {rotated}")
-
-    measured_angle = initial.angle(rotated)
-    d = measured_angle - angle % 360
-    note(f"Angle: {measured_angle} = {angle} + {d if d<180 else d-360}")
-    assert angle_isclose(angle, measured_angle)
+    assert angle_isclose(initial.angle(initial.rotate(angle)), angle)
 
 
 @given(angle=angles(), loops=st.integers(min_value=0, max_value=500))
