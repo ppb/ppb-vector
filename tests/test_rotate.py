@@ -91,11 +91,6 @@ def test_close_rotations(input, angle, expected):
     assert angle_isclose(input.angle(expected), angle)
 
 
-def test_for_exception():
-    with pytest.raises(TypeError):
-        Vector("gibberish", 1).rotate(180)
-
-
 @given(angle=angles())
 def test_trig_stability(angle):
     """cos² + sin² == 1
