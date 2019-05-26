@@ -28,6 +28,12 @@ def test_reflect_nan_inf(initial: Vector, normal: Vector):
 
 
 @given(initial=vectors(), normal=units())
+def test_reflect_length(initial: Vector, normal: Vector):
+    """Test that reflection preserve lengths."""
+    assert isclose(initial.length, initial.reflect(normal).length)
+
+
+@given(initial=vectors(), normal=units())
 def test_reflect_involutive(initial: Vector, normal: Vector):
     """Test that reflection is its own inverse
 
