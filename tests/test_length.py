@@ -40,5 +40,5 @@ def test_length_scalar(v: Vector, scalar: float):
 
 @given(v=vectors(), w=vectors())
 def test_length_triangle(v: Vector, w: Vector):
-    """3rd axiom of normed vector spaces: |v+w| = |v| + |w|"""
-    assert (v + w).length <= v.length + w.length
+    """3rd axiom of normed vector spaces: |v+w| ≤ |v| + |w|"""
+    assert (v + w).length <= (1 + 1e-15) * (v.length + w.length)
