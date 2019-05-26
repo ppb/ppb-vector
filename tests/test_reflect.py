@@ -22,11 +22,18 @@ def test_reflect(initial, surface_normal, expected):
 
 
 @given(initial=vectors(), normal=units())
+def test_reflect_involutive(initial: Vector, normal: Vector):
+    """Test that reflection is its own inverse
+
+    initial.reflect(normal).reflect(normal) ≃ initial
+    """
+    assert initial.isclose( initial.reflect(normal).reflect(normal) )
+
+
+@given(initial=vectors(), normal=units())
 def test_reflect_prop(initial: Vector, normal: Vector):
     """Test several properties of Vector.reflect
 
-    * initial.reflect(normal).reflect(normal) == initial
-      i.e. reflection is its own inverse
     * initial.reflect(normal) * normal == - initial * normal
     * normal.angle(initial) == 180 - normal.angle(reflected)
     """
@@ -43,7 +50,6 @@ def test_reflect_prop(initial: Vector, normal: Vector):
     note(f"angle(normal, reflected): {normal.angle(reflected)}")
     note(f"Reflected: {reflected}")
     assert not any(map(isinf, reflected))
-    assert initial.isclose(returned)
     note(f"initial ⋅ normal: {initial * normal}")
     note(f"reflected ⋅ normal: {reflected * normal}")
     assert isclose((initial * normal), -(reflected * normal))
