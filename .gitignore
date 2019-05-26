@@ -5,3 +5,7 @@ __pycache__/
 /.mypy_cache/
 /tests/*.json
 /.eggs/
+
+# Build & artifacts directories for packages & wheels
+/build/
+/dist/
