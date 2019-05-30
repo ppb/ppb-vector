@@ -1,10 +1,24 @@
-lint_task:
+docs_task:
+  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   container:
     image: python:3.7-slim
 
   install_script:
-    - pip install --upgrade-strategy eager -U -r dev-requirements.txt
-    - pip install --upgrade-strategy eager -U -r lint-requirements.txt
+    - apt update && apt install make
+    - pip install --upgrade-strategy eager -U -r requirements-docs.txt
+    - pip install -e .
+
+  script:
+    - make -C docs/ html
+
+lint_task:
+  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
+  container:
+    image: python:3.7-slim
+
+  install_script:
+    - pip install --upgrade-strategy eager -U -r requirements-tests.txt
+    - pip install --upgrade-strategy eager -U -r requirements-lint.txt
     - pip install -e .
 
   script:
@@ -13,22 +27,55 @@ lint_task:
     - ./lint.sh
 
 
-Linux_task:
-  container:
+
+FreeBSD_task:
+  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
+  freebsd_instance:
+    image: freebsd-12-0-release-amd64
+  env:
     matrix:
-      - image: python:3.6-slim
-      - image: python:3.7-slim
+      - PYTHON: 3.6
+      - PYTHON: 3.7
+  install_script:
+    - PYVER=`echo $PYTHON | tr -d '.'`
+    - PYPKG=py${PYVER}
+    - PY=python${PYTHON}
+    - pkg install -y bash python${PYVER} ${PYPKG}-setuptools
+    - ${PY} -m ensurepip
+    - ${PY} -m pip install --upgrade-strategy eager -U -r requirements-tests.txt
+    - ${PY} -m pip install -e .
+
+  script:
+    - export PY=python${PYTHON}
+    - ${PY} --version
+    - ${PY} -m pip list
+    - ./test.sh
+
+task:
+  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
+  env:
+    matrix:
+      - IMAGE: python:3.6-slim
+      - IMAGE: python:3.7-slim
+      - IMAGE: python:3.8-rc-slim
+      - IMAGE: pypy:3.6-slim
+  name: "Linux $IMAGE"
+  allow_failures: $IMAGE =~ '.*-rc-.*'
+  container:
+    image: $IMAGE
 
   install_script:
-    - pip install --upgrade-strategy eager -U -r dev-requirements.txt
+    - pip install --upgrade-strategy eager -U -r requirements-tests.txt
     - pip install -e .
 
   script:
-    - python3 --version
+    - command -v pypy3 >/dev/null && export PY=pypy3
+    - ${PY-python3} --version
     - pip list
     - ./test.sh
 
 macOS_task:
+  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   osx_instance:
     image: mojave-base
   env:
@@ -45,7 +92,7 @@ macOS_task:
     - pyenv global ${PYTHON}
     - pyenv rehash
     - pip install --upgrade-strategy eager -U pip wheel setuptools
-    - pip install --upgrade-strategy eager -U -r dev-requirements.txt
+    - pip install --upgrade-strategy eager -U -r requirements-tests.txt
     - pip install -e .
 
   script:
@@ -53,20 +100,26 @@ macOS_task:
     - pip list
     - ./test.sh
 
-Windows_task:
+task:
+  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
+  env:
+    matrix:
+      - IMAGE: python:3.6-windowsservercore-1809
+      - IMAGE: python:3.7-windowsservercore-1809
+      - IMAGE: python:3.8-rc-windowsservercore-1809
+  allow_failures: $IMAGE =~ '.*-rc-.*'
+  name: "Windows $IMAGE"
   windows_container:
     os_version: 2019
-    matrix:
-      - image: python:3.6-windowsservercore-1809
-      - image: python:3.7-windowsservercore-1809
+    image: $IMAGE
 
   install_script:
-    - C:\Python\python.exe -m pip install --upgrade-strategy eager -U -r dev-requirements.txt
+    - C:\Python\python.exe -m pip install --upgrade-strategy eager -U -r requirements-tests.txt
     - C:\Python\python.exe -m pip install -e .
 
   script:
     - C:\Python\python.exe --version
     - C:\Python\python.exe -m pip list
 
-    - C:\Python\python.exe -m doctest README.md
+    - C:\Python\python.exe -m doctest README.md ppb_vector/__init__.py
     - C:\Python\python.exe -m pytest --hypothesis-profile ci

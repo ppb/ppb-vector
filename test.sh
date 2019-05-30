@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 source .common.sh
 
-if [[ "${TRAVIS_OS_NAME-x}" == x ]] || [[ "${CI+x}" == x ]]; then
+if [[ "${CI+x}" == x ]]; then
     IN_CI=1
     PYTEST_OPTIONS=( --hypothesis-profile ci )
 else
@@ -10,5 +10,5 @@ else
 fi
 
 
-run ${PY} -m doctest README.md
+run ${PY} -m doctest README.md ppb_vector/__init__.py
 run ${PY} -m pytest "${PYTEST_OPTIONS[@]}"

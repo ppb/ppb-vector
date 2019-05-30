@@ -4,3 +4,8 @@ __pycache__/
 .hypothesis/
 /.mypy_cache/
 /tests/*.json
+/.eggs/
+
+# Build & artifacts directories for packages & wheels
+/build/
+/dist/

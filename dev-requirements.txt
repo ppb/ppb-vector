@@ -1,4 +1,0 @@
-hypothesis
-perf
-pympler
-pytest~=3.8

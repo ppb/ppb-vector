@@ -1,0 +1,8 @@
+# Default owner is the maintainer team
+* @ppb/maintainers
+
+# @nbraud owns the Hypothesis testsuite
+tests/test_vector2_*.py @nbraud
+
+# @astronouth7303 owns the dynamic shenanigans
+tests/test_convert.py tests/test_typing.py @astronouth7303
