@@ -17,7 +17,7 @@ data = [
 
 
 @pytest.mark.parametrize(
-    "left, right, expected", data, ids=[f"{v}.angle({w})" for v, w, _ in data]
+    "left, right, expected", data, ids=[f"{v}.angle({w})" for v, w, _ in data],
 )
 def test_angle(left, right, expected):
     left, right = Vector(left), Vector(right)
