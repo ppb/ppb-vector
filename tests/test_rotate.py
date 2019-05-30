@@ -78,22 +78,12 @@ data_close = [
     for (angle, (sin_t, cos_t)) in remarkable_angles.items()
 ]
 
-data_close_ids = [
-    f"(1,0).rotate({x})" for x in remarkable_angles
-] + [
-    f"(1,1).rotate({x})" for x in remarkable_angles
-]
 
-
-@pytest.mark.parametrize("input, angle, expected", data_close, ids=data_close_ids)
+@pytest.mark.parametrize("input, angle, expected", data_close,
+                         ids=[f"({v.x},{v.y}).rotate({angle})" for v, angle, _ in data_close])
 def test_close_rotations(input, angle, expected):
     assert input.rotate(angle).isclose(expected)
     assert angle_isclose(input.angle(expected), angle)
-
-
-def test_for_exception():
-    with pytest.raises(TypeError):
-        Vector("gibberish", 1).rotate(180)
 
 
 @given(angle=angles())
@@ -134,13 +124,7 @@ def test_rotation_invariance(v: Vector, angle: float, n: int):
 def test_rotation_angle(initial, angle):
     """initial.angle( initial.rotate(angle) ) == angle"""
     assume(initial.length > 1e-5)
-    rotated = initial.rotate(angle)
-    note(f"Rotated: {rotated}")
-
-    measured_angle = initial.angle(rotated)
-    d = measured_angle - angle % 360
-    note(f"Angle: {measured_angle} = {angle} + {d if d<180 else d-360}")
-    assert angle_isclose(angle, measured_angle)
+    assert angle_isclose(initial.angle(initial.rotate(angle)), angle)
 
 
 @given(angle=angles(), loops=st.integers(min_value=0, max_value=500))
@@ -175,7 +159,6 @@ def test_rotation_stability2(initial, angles):
     # Increase the tolerance on this comparison,
     # as stepwise rotations induce rounding errors
     assert fellswoop.isclose(stepwise, rel_tol=1e-6)
-
     assert math.isclose(fellswoop.length, initial.length, rel_tol=1e-15)
 
 
