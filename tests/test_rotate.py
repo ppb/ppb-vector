@@ -62,12 +62,16 @@ remarkable_angles.update({
 @pytest.mark.parametrize("angle, trig", remarkable_angles.items(),
                          ids=[str(x) for x in remarkable_angles])
 def test_remarkable_angles(angle, trig):
-    _angle = math.radians(angle)
-    sin_t, cos_t = trig
-    sin_m, cos_m = math.sin(_angle), math.cos(_angle)
+    """Test that our table of remarkable angles agrees with Vector._trig.
 
-    assert math.isclose(sin_t, sin_m)
-    assert math.isclose(cos_t, cos_m)
+    This is useful both as a consistency test of the table,
+    and as a test of Vector._trig (which Vector.rotate uses).
+    """
+    sin_t, cos_t = trig
+    cos_m, sin_m = Vector._trig(angle)
+
+    assert isclose(sin_t, sin_m)
+    assert isclose(cos_t, cos_m)
 
 
 data_close = [
