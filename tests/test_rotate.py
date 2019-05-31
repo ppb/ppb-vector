@@ -28,34 +28,34 @@ def test_exact_rotations(input, angle, expected):
 #  values from 0 to 45°
 #  lifted from https://en.wikibooks.org/wiki/Trigonometry/Selected_Angles_Reference
 remarkable_angles = {
-    15: ((sqrt(6) - sqrt(2)) / 4, (sqrt(6) + sqrt(2)) / 4),
-    22.5: (sqrt(2 - sqrt(2)) / 2, sqrt(2 + sqrt(2)) / 2),
-    30: (0.5, sqrt(3) / 2),
+    15: ((sqrt(6) + sqrt(2)) / 4, (sqrt(6) - sqrt(2)) / 4),
+    22.5: (sqrt(2 + sqrt(2)) / 2, sqrt(2 - sqrt(2)) / 2),
+    30: (sqrt(3) / 2, 0.5),
     45: (sqrt(2) / 2, sqrt(2) / 2),
 }
 
 #  extend up to 90°
 remarkable_angles.update({
-    90 - angle: (cos_t, sin_t)
-    for angle, (sin_t, cos_t) in remarkable_angles.items()
+    90 - angle: (sin_t, cos_t)
+    for angle, (cos_t, sin_t) in remarkable_angles.items()
 })
 
 #  extend up to 180°
 remarkable_angles.update({
-    angle + 90: (cos_t, -sin_t)
-    for angle, (sin_t, cos_t) in remarkable_angles.items()
+    angle + 90: (-sin_t, cos_t)
+    for angle, (cos_t, sin_t) in remarkable_angles.items()
 })
 
 #  extend up to 360°
 remarkable_angles.update({
-    angle + 180: (-sin_t, -cos_t)
-    for angle, (sin_t, cos_t) in remarkable_angles.items()
+    angle + 180: (-cos_t, -sin_t)
+    for angle, (cos_t, sin_t) in remarkable_angles.items()
 })
 
 #  extend to negative angles
 remarkable_angles.update({
-    -angle: (-sin_t, cos_t)
-    for angle, (sin_t, cos_t) in remarkable_angles.items()
+    -angle: (cos_t, -sin_t)
+    for angle, (cos_t, sin_t) in remarkable_angles.items()
 })
 
 
@@ -67,7 +67,7 @@ def test_remarkable_angles(angle, trig):
     This is useful both as a consistency test of the table,
     and as a test of Vector._trig (which Vector.rotate uses).
     """
-    sin_t, cos_t = trig
+    cos_t, sin_t = trig
     cos_m, sin_m = Vector._trig(angle)
 
     assert isclose(sin_t, sin_m, abs_tol=0, rel_tol=1e-14)
@@ -76,10 +76,10 @@ def test_remarkable_angles(angle, trig):
 
 data_close = [
     (Vector(1, 0), angle, Vector(cos_t, sin_t))
-    for (angle, (sin_t, cos_t)) in remarkable_angles.items()
+    for (angle, (cos_t, sin_t)) in remarkable_angles.items()
 ] + [
     (Vector(1, 1), angle, Vector(cos_t - sin_t, cos_t + sin_t))
-    for (angle, (sin_t, cos_t)) in remarkable_angles.items()
+    for (angle, (cos_t, sin_t)) in remarkable_angles.items()
 ]
 
 
