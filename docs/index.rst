@@ -4,7 +4,7 @@ PPB's 2D Vector class
 .. note::
    ``ppb-vector`` follows the semver_ (semantic versioning) convention.
    In a nutshell, we commit to forward compatibility within a major version:
-   code that works with v1.0 ought to work with any 1.x release.
+   code that works with version 1.0 ought to work with any 1.x release.
 
 .. _semver: https://semver.org
 
