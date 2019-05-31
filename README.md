@@ -21,6 +21,6 @@ pip install 'ppb-vector'
     Vector(3.0, 4.0)
 
 
-See the [online documentation] for an overview of the functionality.
+See the [API reference] for an overview of the functionality.
 
-[online documentation]: https://ppb-vector.readthedocs.io/en/latest/
+[API reference]: https://ppb-vector.readthedocs.io/en/latest/
