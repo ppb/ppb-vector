@@ -70,8 +70,8 @@ def test_remarkable_angles(angle, trig):
     sin_t, cos_t = trig
     cos_m, sin_m = Vector._trig(angle)
 
-    assert isclose(sin_t, sin_m)
-    assert isclose(cos_t, cos_m)
+    assert isclose(sin_t, sin_m, abs_tol=0, rel_tol=1e-14)
+    assert isclose(cos_t, cos_m, abs_tol=0, rel_tol=1e-14)
 
 
 data_close = [
