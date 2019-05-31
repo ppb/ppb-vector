@@ -14,7 +14,7 @@ pip install 'ppb-vector'
 
 ## Usage
 
-`Vector` is an immutable 2D Vector. Instantiated as expected: 
+`Vector` is an immutable 2D Vector, which is instantiated as expected: 
 
     >>> from ppb_vector import Vector
     >>> Vector(3, 4)
