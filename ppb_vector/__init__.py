@@ -129,6 +129,9 @@ class Vector:
                x: typing.Optional[typing.SupportsFloat] = None,
                y: typing.Optional[typing.SupportsFloat] = None):
         """Return a new :py:class:`Vector` replacing specified fields with new values."""
+        if x is None and y is None:
+            return self
+
         return Vector(self.x if x is None else x,
                       self.y if y is None else y)
 
