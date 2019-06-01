@@ -32,7 +32,7 @@ def test_length_dot(v: Vector):
 @given(v=vectors())
 def test_length_zero(v: Vector):
     """1st axiom of normed vector spaces: |v| = 0 iff v = 0"""
-    assert (v.length == 0) == (v == (0, 0))
+    assert (v.length == 0) == not bool(v)
 
 
 @given(v=vectors(), scalar=floats())

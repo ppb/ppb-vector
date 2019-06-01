@@ -16,4 +16,4 @@ def test_negation_involutive(v: Vector):
 
 @given(v=vectors())
 def test_negation_addition(v: Vector):
-    assert v + (-v) == (0, 0)
+    assert not (v + (-v))
