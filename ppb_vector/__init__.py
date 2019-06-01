@@ -140,6 +140,9 @@ class Vector:
         else:
             raise ValueError(f"Cannot use {value} as a vector-like")
 
+    def __bool__(self) -> bool:
+        return self != (0, 0)
+
     @property
     def length(self) -> float:
         """Compute the length of a vector.
