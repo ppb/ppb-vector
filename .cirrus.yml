@@ -29,9 +29,9 @@ lint_task:
 upload_task:
   only_if: $CIRRUS_BRANCH == 'master' && $CIRRUS_RELEASE != ""
   env:
-    PYPI_REPOSITORY: "https://test.pypi.org/legacy/"
-    PYPI_USER: pursuedpybot
-    PYPI_PASSWORD: "ENCRYPTED[31855ff9a080d4be75462409aa237fd116237b333f28cbfdadf0b3e3a15e2c9d542c4ab26d14323765b7e23072bcd126]"
+    TWINE_REPOSITORY_URL: "https://test.pypi.org/legacy/"
+    TWINE_USER: pursuedpybot
+    TWINE_PASSWORD: "ENCRYPTED[31855ff9a080d4be75462409aa237fd116237b333f28cbfdadf0b3e3a15e2c9d542c4ab26d14323765b7e23072bcd126]"
     GITHUB_TOKEN: "ENCRYPTED[6975bc1548d212e17af0529b0041745c188388461f0481c858db317ad2417c3a36014a019b3d6797e62f938098400d6c]"
 
   container:

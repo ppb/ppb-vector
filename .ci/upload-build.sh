@@ -7,7 +7,7 @@ if ! [[ -v CIRRUS_RELEASE ]]; then
 	exit 0
 fi
 
-REQUIRED_VARS=( GITHUB_TOKEN PYPI_{REPOSITORY,USER,PASSWORD} )
+REQUIRED_VARS=( GITHUB_TOKEN TWINE_{REPOSITORY_URL,USER,PASSWORD} )
 for var in "${REQUIRED_VARS[@]}"; do
 	if ! [[ -v "$var" ]]; then
 		echo "Please set environment variable '$var' !"
@@ -30,8 +30,4 @@ for fpath in "${files_to_upload[@]}"; do
 		$url_to_upload
 done
 
-twine upload \
-	--repository-url "$PYPI_REPOSITORY" \
-	--username "$PYPI_USERNAME" \
-	--password "$PYPI_PASSWORD" \
-	"${files_to_upload[@]}"
+twine upload "${files_to_upload[@]}"
