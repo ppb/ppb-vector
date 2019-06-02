@@ -1,4 +1,3 @@
-import dataclasses
 import typing
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
@@ -126,8 +125,15 @@ class Vector:
     def __reduce__(self):
         return Vector, (self.x, self.y)
 
-    #: Return a new :py:class:`Vector` replacing specified fields with new values.
-    update = dataclasses.replace
+    def update(self,
+               x: typing.Optional[typing.SupportsFloat] = None,
+               y: typing.Optional[typing.SupportsFloat] = None):
+        """Return a new :py:class:`Vector` replacing specified fields with new values."""
+        if x is None and y is None:
+            return self
+
+        return Vector(self.x if x is None else x,
+                      self.y if y is None else y)
 
     @staticmethod
     def _unpack(value: VectorLike) -> typing.Tuple[float, float]:
