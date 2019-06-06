@@ -1,3 +1,10 @@
+env_task:
+  container:
+    image: python:3.7-slim
+  script:
+    - env
+
+
 docs_task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   container:
@@ -27,7 +34,7 @@ lint_task:
     - ./lint.sh
 
 upload_task:
-  only_if: $CIRRUS_BRANCH == 'master' && $CIRRUS_RELEASE != ""
+  only_if: $CIRRUS_RELEASE != ""
   env:
     TWINE_REPOSITORY_URL: "https://test.pypi.org/legacy/"
     TWINE_USER: pursuedpybot
