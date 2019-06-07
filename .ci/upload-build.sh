@@ -20,6 +20,7 @@ file_content_type="application/octet-stream"
 files_to_upload=( dist/* )
 
 for fpath in "${files_to_upload[@]}"; do
+	echo
 	echo "Uploading '$fpath' to Github..."
 	name=$(basename "$fpath")
 	url_to_upload="https://uploads.github.com/repos/$CIRRUS_REPO_FULL_NAME/releases/$CIRRUS_RELEASE/assets?name=$name"
@@ -28,7 +29,10 @@ for fpath in "${files_to_upload[@]}"; do
 		--header "Authorization: token $GITHUB_TOKEN" \
 		--header "Content-Type: $file_content_type" \
 		$url_to_upload
+	echo
 done
+
+echo
 
 twine upload \
 	--repository-url "$TWINE_REPOSITORY_URL" \
