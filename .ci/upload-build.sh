@@ -23,11 +23,15 @@ for fpath in "${files_to_upload[@]}"; do
 	echo "Uploading '$fpath' to Github..."
 	name=$(basename "$fpath")
 	url_to_upload="https://uploads.github.com/repos/$CIRRUS_REPO_FULL_NAME/releases/$CIRRUS_RELEASE/assets?name=$name"
-	curl -X POST \
+	curl -i -X POST \
 		--data-binary @$fpath \
 		--header "Authorization: token $GITHUB_TOKEN" \
 		--header "Content-Type: $file_content_type" \
 		$url_to_upload
 done
 
-twine upload "${files_to_upload[@]}"
+twine upload \
+	--repository-url "$TWINE_REPOSITORY_URL" \
+	--username "$TWINE_USER" \
+	--password "$TWINE_PASSWORD" \
+	"${files_to_upload[@]}"
