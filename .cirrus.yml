@@ -27,7 +27,7 @@ lint_task:
     - ./lint.sh
 
 upload_task:
-  only_if: $CIRRUS_BRANCH == 'master' && $CIRRUS_RELEASE != ""
+  # only_if: $CIRRUS_RELEASE != ""
   env:
     TWINE_REPOSITORY_URL: "https://test.pypi.org/legacy/"
     TWINE_USER: pursuedpybot
@@ -39,12 +39,14 @@ upload_task:
 
   install_script:
     - pip install --upgrade-strategy eager -U -r requirements-upload.txt
+    - apt-get update
+    - apt-get install -y curl
 
   script:
     - ./setup.py sdist bdist_wheel
     - ls -Al dist
-    - tar -tf dist/*.tar.*
-    - unzip -l dist/*.whl
+    - python -m tarfile -l dist/*.tar.*
+    - python -m zipfile -l dist/*.whl
     - ./.ci/upload-build.sh
 
 
