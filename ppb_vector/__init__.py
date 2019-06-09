@@ -219,10 +219,17 @@ class Vector:
         return Vector(self.x - other_x, self.y - other_y)
 
     def dot(self, other: VectorLike) -> float:
-        """Dot product of two vectors.
+        """Compute the dot product of two vectors.
 
         :param other: A :py:class:`Vector` or a vector-like.
           For a description of vector-likes, see :py:func:`__new__`.
+
+        >>> Vector(1, 1).dot((-1, -1))
+        -2.0
+
+        This can also be expressed with :py:meth:`* <__mul__>`:
+
+        >>> assert Vector(1, 2).dot([2, 1]) == Vector(1, 2) * [2, 1]
         """
         other_x, other_y = Vector._unpack(other)
         return self.x * other_x + self.y * other_y
