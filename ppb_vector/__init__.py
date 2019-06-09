@@ -189,6 +189,8 @@ class Vector:
 
         >>> Vector(1, 0) + (0, 1)
         Vector(1.0, 1.0)
+        >>> (0, 1) + Vector(1, 0)
+        Vector(1.0, 1.0)
         """
         try:
             other_x, other_y = Vector._unpack(other)
