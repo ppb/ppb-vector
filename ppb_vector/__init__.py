@@ -362,7 +362,7 @@ class Vector:
         return self.scale_by(-1)
 
     def angle(self, other: VectorLike) -> float:
-        """Compute the angle between two vectors, expressed in degrees.
+        """Compute the angle between two vectors.
 
         :param other: A :py:class:`Vector` or a vector-like.
           For a description of vector-likes, see :py:func:`__new__`.
@@ -370,8 +370,9 @@ class Vector:
         >>> Vector(1, 0).angle( (0, 1) )
         90.0
 
-        As with :py:meth:`rotate`, angles are signed, and refer to a direct
-        coordinate system (i.e. positive rotations are counter-clockwise).
+        As with :py:meth:`rotate`, angles are expressed in degrees, signed, and
+        refer to a direct coordinate system (i.e. positive rotations are
+        counter-clockwise).
 
         :py:meth:`angle` is guaranteed to produce an angle between -180° and 180°.
         """
