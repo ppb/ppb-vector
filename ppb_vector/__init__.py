@@ -147,6 +147,11 @@ class Vector:
             raise ValueError(f"Cannot use {value} as a vector-like")
 
     def __bool__(self) -> bool:
+        """Check whether the vector is non-zero.
+
+        >>> assert Vector(1, 1)
+        >>> assert not Vector(0, 0)
+        """
         return self != (0, 0)
 
     @property
