@@ -254,32 +254,30 @@ class Vector:
     def __mul__(self, other: typing.SupportsFloat) -> 'Vector': pass
 
     def __mul__(self, other):
-        """Performs a dot product or scalar product, based on the parameter type.
+        """Perform a dot product or a scalar product, based on the parameter type.
 
         :param other: If ``other`` is a scalar (an instance of
           :py:class:`typing.SupportsFloat`), return
           :py:meth:`self.scale_by(other) <scale_by>`.
 
-           >>> 3 * Vector(1, 1)
+           >>> v = Vector(1, 1)
+           >>> 3 * v
            Vector(3.0, 3.0)
 
-           >>> Vector(1, 1) * 3
-           Vector(3.0, 3.0)
+           >>> assert 3 * v == v * 3 == v.scale_by(3)
 
-           >>> Vector(1, 1).scale_by(3)
-           Vector(3.0, 3.0)
+          A :py:class:`Vector` can also be divided by a scalar,
+            using the :py:meth:`/ <__truediv__>` operator:
 
-          It is also possible to divide a :py:class:`Vector` by a scalar:
-
-           >>> Vector(3, 3) / 3
-           Vector(1.0, 1.0)
-
+           >>> assert 3 * v / 3 == v
 
         :param other: If ``other`` is a vector-like, return
           :py:meth:`self.dot(other) <dot>`.
 
-          >>> Vector(1, 1) * (-1, -1)
+          >>> v * (-1, -1)
           -2.0
+
+          >>> assert v * (-1, -1) == (-1, -1) * v == v.dot((-1, -1))
 
           Vector-likes are defined in :py:meth:`convert`.
         """
