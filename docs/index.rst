@@ -11,7 +11,7 @@ PPB's 2D Vector class
 .. autoclass:: ppb_vector.Vector
    :members:
    :special-members:
-   :exclude-members: __init__, __repr__, __weakref__, scale
+   :exclude-members: __init__, __radd__, __repr__, __weakref__, scale
 
     .. autoattribute:: x
         :annotation: : float

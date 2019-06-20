@@ -147,6 +147,11 @@ class Vector:
             raise ValueError(f"Cannot use {value} as a vector-like")
 
     def __bool__(self) -> bool:
+        """Check whether the vector is non-zero.
+
+        >>> assert Vector(1, 1)
+        >>> assert not Vector(0, 0)
+        """
         return self != (0, 0)
 
     @property
@@ -184,6 +189,8 @@ class Vector:
 
         >>> Vector(1, 0) + (0, 1)
         Vector(1.0, 1.0)
+        >>> (0, 1) + Vector(1, 0)
+        Vector(1.0, 1.0)
         """
         try:
             other_x, other_y = Vector._unpack(other)
@@ -212,24 +219,30 @@ class Vector:
         return Vector(self.x - other_x, self.y - other_y)
 
     def dot(self, other: VectorLike) -> float:
-        """Dot product of two vectors.
+        """Compute the dot product of two vectors.
 
         :param other: A :py:class:`Vector` or a vector-like.
           For a description of vector-likes, see :py:func:`__new__`.
+
+        >>> Vector(1, 1).dot((-1, -1))
+        -2.0
+
+        This can also be expressed with :py:meth:`* <__mul__>`:
+
+        >>> assert Vector(1, 2).dot([2, 1]) == Vector(1, 2) * [2, 1]
         """
         other_x, other_y = Vector._unpack(other)
         return self.x * other_x + self.y * other_y
 
     def scale_by(self, scalar: typing.SupportsFloat) -> 'Vector':
-        """Scalar multiplication.
+        """Compute a vector-scalar multiplication.
 
         >>> Vector(1, 2).scale_by(3)
         Vector(3.0, 6.0)
 
         Can also be expressed with :py:meth:`* <__mul__>`:
 
-        >>> 3 * Vector(1, 2)
-        Vector(3.0, 6.0)
+        >>> assert Vector(1, 2).scale_by(3) == 3 * Vector(1, 2)
         """
         scalar = float(scalar)
         return Vector(scalar * self.x, scalar * self.y)
@@ -241,32 +254,30 @@ class Vector:
     def __mul__(self, other: typing.SupportsFloat) -> 'Vector': pass
 
     def __mul__(self, other):
-        """Performs a dot product or scalar product, based on the parameter type.
+        """Perform a dot product or a scalar product, based on the parameter type.
 
         :param other: If ``other`` is a scalar (an instance of
           :py:class:`typing.SupportsFloat`), return
           :py:meth:`self.scale_by(other) <scale_by>`.
 
-           >>> 3 * Vector(1, 1)
+           >>> v = Vector(1, 1)
+           >>> 3 * v
            Vector(3.0, 3.0)
 
-           >>> Vector(1, 1) * 3
-           Vector(3.0, 3.0)
+           >>> assert 3 * v == v * 3 == v.scale_by(3)
 
-           >>> Vector(1, 1).scale_by(3)
-           Vector(3.0, 3.0)
+          A :py:class:`Vector` can also be divided by a scalar,
+            using the :py:meth:`/ <__truediv__>` operator:
 
-          It is also possible to divide a :py:class:`Vector` by a scalar:
-
-           >>> Vector(3, 3) / 3
-           Vector(1.0, 1.0)
-
+           >>> assert 3 * v / 3 == v
 
         :param other: If ``other`` is a vector-like, return
           :py:meth:`self.dot(other) <dot>`.
 
-          >>> Vector(1, 1) * (-1, -1)
+          >>> v * (-1, -1)
           -2.0
+
+          >>> assert v * (-1, -1) == (-1, -1) * v == v.dot((-1, -1))
 
           Vector-likes are defined in :py:meth:`convert`.
         """
@@ -351,7 +362,7 @@ class Vector:
         return self.scale_by(-1)
 
     def angle(self, other: VectorLike) -> float:
-        """Compute the angle between two vectors, expressed in degrees.
+        """Compute the angle between two vectors.
 
         :param other: A :py:class:`Vector` or a vector-like.
           For a description of vector-likes, see :py:func:`__new__`.
@@ -359,8 +370,9 @@ class Vector:
         >>> Vector(1, 0).angle( (0, 1) )
         90.0
 
-        As with :py:meth:`rotate`, angles are signed, and refer to a direct
-        coordinate system (i.e. positive rotations are counter-clockwise).
+        As with :py:meth:`rotate`, angles are expressed in degrees, signed, and
+        refer to a direct coordinate system (i.e. positive rotations are
+        counter-clockwise).
 
         :py:meth:`angle` is guaranteed to produce an angle between -180° and 180°.
         """
