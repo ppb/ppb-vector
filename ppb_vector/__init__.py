@@ -5,6 +5,9 @@ from math import atan2, copysign, cos, degrees, hypot, isclose, radians, sin, sq
 
 __all__ = ('Vector',)
 
+#: ppb_vector's current version.
+#: It follows the semantic versioning convention.
+__version__ = "1.0b1"
 
 # Anything convertable to a Vector, including lists, tuples, and dicts
 VectorLike = typing.Union[
