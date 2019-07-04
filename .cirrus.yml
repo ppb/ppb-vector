@@ -32,7 +32,7 @@ pep517_task:
     image: python:3.7-slim
 
   install_script:
-    - pip install --upgrade-strategy eager -U -r requirements-tests.txt
+    - pip install --upgrade-strategy eager -U pep517
 
   script:
     - python3 -m pep517.check .
