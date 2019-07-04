@@ -26,6 +26,17 @@ lint_task:
     - pip list
     - ./lint.sh
 
+pep517_task:
+  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
+  container:
+    image: python:3.7-slim
+
+  install_script:
+    - pip install --upgrade-strategy eager -U pep517
+
+  script:
+    - python3 -m pep517.check .
+
 upload_task:
   # only_if: $CIRRUS_RELEASE != ""
   env:
