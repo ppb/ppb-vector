@@ -7,7 +7,8 @@ __all__ = ('Vector',)
 
 #: ppb_vector's current version.
 #: It follows the semantic versioning convention.
-__version__ = "1.0rc1"
+__version__ = "1.0"
+
 
 # Anything convertable to a Vector, including lists, tuples, and dicts
 VectorLike = typing.Union[
