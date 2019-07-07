@@ -16,12 +16,12 @@ def test_scale_negative_length(v: Vector, length: float):
 @given(x=vectors(), length=lengths())
 def test_scale_to_length(x: Vector, length: float):
     """Test that the length of x.scale_to(length) is length with x non-null."""
-    assume(x != (0, 0))
+    assume(x)
     assert isclose(x.scale_to(length).length, length)
 
 
 @given(x=vectors(), length=lengths())
 def test_scale_aligned(x: Vector, length: float):
     """Test that x.scale_to(length) is aligned with x."""
-    assume(length > 0 and x != (0, 0))
+    assume(length > 0 and x)
     assert angle_isclose(x.scale_to(length).angle(x), 0)

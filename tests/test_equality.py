@@ -25,7 +25,7 @@ def test_equal_symmetric(x: Vector, y):
 
 @given(x=vectors())
 def test_non_zero_equal(x: Vector):
-    assume(x != (0, 0))
+    assume(x)
     assert x != 1.1 * x
     assert x != -x
 

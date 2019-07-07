@@ -1,7 +1,6 @@
 from typing import Sequence, Union
 
 import hypothesis.strategies as st
-from hypothesis import note
 
 from ppb_vector import Vector
 
@@ -56,11 +55,6 @@ def isclose(
         *(abs(z) ** rel_exp for z in rel_to if isinstance(z, float)),
         *(z.length ** rel_exp for z in rel_to if isinstance(z, Vector)),
     )
-    note(f"rel_max = {rel_max}")
-    if rel_max > 0:
-        note(f"diff = {diff} = {diff/rel_max} * rel_max")
-    else:
-        note(f"diff = {diff}")
 
     return diff <= rel_max * rel_tol or diff <= abs_tol
 
