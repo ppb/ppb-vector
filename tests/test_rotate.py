@@ -1,5 +1,5 @@
 import math
-from math import sqrt
+from math import cos, fabs, radians, sin, sqrt
 
 import hypothesis.strategies as st
 import pytest  # type: ignore
@@ -96,11 +96,19 @@ def test_trig_stability(angle):
 
     We are testing that this equation holds, as otherwise rotations
     would (slightly) change the length of vectors they are applied to.
+
+    Moreover, Vector._trig should get closer to fulfilling it than
+    math.{cos,sin}.
     """
     r_cos, r_sin = Vector._trig(angle)
+    r_len = r_cos * r_cos + r_sin * r_sin
 
     # Don't use exponents here. Multiplication is generally more stable.
-    assert math.isclose(r_cos * r_cos + r_sin * r_sin, 1, rel_tol=1e-18)
+    assert math.isclose(r_len, 1, rel_tol=1e-18)
+
+    t_cos, t_sin = cos(radians(angle)), sin(radians(angle))
+    t_len = t_cos * t_cos + t_sin * t_sin
+    assert fabs(1 - r_len) <= fabs(1 - t_len)
 
 
 @given(angle=angles(), n=st.integers(min_value=0, max_value=1e5))
