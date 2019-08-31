@@ -487,16 +487,16 @@ class Vector:
         It produces a vector with the same direction, but possibly a different
         length.
 
-        Note that :py:meth:`vector.scale(max_length) <scale>` is equivalent to
-        :py:meth:`vector.truncate(max_length) <truncate>` when
+        Note that :py:meth:`vector.scale_to(max_length) <scale_to>` is
+        equivalent to :py:meth:`vector.truncate(max_length) <truncate>` when
         :py:meth:`max_length ≨ vector.length <length>`.
 
-        >>> Vector(3, 4).scale(4)
+        >>> Vector(3, 4).scale_to(4)
         Vector(2.4, 3.2)
         >>> Vector(3, 4).truncate(4)
         Vector(2.4, 3.2)
 
-        >>> Vector(3, 4).scale(6)
+        >>> Vector(3, 4).scale_to(6)
         Vector(3.6, 4.8)
         >>> Vector(3, 4).truncate(6)
         Vector(3.0, 4.0)
