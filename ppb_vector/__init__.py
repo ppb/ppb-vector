@@ -1,4 +1,5 @@
 import typing
+import warnings
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from math import atan2, copysign, cos, degrees, hypot, isclose, radians, sin, sqrt
@@ -526,7 +527,10 @@ class Vector:
 
         return (length * self) / self.length
 
-    scale = scale_to
+    def scale(self, length: typing.SupportsFloat) -> 'Vector':
+        warnings.warn("Vector.scale was renamed to `scale_to`",
+                      DeprecationWarning)
+        return self.scale_to(length)
 
     def reflect(self, surface_normal: VectorLike) -> 'Vector':
         """Reflect a vector against a surface.
