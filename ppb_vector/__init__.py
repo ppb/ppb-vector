@@ -471,11 +471,12 @@ class Vector:
         >>> Vector(3, 4).normalize()
         Vector(0.6, 0.8)
 
-        Note that :py:meth:`normalize()` is equivalent to :py:meth:`scale(1) <scale>`:
+        Note that :py:meth:`normalize()` is equivalent to
+        :py:meth:`scale_to(1) <scale_to>`:
 
         >>> assert Vector(7, 24).normalize() == Vector(7, 24).scale_to(1)
         """
-        return self.scale(1)
+        return self.scale_to(1)
 
     def truncate(self, max_length: typing.SupportsFloat) -> 'Vector':
         """Scale a given :py:class:`Vector` down to a given length, if it is larger.
