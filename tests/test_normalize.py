@@ -1,6 +1,6 @@
 from hypothesis import assume, given
 
-from utils import isclose, vectors
+from utils import angle_isclose, isclose, vectors
 
 
 @given(v=vectors())
