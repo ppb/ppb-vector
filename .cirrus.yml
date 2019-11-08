@@ -1,7 +1,7 @@
 docs_task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   container:
-    image: python:3.7-slim
+    image: python:3.8-slim
 
   install_script:
     - apt update && apt install make
@@ -14,7 +14,7 @@ docs_task:
 lint_task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   container:
-    image: python:3.7-slim
+    image: python:3.8-slim
 
   install_script:
     - pip install --upgrade-strategy eager -U -r requirements-tests.txt
@@ -29,7 +29,7 @@ lint_task:
 pep517_task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   container:
-    image: python:3.7-slim
+    image: python:3.8-slim
 
   install_script:
     - pip install --upgrade-strategy eager -U pep517
@@ -46,7 +46,7 @@ upload_task:
     GITHUB_TOKEN: "ENCRYPTED[6975bc1548d212e17af0529b0041745c188388461f0481c858db317ad2417c3a36014a019b3d6797e62f938098400d6c]"
 
   container:
-    image: python:3.7-slim
+    image: python:3.8-slim
 
   install_script:
     - pip install --upgrade-strategy eager -U -r requirements-upload.txt
