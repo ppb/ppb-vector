@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-import perf  # type: ignore
+import pyperf  # type: ignore
 
 from ppb_vector import Vector
 from utils import *
 
-r = perf.Runner()
+r = pyperf.Runner()
 x = Vector(1, 1)
 y = Vector(0, 1)
 scalar = 123
