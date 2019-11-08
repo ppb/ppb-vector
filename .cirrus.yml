@@ -110,7 +110,7 @@ task:
 macOS_task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   osx_instance:
-    image: mojave-base
+    image: mojave-xcode-11
   env:
     PATH: ${HOME}/.pyenv/shims:${PATH}
     matrix:
@@ -119,7 +119,6 @@ macOS_task:
   install_script:
     # Per the pyenv homebrew recommendations.
     # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
-    - sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
     - brew install openssl readline pyenv
     - pyenv install ${PYTHON}
     - pyenv global ${PYTHON}
