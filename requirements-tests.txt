@@ -1,4 +1,4 @@
 hypothesis
-perf
+pyperf
 pympler>=0.7; implementation_name == 'cpython'
 pytest~=3.8
