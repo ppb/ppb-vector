@@ -142,6 +142,7 @@ task:
       - IMAGE: python:3.6-windowsservercore
       - IMAGE: python:3.7-windowsservercore
       - IMAGE: python:3.8-windowsservercore
+      - IMAGE: python:3.9-rc-windowsservercore
   allow_failures: $IMAGE =~ '.*-rc-.*'
   name: "Windows $IMAGE"
   windows_container:
