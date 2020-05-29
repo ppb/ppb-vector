@@ -1,4 +1,5 @@
 import typing
+import warnings
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from math import atan2, copysign, cos, degrees, hypot, isclose, radians, sin, sqrt
@@ -471,11 +472,12 @@ class Vector:
         >>> Vector(3, 4).normalize()
         Vector(0.6, 0.8)
 
-        Note that :py:meth:`normalize()` is equivalent to :py:meth:`scale(1) <scale>`:
+        Note that :py:meth:`normalize()` is equivalent to
+        :py:meth:`scale_to(1) <scale_to>`:
 
         >>> assert Vector(7, 24).normalize() == Vector(7, 24).scale_to(1)
         """
-        return self.scale(1)
+        return self.scale_to(1)
 
     def truncate(self, max_length: typing.SupportsFloat) -> 'Vector':
         """Scale a given :py:class:`Vector` down to a given length, if it is larger.
@@ -486,16 +488,16 @@ class Vector:
         It produces a vector with the same direction, but possibly a different
         length.
 
-        Note that :py:meth:`vector.scale(max_length) <scale>` is equivalent to
-        :py:meth:`vector.truncate(max_length) <truncate>` when
+        Note that :py:meth:`vector.scale_to(max_length) <scale_to>` is
+        equivalent to :py:meth:`vector.truncate(max_length) <truncate>` when
         :py:meth:`max_length ≨ vector.length <length>`.
 
-        >>> Vector(3, 4).scale(4)
+        >>> Vector(3, 4).scale_to(4)
         Vector(2.4, 3.2)
         >>> Vector(3, 4).truncate(4)
         Vector(2.4, 3.2)
 
-        >>> Vector(3, 4).scale(6)
+        >>> Vector(3, 4).scale_to(6)
         Vector(3.6, 4.8)
         >>> Vector(3, 4).truncate(6)
         Vector(3.0, 4.0)
@@ -525,7 +527,10 @@ class Vector:
 
         return (length * self) / self.length
 
-    scale = scale_to
+    def scale(self, length: typing.SupportsFloat) -> 'Vector':
+        warnings.warn("Vector.scale was renamed to `scale_to`",
+                      DeprecationWarning)
+        return self.scale_to(length)
 
     def reflect(self, surface_normal: VectorLike) -> 'Vector':
         """Reflect a vector against a surface.

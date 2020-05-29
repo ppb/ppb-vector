@@ -123,7 +123,7 @@ def test_trig_invariance(angle: float, n: int):
     assert isclose(r_sin, n_sin, rel_to=[n / 1e9])
 
 
-@given(v=vectors(), angle=angles(), n=st.integers(min_value=0, max_value=10_000))
+@given(v=vectors(), angle=angles(), n=st.integers(min_value=0, max_value=100_000))
 def test_rotation_invariance(v: Vector, angle: float, n: int):
     """Check that rotating by angle and angle + n×360° have the same result."""
     rot_once = v.rotate(angle)
