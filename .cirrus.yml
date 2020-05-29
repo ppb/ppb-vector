@@ -69,6 +69,7 @@ FreeBSD_task:
     matrix:
       - PYTHON: 3.6
       - PYTHON: 3.7
+      - PYTHON: 3.8
   install_script:
     - PYVER=`echo $PYTHON | tr -d '.'`
     - PYPKG=py${PYVER}
