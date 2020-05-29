@@ -139,9 +139,9 @@ task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   env:
     matrix:
-      - IMAGE: python:3.6-windowsservercore-1809
-      - IMAGE: python:3.7-windowsservercore-1809
-      - IMAGE: python:3.8-windowsservercore-1809
+      - IMAGE: python:3.6-windowsservercore
+      - IMAGE: python:3.7-windowsservercore
+      - IMAGE: python:3.8-windowsservercore
   allow_failures: $IMAGE =~ '.*-rc-.*'
   name: "Windows $IMAGE"
   windows_container:
