@@ -70,6 +70,7 @@ FreeBSD_task:
       - PYTHON: 3.6
       - PYTHON: 3.7
       - PYTHON: 3.8
+      - PYTHON: 3.9
   install_script:
     - PYVER=`echo $PYTHON | tr -d '.'`
     - PYPKG=py${PYVER}
