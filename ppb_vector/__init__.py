@@ -65,6 +65,9 @@ class Vector:
     x: float
     y: float
 
+    # Class-level attributes
+    zero: typing.ClassVar['Vector']
+
     __match_args__ = ('x', 'y')
 
     # Tell CPython that this isn't an extendable dict
@@ -572,6 +575,9 @@ class Vector:
             raise ValueError("Reflection requires a normalized vector.")
 
         return self - (2 * (self * surface_normal) * surface_normal)
+
+
+Vector.zero = Vector(0, 0)
 
 
 Sequence.register(Vector)
