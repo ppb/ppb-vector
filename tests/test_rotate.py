@@ -152,7 +152,7 @@ def test_rotation_stability(angle, loops):
         stepwise = stepwise.rotate(angle)
     note(f"Step-wise: {stepwise}")
 
-    assert fellswoop.isclose(stepwise, rel_tol=1e-8)
+    assert fellswoop.isclose(stepwise, rel_tol=1e-6)
     assert math.isclose(fellswoop.length, initial.length, rel_tol=1e-15)
 
 
