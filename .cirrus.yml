@@ -114,7 +114,7 @@ task:
 macOS_task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   osx_instance:
-    image: mojave-xcode-11
+    image: catalina-xcode
   env:
     PATH: ${HOME}/.pyenv/shims:${PATH}
     matrix:
