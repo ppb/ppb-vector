@@ -118,9 +118,9 @@ macOS_task:
   env:
     PATH: ${HOME}/.pyenv/shims:${PATH}
     matrix:
-      - PYTHON: 3.6.9
-      - PYTHON: 3.7.5
-      - PYTHON: 3.8.0
+      - PYTHON: 3.6.12
+      - PYTHON: 3.7.7
+      - PYTHON: 3.8.6
       - PYTHON: 3.9.0
   install_script:
     # Per the pyenv homebrew recommendations.
