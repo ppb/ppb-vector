@@ -15,6 +15,7 @@ status = [
   "macOS PYTHON:3.6.9",
   "macOS PYTHON:3.7.5",
   "macOS PYTHON:3.8.0",
+  "macOS PYTHON:3.9.0",
   "pep517",
 ]
 

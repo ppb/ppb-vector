@@ -121,6 +121,7 @@ macOS_task:
       - PYTHON: 3.6.9
       - PYTHON: 3.7.5
       - PYTHON: 3.8.0
+      - PYTHON: 3.9.0
   install_script:
     # Per the pyenv homebrew recommendations.
     # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
