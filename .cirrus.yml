@@ -139,6 +139,20 @@ macOS_task:
     - pip list
     - ./test.sh
 
+macOS_version_task:
+  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
+  osx_instance:
+    image: catalina-xcode
+  env:
+    PATH: ${HOME}/.pyenv/shims:${PATH}
+  install_script:
+    # Per the pyenv homebrew recommendations.
+    # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
+    - brew install openssl readline pyenv
+
+  script:
+    - pyenv install --list
+
 task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   env:
