@@ -64,7 +64,7 @@ upload_task:
 FreeBSD_task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   freebsd_instance:
-    image_family: freebsd-12-1
+    image_family: freebsd-14-0
   env:
     matrix:
       - PYTHON: 3.6
