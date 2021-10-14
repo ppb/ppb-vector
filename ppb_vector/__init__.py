@@ -63,6 +63,8 @@ class Vector:
     """
     x: float
     y: float
+        
+   __match_args__ = ('x', 'y')
 
     # Tell CPython that this isn't an extendable dict
     __slots__ = ('x', 'y', '__weakref__')
