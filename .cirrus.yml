@@ -1,7 +1,7 @@
 docs_task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   container:
-    image: python:3.9-slim
+    image: python:3-slim
 
   install_script:
     - apt update && apt install make
@@ -14,7 +14,7 @@ docs_task:
 lint_task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   container:
-    image: python:3.9-slim
+    image: python:3-slim
 
   install_script:
     - pip install --upgrade-strategy eager -U -r requirements-tests.txt
@@ -29,7 +29,7 @@ lint_task:
 pep517_task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   container:
-    image: python:3.9-slim
+    image: python:3-slim
 
   install_script:
     - pip install --upgrade-strategy eager -U pep517
@@ -71,6 +71,7 @@ FreeBSD_task:
       - PYTHON: 3.7
       - PYTHON: 3.8
       - PYTHON: 3.9
+      - PYTHON: 3.10
   install_script:
     - PYVER=`echo $PYTHON | tr -d '.'`
     - PYPKG=py${PYVER}
@@ -94,7 +95,8 @@ task:
       - IMAGE: python:3.7-slim
       - IMAGE: python:3.8-slim
       - IMAGE: python:3.9-slim
-      - IMAGE: python:3.10-rc-slim
+      - IMAGE: python:3.10-slim
+      - IMAGE: python:rc-slim
       - IMAGE: pypy:3.6-slim
       - IMAGE: pypy:3.7-slim
   name: "Linux $IMAGE"
@@ -115,14 +117,17 @@ task:
 macOS_task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   osx_instance:
-    image: catalina-xcode
+    image: big-sur-xcode
   env:
     PATH: ${HOME}/.pyenv/shims:${PATH}
     matrix:
+      # Sadly, I have not found a way to reliably discover what versions are
+      # available without just asking in a Cirrus job.
       - PYTHON: 3.6.12
       - PYTHON: 3.7.9
       - PYTHON: 3.8.6
       - PYTHON: 3.9.0
+      - PYTHON: 3.10-dev
   install_script:
     # Per the pyenv homebrew recommendations.
     # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
@@ -142,7 +147,7 @@ macOS_task:
 macOS_version_task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   osx_instance:
-    image: catalina-xcode
+    image: big-sur-xcode
   env:
     PATH: ${HOME}/.pyenv/shims:${PATH}
   install_script:
@@ -161,7 +166,8 @@ task:
       - IMAGE: python:3.7-windowsservercore
       - IMAGE: python:3.8-windowsservercore
       - IMAGE: python:3.9-windowsservercore
-      - IMAGE: python:3.10-rc-windowsservercore
+      - IMAGE: python:3.10-windowsservercore
+      - IMAGE: python:rc-windowsservercore
   allow_failures: $IMAGE =~ '.*-rc-.*'
   name: "Windows $IMAGE"
   windows_container:
