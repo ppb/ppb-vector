@@ -136,7 +136,7 @@ macOS_task:
     - pyenv rehash
     - pip install --upgrade-strategy eager -U pip wheel setuptools
     - pip install --upgrade-strategy eager -U -r requirements-tests.txt
-    - pip install -e .
+    - pip install .
 
   script:
     - python3 --version
