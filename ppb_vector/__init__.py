@@ -118,12 +118,13 @@ class Vector:
             #  https://docs.python.org/3/library/dataclasses.html#frozen-instances
             object.__setattr__(self, 'x', float(x))
         except ValueError:
-            raise TypeError(f"{type(x).__name__} object not convertable to float") from None
+            # TODO(nicoo): Decide whether this should rethrow
+            raise TypeError(f"{type(x).__name__} object not convertable to float")  # noqa: B904
 
         try:
             object.__setattr__(self, 'y', float(y))
         except ValueError:
-            raise TypeError(f"{type(y).__name__} object not convertable to float") from None
+            raise TypeError(f"{type(y).__name__} object not convertable to float")  # noqa: B904
 
         return self
 
