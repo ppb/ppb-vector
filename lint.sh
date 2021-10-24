@@ -10,4 +10,5 @@ run flake8 --version
 run flake8 --ignore E241,F403,F405,B011 tests
 run flake8 --exclude tests/
 
-run ${PY} -m mypy ppb_vector tests
+# Exclusion due to https://github.com/python/mypy/pull/10191
+run ${PY} -m mypy ppb_vector tests --exclude test_pattern_matching.py
