@@ -1,4 +1,5 @@
 import sys
+import typing
 
 
 def setup_hypothesis():
@@ -12,6 +13,6 @@ def setup_hypothesis():
 
 setup_hypothesis()
 
-collect_ignore = []
+collect_ignore: typing.List[str] = []
 if sys.version_info < (3, 10):
     collect_ignore.append('test_pattern_matching.py')
