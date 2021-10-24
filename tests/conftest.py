@@ -1,3 +1,6 @@
+import sys
+
+
 def setup_hypothesis():
     from hypothesis import settings, Verbosity
 
@@ -8,3 +11,7 @@ def setup_hypothesis():
 
 
 setup_hypothesis()
+
+collect_ignore = []
+if sys.version_info < (3, 10):
+    collect_ignore.append('test_pattern_matching.py')
