@@ -64,10 +64,9 @@ upload_task:
 FreeBSD_task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   freebsd_instance:
-    image_family: freebsd-12-1
+    image_family: freebsd-13-0
   env:
     matrix:
-      - PYTHON: 3.6
       - PYTHON: 3.7
       - PYTHON: 3.8
       - PYTHON: 3.9
@@ -90,12 +89,10 @@ task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   env:
     matrix:
-      - IMAGE: python:3.6-slim
       - IMAGE: python:3.7-slim
       - IMAGE: python:3.8-slim
       - IMAGE: python:3.9-slim
       - IMAGE: python:3.10-rc-slim
-      - IMAGE: pypy:3.6-slim
       - IMAGE: pypy:3.7-slim
   name: "Linux $IMAGE"
   allow_failures: $IMAGE =~ '.*-rc-.*'
@@ -119,7 +116,6 @@ macOS_task:
   env:
     PATH: ${HOME}/.pyenv/shims:${PATH}
     matrix:
-      - PYTHON: 3.6.12
       - PYTHON: 3.7.7
       - PYTHON: 3.8.6
       - PYTHON: 3.9.0
@@ -143,7 +139,6 @@ task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   env:
     matrix:
-      - IMAGE: python:3.6-windowsservercore
       - IMAGE: python:3.7-windowsservercore
       - IMAGE: python:3.8-windowsservercore
       - IMAGE: python:3.9-windowsservercore
