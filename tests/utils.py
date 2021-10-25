@@ -32,7 +32,7 @@ def units():
     return st.builds(UNIT_X.rotate, angles())
 
 
-def angle_isclose(x, y, epsilon=6.5e-5, modulus=360):
+def angle_isclose(x, y, *, epsilon=6.5e-5, modulus=360):
     d = (x - y) % modulus
     return (d < epsilon) or (d > modulus - epsilon)
 
