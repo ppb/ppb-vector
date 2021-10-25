@@ -6,9 +6,12 @@ function run() {
     echo
 }
 
+function die() {
+    echo "$@" >&2
+    exit 1
+}
+
 PY=${PY-python3}
 
-if ! command -v $PY >/dev/null; then
-    echo "Python interpreter '$PY' not found" >&2
-    exit 1
-fi
+command -v $PY >/dev/null || die "Python interpreter '$PY' not found"
+
