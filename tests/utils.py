@@ -16,7 +16,7 @@ def floats(max_magnitude=1e75):
     return st.floats(min_value=-max_magnitude, max_value=max_magnitude)
 
 
-def lengths(min_value=0, max_value=1e75):
+def lengths(*, min_value=0, max_value=1e75):
     return st.floats(min_value=min_value, max_value=max_value)
 
 
@@ -32,14 +32,15 @@ def units():
     return st.builds(UNIT_X.rotate, angles())
 
 
-def angle_isclose(x, y, epsilon=6.5e-5):
-    d = (x - y) % 360
-    return (d < epsilon) or (d > 360 - epsilon)
+def angle_isclose(x, y, *, epsilon=6.5e-5, modulus=360):
+    d = (x - y) % modulus
+    return (d < epsilon) or (d > modulus - epsilon)
 
 
 def isclose(
     x,
     y,
+    *,
     abs_tol: float = 1e-9,
     rel_tol: float = 1e-9,
     rel_exp: float = 1,

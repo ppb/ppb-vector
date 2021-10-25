@@ -24,6 +24,23 @@ PPB's 2D Vector class
         The Y coordinate of the vector
 
 
+Pattern Matching
+----------------
+
+(Python 3.10 and up only. See pep636_ (PEP 636) for information on pattern
+matching in general.)
+
+:py:class:`Vector` supports not only basic pattern matching
+(``case Vector(x=4, y=2):``), but also supports positional arguments
+(``case Vector(4, 2):``) and also comparison to sequences
+(``case (4, 2):``).
+
+However, it does not support matching against dictionaries
+(``case {'x': 4, 'y': 2}:``).
+
+.. _pep636: https://www.python.org/dev/peps/pep-0636/
+
+
 Inheriting from :py:class:`Vector`
 -----------------------------------
 

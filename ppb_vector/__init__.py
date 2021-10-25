@@ -3,6 +3,7 @@ import warnings
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from math import atan2, copysign, cos, degrees, hypot, isclose, radians, sin, sqrt
+from typing import Tuple
 
 __all__ = ('Vector',)
 
@@ -63,6 +64,8 @@ class Vector:
     """
     x: float
     y: float
+
+    __match_args__ = ('x', 'y')
 
     # Tell CPython that this isn't an extendable dict
     __slots__ = ('x', 'y', '__weakref__')
@@ -531,6 +534,22 @@ class Vector:
         warnings.warn("Vector.scale was renamed to `scale_to`",
                       DeprecationWarning)
         return self.scale_to(length)
+
+    def decompose(self, basis: VectorLike) -> 'Tuple[Vector, Vector]':
+        """Decomposes a vector as 2 components in a different basis.
+
+        :param basis: A :py:class:`Vector` or a vector-like, describing the first
+            component of the basis, which must be normalized.
+
+        >>> Vector(2, 3).decompose( (1, 0) )
+        (Vector(2.0, 0.0), Vector(0.0, 3.0))
+        """
+        basis = Vector(basis)
+        if not isclose(basis.length, 1):
+            raise ValueError("Decomposition requires a normalized vector.")
+
+        a = (self * basis) * basis
+        return a, self - a
 
     def reflect(self, surface_normal: VectorLike) -> 'Vector':
         """Reflect a vector against a surface.

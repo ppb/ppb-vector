@@ -6,9 +6,16 @@ function run() {
     echo
 }
 
+function die() {
+    echo "$@" >&2
+    exit 1
+}
+
 PY=${PY-python3}
 
-if ! command -v $PY >/dev/null; then
-    echo "Python interpreter '$PY' not found" >&2
-    exit 1
-fi
+command -v $PY >/dev/null || die "Python interpreter '$PY' not found"
+
+PY_MAJOR="$($PY -c 'import sys; print(sys.version_info.major)')"
+PY_MINOR="$($PY -c 'import sys; print(sys.version_info.minor)')"
+
+[ "${PY_MAJOR}" -eq 3 ] || die Only Python 3 is supported
