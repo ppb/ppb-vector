@@ -149,7 +149,7 @@ class Vector:
     def __reduce__(self):
         return Vector, (self.x, self.y)
 
-    def update(self,
+    def update(self, *,
                x: Optional[SupportsFloat] = None,
                y: Optional[SupportsFloat] = None):
         """Return a new :py:class:`Vector` replacing specified fields with new values."""
