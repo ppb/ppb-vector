@@ -7,7 +7,9 @@ if [[ "${PYTHON-x}" =~ pypy-* ]]; then
 fi
 
 run flake8 --version
-run flake8 --ignore E241,F403,F405,B011 tests
+run flake8 --ignore E241,F403,F405,B011 \
+    $([ $PY_MINOR -ge 10 ] || echo '--exclude tests/test_pattern_matching.py') \
+    tests
 run flake8 --exclude tests/
 
 # Exclusion due to https://github.com/python/mypy/pull/10191
