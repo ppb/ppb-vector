@@ -535,7 +535,8 @@ class Vector:
     def reflect(self, surface_normal: VectorLike) -> 'Vector':
         """Reflect a vector against a surface.
 
-        :param other: A :py:class:`Vector` or a vector-like.
+        :param surface_normal: A :py:class:`Vector` or a vector-like, that is
+          orthogonal to the surface against which to reflect and normalized.
           For a description of vector-likes, see :py:func:`__new__`.
 
         Compute the reflection of a :py:class:`Vector` on a surface going
