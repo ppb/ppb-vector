@@ -40,6 +40,7 @@ def angle_isclose(x, y, *, epsilon=6.5e-5, modulus=360):
 def isclose(
     x,
     y,
+    *,
     abs_tol: float = 1e-9,
     rel_tol: float = 1e-9,
     rel_exp: float = 1,
