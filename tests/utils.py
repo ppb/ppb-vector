@@ -16,7 +16,7 @@ def floats(max_magnitude=1e75):
     return st.floats(min_value=-max_magnitude, max_value=max_magnitude)
 
 
-def lengths(min_value=0, max_value=1e75):
+def lengths(*, min_value=0, max_value=1e75):
     return st.floats(min_value=min_value, max_value=max_value)
 
 
