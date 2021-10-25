@@ -1,3 +1,6 @@
+import operator
+from functools import reduce
+
 from hypothesis import given, note
 
 from ppb_vector import Vector
@@ -20,7 +23,7 @@ def test_decompose_canonical(v: Vector):
 @given(v=vectors(), basis=units())
 def test_decompose_recombine(v: Vector, basis: Vector):
     """A vector is the sum of its decomposed components."""
-    assert sum(v.decompose(basis), start=ZERO).isclose(v)
+    assert reduce(operator.add, v.decompose(basis)).isclose(v)
 
 
 @given(v=vectors(), basis=units())
