@@ -1,5 +1,5 @@
 import sys
-import typing
+import typing  # TODO: In Py3.9 onwards, ABCs can be subscripted directly
 import warnings
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
