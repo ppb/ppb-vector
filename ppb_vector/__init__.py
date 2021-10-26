@@ -1,3 +1,4 @@
+import sys
 import typing
 import warnings
 from collections.abc import Mapping, Sequence
@@ -12,12 +13,23 @@ __all__ = ('Vector',)
 __version__ = "1.0"
 
 
+# TODO: TypedDict is only available from the stdlib in Python 3.8 onwards
+if sys.version_info.minor >= 8:
+    from typing import TypedDict
+else:
+    from typing_extensions import TypedDict
+
+
+# Mappings convertable to Vector
+VectorLikeDict = TypedDict('VectorLikeDict', {'x': SupportsFloat, 'y': SupportsFloat})
+
+
 # Anything convertable to a Vector, including lists, tuples, and dicts
 VectorLike = Union[
     'Vector',
     Tuple[SupportsFloat, SupportsFloat],
     typing.Sequence[SupportsFloat],  # TODO: Length 2
-    typing.Mapping[str, SupportsFloat],  # TODO: Length 2, keys 'x', 'y'
+    VectorLikeDict,
 ]
 
 
