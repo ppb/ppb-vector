@@ -14,7 +14,7 @@ __version__ = "1.0"
 
 # Anything convertable to a Vector, including lists, tuples, and dicts
 VectorLike = typing.Union[
-    'Vector',  # Or subclasses, unconnected to the Vector typevar above
+    'Vector',
     typing.Tuple[typing.SupportsFloat, typing.SupportsFloat],
     typing.Sequence[typing.SupportsFloat],  # TODO: Length 2
     typing.Mapping[str, typing.SupportsFloat],  # TODO: Length 2, keys 'x', 'y'
