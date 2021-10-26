@@ -39,7 +39,7 @@ def test_decompose_angles(v: Vector, basis: Vector):
     v=vectors(), w=vectors(), λ=floats(),
     basis=units(),
 )
-def test_dot_linear(v: Vector, w: Vector, λ: float, basis: Vector):
+def test_decompose_linear(v: Vector, w: Vector, λ: float, basis: Vector):
     """Decomposition against a fixed basis is linear"""
     inner = (v + λ * w).decompose(basis)
     outer = tuple(map(lambda t: t[0] + λ * t[1],
