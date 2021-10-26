@@ -68,6 +68,7 @@ class Vector:
     # Class-level attributes
     zero: typing.ClassVar['Vector']
 
+    # See https://www.python.org/dev/peps/pep-0622/#special-attribute-match-args
     __match_args__ = ('x', 'y')
 
     # Tell CPython that this isn't an extendable dict
