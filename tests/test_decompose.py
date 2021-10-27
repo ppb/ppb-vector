@@ -38,6 +38,8 @@ def test_decompose_angles(v: Vector, basis: Vector):
 
 @given(
     basis=units(), v=vectors(),
+    # We need |λw| ⩽ MAX_MAGNITUDE; picking |λ| and |w| below √MAX_MAGNITUDE
+    #  achieves that, though rejects some otherwise-valid combinations.
     λ=floats(max_magnitude=sqrt(MAX_MAGNITUDE)), w=vectors(sqrt(MAX_MAGNITUDE)),
 )
 def test_decompose_linear(v: Vector, w: Vector, λ: float, basis: Vector):
