@@ -178,7 +178,7 @@ class Vector:
         >>> assert Vector(1, 1)
         >>> assert not Vector(0, 0)
         """
-        return self != (0, 0)
+        return self != Vector.zero
 
     @property
     def length(self) -> float:
@@ -544,7 +544,7 @@ class Vector:
             raise ValueError("Vector.scale_to takes non-negative lengths.")
 
         if length == 0:
-            return Vector(0, 0)
+            return Vector.zero
 
         return (length * self) / self.length
 
