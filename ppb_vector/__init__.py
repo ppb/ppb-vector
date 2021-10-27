@@ -78,6 +78,8 @@ class Vector:
     y: float
 
     # Class-level attributes
+    u: typing.ClassVar['Vector']
+    v: typing.ClassVar['Vector']
     zero: typing.ClassVar['Vector']
 
     # See https://www.python.org/dev/peps/pep-0622/#special-attribute-match-args
@@ -599,6 +601,8 @@ class Vector:
         return p
 
 
+Vector.u = Vector(1, 0)
+Vector.v = Vector(0, 1)
 Vector.zero = Vector(0, 0)
 
 
