@@ -130,16 +130,15 @@ macOS_task:
       - PYTHON: 3.9
       - PYTHON: 3.10
   install_script:
-    # Per the pyenv homebrew recommendations.
-    # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
+    - brew update
     - brew install python@${PYTHON}
-    - export PY=/usr/local/opt/python@${PYTHON}/bin/python3
+    - export PY=$(brew --prefix)/opt/python@${PYTHON}/bin/python3
     - ${PY} -m pip install --user --upgrade-strategy eager -U pip wheel setuptools
     - ${PY} -m pip install --user --upgrade-strategy eager -U -r requirements-ci.txt
     - ${PY} -m pip install --user .
 
   script:
-    - export PY=/usr/local/opt/python@${PYTHON}/bin/python3
+    - export PY=$(brew --prefix)/opt/python@${PYTHON}/bin/python3
     - ${PY} --version
     - ${PY} -m pip list
     - ./test.sh
