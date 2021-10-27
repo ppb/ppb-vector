@@ -17,5 +17,6 @@ def requirements(section=None):
 setup(
     # setup needs to be able to import the library, for attr: to work
     setup_requires=requirements() + ['pytest-runner'],
+    install_requires=requirements(),
     tests_require=requirements('tests'),
 )
