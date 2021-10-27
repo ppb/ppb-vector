@@ -1,9 +1,10 @@
-import typing
+import sys
+import typing  # TODO: In Py3.9 onwards, ABCs can be subscripted directly
 import warnings
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from math import atan2, copysign, cos, degrees, hypot, isclose, radians, sin, sqrt
-from typing import Tuple
+from typing import Optional, SupportsFloat, Tuple, Union
 
 __all__ = ('Vector',)
 
@@ -12,12 +13,23 @@ __all__ = ('Vector',)
 __version__ = "1.0"
 
 
+# TODO: TypedDict is only available from the stdlib in Python 3.8 onwards
+if sys.version_info.minor >= 8:
+    from typing import TypedDict
+else:
+    from typing_extensions import TypedDict
+
+
+# Mappings convertable to Vector
+VectorLikeDict = TypedDict('VectorLikeDict', {'x': SupportsFloat, 'y': SupportsFloat})
+
+
 # Anything convertable to a Vector, including lists, tuples, and dicts
-VectorLike = typing.Union[
-    'Vector',  # Or subclasses, unconnected to the Vector typevar above
-    typing.Tuple[typing.SupportsFloat, typing.SupportsFloat],
-    typing.Sequence[typing.SupportsFloat],  # TODO: Length 2
-    typing.Mapping[str, typing.SupportsFloat],  # TODO: Length 2, keys 'x', 'y'
+VectorLike = Union[
+    'Vector',
+    Tuple[SupportsFloat, SupportsFloat],
+    typing.Sequence[SupportsFloat],  # TODO: Length 2
+    VectorLikeDict,
 ]
 
 
@@ -68,13 +80,14 @@ class Vector:
     # Class-level attributes
     zero: typing.ClassVar['Vector']
 
+    # See https://www.python.org/dev/peps/pep-0622/#special-attribute-match-args
     __match_args__ = ('x', 'y')
 
     # Tell CPython that this isn't an extendable dict
     __slots__ = ('x', 'y', '__weakref__')
 
     @typing.overload
-    def __new__(cls, x: typing.SupportsFloat, y: typing.SupportsFloat): pass
+    def __new__(cls, x: SupportsFloat, y: SupportsFloat): pass
 
     @typing.overload
     def __new__(cls, other: VectorLike): pass
@@ -137,8 +150,8 @@ class Vector:
         return Vector, (self.x, self.y)
 
     def update(self,
-               x: typing.Optional[typing.SupportsFloat] = None,
-               y: typing.Optional[typing.SupportsFloat] = None):
+               x: Optional[SupportsFloat] = None,
+               y: Optional[SupportsFloat] = None):
         """Return a new :py:class:`Vector` replacing specified fields with new values."""
         if x is None and y is None:
             return self
@@ -147,7 +160,7 @@ class Vector:
                       self.y if y is None else y)
 
     @staticmethod
-    def _unpack(value: VectorLike) -> typing.Tuple[float, float]:
+    def _unpack(value: VectorLike) -> Tuple[float, float]:
         if isinstance(value, Vector):
             return value.x, value.y
         elif isinstance(value, Sequence) and len(value) == 2:
@@ -245,7 +258,7 @@ class Vector:
         other_x, other_y = Vector._unpack(other)
         return self.x * other_x + self.y * other_y
 
-    def scale_by(self, scalar: typing.SupportsFloat) -> 'Vector':
+    def scale_by(self, scalar: SupportsFloat) -> 'Vector':
         """Compute a vector-scalar multiplication.
 
         >>> Vector(1, 2).scale_by(3)
@@ -262,7 +275,7 @@ class Vector:
     def __mul__(self, other: VectorLike) -> float: pass
 
     @typing.overload
-    def __mul__(self, other: typing.SupportsFloat) -> 'Vector': pass
+    def __mul__(self, other: SupportsFloat) -> 'Vector': pass
 
     def __mul__(self, other):
         """Perform a dot product or a scalar product, based on the parameter type.
@@ -304,12 +317,12 @@ class Vector:
     def __rmul__(self, other: VectorLike) -> float: pass
 
     @typing.overload
-    def __rmul__(self, other: typing.SupportsFloat) -> 'Vector': pass
+    def __rmul__(self, other: SupportsFloat) -> 'Vector': pass
 
     def __rmul__(self, other):
         return self.__mul__(other)
 
-    def __truediv__(self, other: typing.SupportsFloat) -> 'Vector':
+    def __truediv__(self, other: SupportsFloat) -> 'Vector':
         """Perform a division between a vector and a scalar.
 
         >>> Vector(3, 3) / 3
@@ -318,7 +331,7 @@ class Vector:
         other = float(other)
         return Vector(self.x / other, self.y / other)
 
-    def __getitem__(self, item: typing.Union[str, int]) -> float:
+    def __getitem__(self, item: Union[str, int]) -> float:
         if hasattr(item, '__index__'):
             item = item.__index__()  # type: ignore
         if isinstance(item, str):
@@ -400,7 +413,7 @@ class Vector:
         return rv
 
     def isclose(self, other: VectorLike, *,
-                abs_tol: typing.SupportsFloat = 1e-09, rel_tol: typing.SupportsFloat = 1e-09,
+                abs_tol: SupportsFloat = 1e-09, rel_tol: SupportsFloat = 1e-09,
                 rel_to: typing.Sequence[VectorLike] = ()) -> bool:
         """Perform an approximate comparison of two vectors.
 
@@ -439,7 +452,7 @@ class Vector:
         return (diff <= rel_tol * rel_length or diff <= float(abs_tol))
 
     @staticmethod
-    def _trig(angle: typing.SupportsFloat) -> typing.Tuple[float, float]:
+    def _trig(angle: SupportsFloat) -> Tuple[float, float]:
         r = radians(angle)
         r_cos, r_sin = cos(r), sin(r)
 
@@ -456,7 +469,7 @@ class Vector:
 
         return r_cos, r_sin
 
-    def rotate(self, angle: typing.SupportsFloat) -> 'Vector':
+    def rotate(self, angle: SupportsFloat) -> 'Vector':
         """Rotate a vector.
 
         Rotate a vector in relation to the origin and return a new :py:class:`Vector`.
@@ -485,7 +498,7 @@ class Vector:
         """
         return self.scale_to(1)
 
-    def truncate(self, max_length: typing.SupportsFloat) -> 'Vector':
+    def truncate(self, max_length: SupportsFloat) -> 'Vector':
         """Scale a given :py:class:`Vector` down to a given length, if it is larger.
 
         >>> Vector(7, 24).truncate(3)
@@ -518,7 +531,7 @@ class Vector:
 
         return self.scale_to(max_length)
 
-    def scale_to(self, length: typing.SupportsFloat) -> 'Vector':
+    def scale_to(self, length: SupportsFloat) -> 'Vector':
         """Scale a given :py:class:`Vector` to a certain length.
 
         >>> Vector(7, 24).scale_to(2)
@@ -533,7 +546,7 @@ class Vector:
 
         return (length * self) / self.length
 
-    def scale(self, length: typing.SupportsFloat) -> 'Vector':
+    def scale(self, length: SupportsFloat) -> 'Vector':
         warnings.warn("Vector.scale was renamed to `scale_to`",
                       DeprecationWarning)
         return self.scale_to(length)
