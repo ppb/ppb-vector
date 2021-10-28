@@ -47,6 +47,10 @@ class Vector:
     :py:class:`Vector` implements many convenience features, as well as
     useful mathematical operations for 2D geometry and linear algebra.
 
+    ### Implemented protocols
+
+    #### Sequence
+
     :py:class:`Vector` acts as an iterable and a sequence, allowing usage like
     converting, indexing, and unpacking:
 
@@ -65,6 +69,8 @@ class Vector:
 
     >>> print( *Vector(1, 2) )
     1.0 2.0
+
+    #### Mapping
 
     It also acts mostly like a mapping, when it does not conflict with being a
     sequence. In particular, the coordinates may be accessed by subscripting:
