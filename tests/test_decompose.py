@@ -1,10 +1,11 @@
 import operator
 from functools import reduce
+from math import sqrt
 
 from hypothesis import given, note
 
 from ppb_vector import Vector
-from utils import angle_isclose, floats, units, vectors
+from utils import angle_isclose, floats, MAX_MAGNITUDE, units, vectors
 
 
 # TODO(nicoo): Replace with Vector.zero once #168 is merged.
@@ -36,14 +37,15 @@ def test_decompose_angles(v: Vector, basis: Vector):
 
 
 @given(
-    v=vectors(), w=vectors(), λ=floats(),
-    basis=units(),
+    basis=units(), v=vectors(),
+    # We need |λw| ⩽ MAX_MAGNITUDE; picking |λ| and |w| below √MAX_MAGNITUDE
+    #  achieves that, though rejects some otherwise-valid combinations.
+    λ=floats(max_magnitude=sqrt(MAX_MAGNITUDE)), w=vectors(sqrt(MAX_MAGNITUDE)),
 )
-def test_dot_linear(v: Vector, w: Vector, λ: float, basis: Vector):
+def test_decompose_linear(v: Vector, w: Vector, λ: float, basis: Vector):
     """Decomposition against a fixed basis is linear"""
     inner = (v + λ * w).decompose(basis)
-    outer = tuple(map(lambda t: t[0] + λ * t[1],
-                      zip(v.decompose(basis), w.decompose(basis))))
+    outer = tuple((t + λ * u for t, u in zip(v.decompose(basis), w.decompose(basis))))
 
     note(f"inner: {inner}")
     note(f"outer: {outer}")

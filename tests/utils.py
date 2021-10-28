@@ -12,15 +12,24 @@ def angles():
     return st.floats(min_value=-360, max_value=360)
 
 
-def floats(max_magnitude=1e75):
+# The max magnitude of any “sensible” vector
+# 10⁷⁵ is a semi-arbitrary choice, but:
+# - It is sufficient to describe any game world; even using /picometers/ as the
+#   unit of length, the entire observable universe is “only” 9 × 10³⁸ pm across.
+# - It is slightly below 10⁷⁷≃2²⁵⁶, so squares are representable without issue
+#   in a `float` (or rather an IEEE754 binary64).
+MAX_MAGNITUDE = 1e75
+
+
+def floats(max_magnitude=MAX_MAGNITUDE):
     return st.floats(min_value=-max_magnitude, max_value=max_magnitude)
 
 
-def lengths(*, min_value=0, max_value=1e75):
+def lengths(*, min_value=0, max_value=MAX_MAGNITUDE):
     return st.floats(min_value=min_value, max_value=max_value)
 
 
-def vectors(max_magnitude=1e75):
+def vectors(max_magnitude=MAX_MAGNITUDE):
     return st.builds(
         Vector,
         st.floats(min_value=-max_magnitude, max_value=max_magnitude),
