@@ -91,13 +91,13 @@ class Vector:
         The vector with no length.
         >>> assert not Vector.zero
 
-    .. py:attribute:: Vector.u
+    .. py:attribute:: Vector.x_unit
         :type: Vector
         :value: Vector(1.0, 0.0)
 
         The unit vector aligned with the x axis.
 
-    .. py:attribute:: Vector.v
+    .. py:attribute:: Vector.y_unit
         :type: Vector
         :value: Vector(0.0, 1.0)
 
@@ -112,8 +112,8 @@ class Vector:
     __slots__ = ('x', 'y', '__weakref__')
 
     # Class-level attributes
-    u: typing.ClassVar['Vector']
-    v: typing.ClassVar['Vector']
+    x_unit: typing.ClassVar['Vector']
+    y_unit: typing.ClassVar['Vector']
     zero: typing.ClassVar['Vector']
 
     # See https://www.python.org/dev/peps/pep-0622/#special-attribute-match-args
@@ -632,8 +632,8 @@ class Vector:
         return p
 
 
-Vector.u = Vector(1, 0)
-Vector.v = Vector(0, 1)
+Vector.x_unit = Vector(1, 0)
+Vector.y_unit = Vector(0, 1)
 Vector.zero = Vector(0, 0)
 
 

@@ -35,7 +35,7 @@ def vectors(max_magnitude=MAX_MAGNITUDE):
 
 
 def units():
-    return st.builds(Vector.u.rotate, angles())
+    return st.builds(Vector.x_unit.rotate, angles())
 
 
 def angle_isclose(x, y, *, epsilon=6.5e-5, modulus=360):
@@ -90,5 +90,5 @@ UNARY_SCALAR_OPS = (
 
 
 # Sequence of vector-likes equivalent to the input vector (def. to the x vector)
-def vector_likes(v: Vector = Vector.u):
+def vector_likes(v: Vector = Vector.x_unit):
     return ((v.x, v.y), [v.x, v.y], {"x": v.x, "y": v.y})
