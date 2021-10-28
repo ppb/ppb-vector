@@ -103,8 +103,13 @@ class Vector:
 
         The unit vector aligned with the y axis.
     """
+
+    # Object members
     x: float
     y: float
+
+    # Tell CPython there are no other members, allowing for memory layour optimizations.
+    __slots__ = ('x', 'y', '__weakref__')
 
     # Class-level attributes
     u: typing.ClassVar['Vector']
@@ -113,9 +118,6 @@ class Vector:
 
     # See https://www.python.org/dev/peps/pep-0622/#special-attribute-match-args
     __match_args__ = ('x', 'y')
-
-    # Tell CPython that this isn't an extendable dict
-    __slots__ = ('x', 'y', '__weakref__')
 
     @typing.overload
     def __new__(cls, x: SupportsFloat, y: SupportsFloat): pass
