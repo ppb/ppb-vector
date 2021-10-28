@@ -15,4 +15,4 @@ elif ${PY} -m pip show -q pytest-xdist 2>/dev/null; then
 		PYTEST_OPTIONS=( -n auto )
 fi
 
-run ${PY} -m pytest "${PYTEST_OPTIONS[@]}"
+run ${PY} -m pytest "${PYTEST_OPTIONS[@]}" "$@"
