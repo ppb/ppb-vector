@@ -160,8 +160,8 @@ task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   env:
     matrix:
-      - IMAGE: python:3.7
-      - IMAGE: python:3.8
+      - IMAGE: python:3.7-windowsservercore
+      - IMAGE: python:3.8-windowsservercore
       - IMAGE: python:3.9
       - IMAGE: python:3.10
       - IMAGE: python:3
