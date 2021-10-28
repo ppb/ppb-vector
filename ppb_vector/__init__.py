@@ -79,6 +79,29 @@ class Vector:
     -5.0
     >>> v["x"]
     -3.0
+
+    ### Class attributes
+
+    Common constants are also provided as class-level attributes for convenience.
+
+    .. py:attribute:: Vector.zero
+        :type: Vector
+        :value: Vector(0.0, 0.0)
+
+        The vector with no length.
+        >>> assert not Vector.zero
+
+    .. py:attribute:: Vector.u
+        :type: Vector
+        :value: Vector(1.0, 0.0)
+
+        The unit vector aligned with the x axis.
+
+    .. py:attribute:: Vector.v
+        :type: Vector
+        :value: Vector(0.0, 1.0)
+
+        The unit vector aligned with the y axis.
     """
     x: float
     y: float
