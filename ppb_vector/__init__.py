@@ -578,7 +578,7 @@ class Vector:
 
         :param direction: A :py:class:`Vector` or vector-like, that is non-null.
         """
-        basis = Vector.normalize(Vector(direction))
+        basis = Vector(direction).normalize()
         p, _ = self.decompose(basis)
         return p
 
