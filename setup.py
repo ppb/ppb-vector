@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 from setuptools import setup
 
+from mypyc.build import mypycify
+
 
 def requirements(section=None):
     """Helper for loading dependencies from requirements files."""
@@ -19,4 +21,7 @@ setup(
     setup_requires=requirements() + ['pytest-runner'],
     install_requires=requirements(),
     tests_require=requirements('tests'),
+    ext_modules=mypycify([
+        'ppb_vector/__init__.py',
+    ]),
 )
