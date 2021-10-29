@@ -1,0 +1,4 @@
+# Required to be able to import utils.py
+hypothesis
+
+pyperf
