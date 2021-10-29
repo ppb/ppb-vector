@@ -3,7 +3,7 @@
 __pycache__/
 .hypothesis/
 /.mypy_cache/
-/tests/*.json
+/tests/benchdata/*.json
 /.eggs/
 
 # Build & artifacts directories for packages & wheels
