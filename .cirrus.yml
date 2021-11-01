@@ -94,8 +94,11 @@ task:
       - IMAGE: python:3.8-slim
       - IMAGE: python:3.9-slim
       - IMAGE: python:3.10-slim
+      - IMAGE: python:3-slim
       - IMAGE: python:rc-slim
       - IMAGE: pypy:3.7-slim
+      - IMAGE: pypy:3-slim
+      - IMAGE: pypy:3.8-slim
   name: "Linux $IMAGE"
   allow_failures: $IMAGE =~ '.*-rc-.*'
   container:
@@ -159,9 +162,10 @@ task:
     matrix:
       - IMAGE: python:3.7-windowsservercore
       - IMAGE: python:3.8-windowsservercore
-      - IMAGE: python:3.9-windowsservercore
-      - IMAGE: python:3.10-windowsservercore
-      - IMAGE: python:rc-windowsservercore
+      - IMAGE: python:3.9
+      - IMAGE: python:3.10
+      - IMAGE: python:3
+      - IMAGE: python:rc
   allow_failures: $IMAGE =~ '.*-rc-.*'
   name: "Windows $IMAGE"
   windows_container:
