@@ -589,6 +589,15 @@ class Vector:
 
         return self - (2 * (self * surface_normal) * surface_normal)
 
+    def project(self, direction: VectorLike) -> 'Vector':
+        """Project a vector on a line, defined by its direction.
+
+        :param direction: A :py:class:`Vector` or vector-like, that is non-null.
+        """
+        basis = Vector(direction).normalize()
+        p, _ = self.decompose(basis)
+        return p
+
 
 Vector.zero = Vector(0, 0)
 
