@@ -77,7 +77,7 @@ FreeBSD_task:
     - PY=python${PYTHON}
     - pkg install -y bash python${PYVER} ${PYPKG}-setuptools
     - ${PY} -m ensurepip
-    - ${PY} -m pip install --upgrade-strategy eager -U -r requirements-tests.txt
+    - ${PY} -m pip install --upgrade-strategy eager -U -r requirements-ci.txt
     - ${PY} -m pip install -e .
 
   script:
@@ -97,15 +97,19 @@ task:
       - IMAGE: python:3-slim
       - IMAGE: python:rc-slim
       - IMAGE: pypy:3.7-slim
+        PYTEST_CPUS: 15
       - IMAGE: pypy:3-slim
+        PYTEST_CPUS: 15
       - IMAGE: pypy:3.8-slim
+        PYTEST_CPUS: 15
   name: "Linux $IMAGE"
   allow_failures: $IMAGE =~ '.*-rc-.*'
   container:
     image: $IMAGE
+    greedy: true
 
   install_script:
-    - pip install --upgrade-strategy eager -U -r requirements-tests.txt
+    - pip install --upgrade-strategy eager -U -r requirements-ci.txt
     - pip install -e .
 
   script:
@@ -134,7 +138,7 @@ macOS_task:
     - pyenv global ${PYTHON}
     - pyenv rehash
     - pip install --upgrade-strategy eager -U pip wheel setuptools
-    - pip install --upgrade-strategy eager -U -r requirements-tests.txt
+    - pip install --upgrade-strategy eager -U -r requirements-ci.txt
     - pip install .
 
   script:
@@ -173,7 +177,7 @@ task:
     image: $IMAGE
 
   install_script:
-    - C:\Python\python.exe -m pip install --upgrade-strategy eager -U -r requirements-tests.txt
+    - C:\Python\python.exe -m pip install --upgrade-strategy eager -U -r requirements-ci.txt
     - C:\Python\python.exe -m pip install -e .
 
   script:
