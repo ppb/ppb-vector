@@ -89,6 +89,7 @@ FreeBSD_task:
 task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   env:
+    PYTEST_CPUS: 8
     matrix:
       - IMAGE: python:3.7-slim
       - IMAGE: python:3.8-slim
@@ -102,6 +103,7 @@ task:
   name: "Linux $IMAGE"
   allow_failures: $IMAGE =~ '.*-rc-.*'
   container:
+    cpu: $PYTEST_CPUS
     image: $IMAGE
 
   install_script:
