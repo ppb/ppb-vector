@@ -79,29 +79,6 @@ class Vector:
     -5.0
     >>> v["x"]
     -3.0
-
-    ### Class attributes
-
-    Common constants are also provided as class-level attributes for convenience.
-
-    .. py:attribute:: Vector.zero
-        :type: Vector
-        :value: Vector(0.0, 0.0)
-
-        The vector with no length.
-        >>> assert not Vector.zero
-
-    .. py:attribute:: Vector.x_unit
-        :type: Vector
-        :value: Vector(1.0, 0.0)
-
-        The unit vector aligned with the x axis.
-
-    .. py:attribute:: Vector.y_unit
-        :type: Vector
-        :value: Vector(0.0, 1.0)
-
-        The unit vector aligned with the y axis.
     """
 
     # Object members
@@ -112,8 +89,18 @@ class Vector:
     __slots__ = ('x', 'y', '__weakref__')
 
     # Class-level attributes
+    #: The unit vector aligned with the x axis.
+    #: >>> Vector.x_unit
+    #: Vector(1.0, 0.0)
     x_unit: typing.ClassVar['Vector']
+
+    #: The unit vector aligned with the y axis.
+    #: >>> Vector.y_unit
+    #: Vector(0.0, 1.0)
     y_unit: typing.ClassVar['Vector']
+
+    #: The vector with no length.
+    #: >>> assert not Vector.zero
     zero: typing.ClassVar['Vector']
 
     # See https://www.python.org/dev/peps/pep-0622/#special-attribute-match-args
