@@ -15,9 +15,9 @@ status = [
   "Windows python:3.9",
   "Windows python:3.10",
   "Windows python:3",
-  "macOS PYTHON:3.7.9",
-  "macOS PYTHON:3.8.6",
-  "macOS PYTHON:3.9.0",
+  "macOS PYTHON:3.7",
+  "macOS PYTHON:3.8",
+  "macOS PYTHON:3.9",
   "pep517",
 ]
 

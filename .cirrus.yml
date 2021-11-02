@@ -125,40 +125,23 @@ macOS_task:
   env:
     PATH: ${HOME}/.pyenv/shims:${PATH}
     matrix:
-      # Sadly, I have not found a way to reliably discover what versions are
-      # available without just asking in a Cirrus job.
-      - PYTHON: 3.7.9
-      - PYTHON: 3.8.6
-      - PYTHON: 3.9.0
+      - PYTHON: 3.7
+      - PYTHON: 3.8
+      - PYTHON: 3.9
+      - PYTHON: 3.10
   install_script:
-    # Per the pyenv homebrew recommendations.
-    # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
-    - brew install openssl readline pyenv
-    - pyenv install ${PYTHON}
-    - pyenv global ${PYTHON}
-    - pyenv rehash
-    - pip install --upgrade-strategy eager -U pip wheel setuptools
-    - pip install --upgrade-strategy eager -U -r requirements-ci.txt
-    - pip install .
+    - brew update
+    - brew install python@${PYTHON}
+    - export PY=$(brew --prefix)/opt/python@${PYTHON}/bin/python3
+    - ${PY} -m pip install --user --upgrade-strategy eager -U pip wheel setuptools
+    - ${PY} -m pip install --user --upgrade-strategy eager -U -r requirements-ci.txt
+    - ${PY} -m pip install --user .
 
   script:
-    - python3 --version
-    - pip list
+    - export PY=$(brew --prefix)/opt/python@${PYTHON}/bin/python3
+    - ${PY} --version
+    - ${PY} -m pip list
     - ./test.sh
-
-macOS_version_task:
-  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
-  osx_instance:
-    image: catalina-xcode
-  env:
-    PATH: ${HOME}/.pyenv/shims:${PATH}
-  install_script:
-    # Per the pyenv homebrew recommendations.
-    # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
-    - brew install openssl readline pyenv
-
-  script:
-    - pyenv install --list
 
 task:
   skip: $CIRRUS_BRANCH =~ '.*\.tmp'
