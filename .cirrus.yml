@@ -17,7 +17,6 @@ lint_task:
     image: python:3-slim
 
   install_script:
-    - pip install --upgrade-strategy eager -U -r requirements-tests.txt
     - pip install --upgrade-strategy eager -U -r requirements-lint.txt
     - pip install -e .
 
