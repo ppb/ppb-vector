@@ -1,6 +1,11 @@
 [build-system]
 # Minimum requirements for the build system to execute.
-requires = ["setuptools", "wheel"]  # PEP 508 specifications.
+requires = ["setuptools", "wheel"] # PEP 508 specifications.
 
 # Actually tell PEP517 tools to call setuptools
 build-backend = "setuptools.build_meta"
+
+# PyTest configuration
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--doctest-modules --doctest-glob=*.md"
