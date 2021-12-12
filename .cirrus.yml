@@ -63,6 +63,7 @@ upload_task:
 
 FreeBSD_task:
   only_if: $BRANCH == 'staging' || $BRANCH == 'trying'
+  use_compute_credits: yes
   freebsd_instance:
     image_family: freebsd-13-0
   env:
@@ -120,6 +121,7 @@ task:
 
 macOS_task:
   only_if: $BRANCH == 'staging' || $BRANCH == 'trying'
+  use_compute_credits: yes
   osx_instance:
     image: catalina-xcode
   env:
