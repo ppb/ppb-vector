@@ -89,6 +89,7 @@ FreeBSD_task:
 
 task:
   skip: $BRANCH =~ '.*\.tmp'
+  use_compute_credits: $BRANCH == 'staging' || $BRANCH == 'trying'
   env:
     matrix:
       - IMAGE: python:3.7-slim
@@ -147,6 +148,7 @@ macOS_task:
 
 task:
   skip: $BRANCH =~ '.*\.tmp'
+  use_compute_credits: $BRANCH == 'staging' || $BRANCH == 'trying'
   env:
     matrix:
       - IMAGE: python:3.7-windowsservercore
