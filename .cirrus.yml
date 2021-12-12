@@ -37,6 +37,7 @@ pep517_task:
     - python3 -m pep517.check .
 
 upload_task:
+  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
   # only_if: $CIRRUS_RELEASE != ""
   env:
     TWINE_REPOSITORY_URL: "https://test.pypi.org/legacy/"
