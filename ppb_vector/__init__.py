@@ -47,6 +47,10 @@ class Vector:
     :py:class:`Vector` implements many convenience features, as well as
     useful mathematical operations for 2D geometry and linear algebra.
 
+    ### Implemented protocols
+
+    #### Sequence
+
     :py:class:`Vector` acts as an iterable and a sequence, allowing usage like
     converting, indexing, and unpacking:
 
@@ -66,6 +70,8 @@ class Vector:
     >>> print( *Vector(1, 2) )
     1.0 2.0
 
+    #### Mapping
+
     It also acts mostly like a mapping, when it does not conflict with being a
     sequence. In particular, the coordinates may be accessed by subscripting:
 
@@ -74,17 +80,31 @@ class Vector:
     >>> v["x"]
     -3.0
     """
+
+    # Object members
     x: float
     y: float
 
+    # Tell CPython there are no other members, allowing for memory layour optimizations.
+    __slots__ = ('x', 'y', '__weakref__')
+
     # Class-level attributes
+    #: The unit vector aligned with the x axis.
+    #: >>> Vector.x_unit
+    #: Vector(1.0, 0.0)
+    x_unit: typing.ClassVar['Vector']
+
+    #: The unit vector aligned with the y axis.
+    #: >>> Vector.y_unit
+    #: Vector(0.0, 1.0)
+    y_unit: typing.ClassVar['Vector']
+
+    #: The vector with no length.
+    #: >>> assert not Vector.zero
     zero: typing.ClassVar['Vector']
 
     # See https://www.python.org/dev/peps/pep-0622/#special-attribute-match-args
     __match_args__ = ('x', 'y')
-
-    # Tell CPython that this isn't an extendable dict
-    __slots__ = ('x', 'y', '__weakref__')
 
     @typing.overload
     def __new__(cls, x: SupportsFloat, y: SupportsFloat): pass
@@ -176,7 +196,7 @@ class Vector:
         >>> assert Vector(1, 1)
         >>> assert not Vector(0, 0)
         """
-        return self != (0, 0)
+        return self != Vector.zero
 
     @property
     def length(self) -> float:
@@ -542,7 +562,7 @@ class Vector:
             raise ValueError("Vector.scale_to takes non-negative lengths.")
 
         if length == 0:
-            return Vector(0, 0)
+            return Vector.zero
 
         return (length * self) / self.length
 
@@ -599,6 +619,8 @@ class Vector:
         return p
 
 
+Vector.x_unit = Vector(1, 0)
+Vector.y_unit = Vector(0, 1)
 Vector.zero = Vector(0, 0)
 
 

@@ -5,9 +5,6 @@ import hypothesis.strategies as st
 from ppb_vector import Vector
 
 
-UNIT_X, UNIT_Y = Vector(1, 0), Vector(0, 1)
-
-
 def angles():
     return st.floats(min_value=-360, max_value=360)
 
@@ -38,7 +35,7 @@ def vectors(max_magnitude=MAX_MAGNITUDE):
 
 
 def units():
-    return st.builds(UNIT_X.rotate, angles())
+    return st.builds(Vector.x_unit.rotate, angles())
 
 
 def angle_isclose(x, y, *, epsilon=6.5e-5, modulus=360):
@@ -93,5 +90,5 @@ UNARY_SCALAR_OPS = (
 
 
 # Sequence of vector-likes equivalent to the input vector (def. to the x vector)
-def vector_likes(v: Vector = UNIT_X):
+def vector_likes(v: Vector = Vector.x_unit):
     return ((v.x, v.y), [v.x, v.y], {"x": v.x, "y": v.y})
