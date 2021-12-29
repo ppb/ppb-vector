@@ -165,6 +165,4 @@ task:
   script:
     - C:\Python\python.exe --version
     - C:\Python\python.exe -m pip list
-
-    - C:\Python\python.exe -m doctest README.md ppb_vector/__init__.py
-    - C:\Python\python.exe -m pytest --hypothesis-profile ci
+    - C:\Python\python.exe -m pytest --hypothesis-profile ci -n auto
