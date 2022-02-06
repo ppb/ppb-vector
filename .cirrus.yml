@@ -1,5 +1,5 @@
 docs_task:
-  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
+  skip: $BRANCH =~ '.*\.tmp'
   container:
     image: python:3-slim
 
@@ -12,7 +12,7 @@ docs_task:
     - make -C docs/ html
 
 lint_task:
-  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
+  skip: $BRANCH =~ '.*\.tmp'
   container:
     image: python:3-slim
 
@@ -26,7 +26,7 @@ lint_task:
     - ./lint.sh
 
 pep517_task:
-  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
+  skip: $BRANCH =~ '.*\.tmp'
   container:
     image: python:3-slim
 
@@ -37,6 +37,7 @@ pep517_task:
     - python3 -m pep517.check .
 
 upload_task:
+  skip: $BRANCH =~ '.*\.tmp'
   # only_if: $CIRRUS_RELEASE != ""
   env:
     TWINE_REPOSITORY_URL: "https://test.pypi.org/legacy/"
@@ -61,7 +62,8 @@ upload_task:
 
 
 FreeBSD_task:
-  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
+  only_if: $BRANCH == 'staging' || $BRANCH == 'trying'
+  use_compute_credits: true
   freebsd_instance:
     image_family: freebsd-13-0
   env:
@@ -86,7 +88,8 @@ FreeBSD_task:
     - ./test.sh
 
 task:
-  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
+  skip: $BRANCH =~ '.*\.tmp'
+  use_compute_credits: $BRANCH == 'staging' || $BRANCH == 'trying'
   env:
     matrix:
       - IMAGE: python:3.7-slim
@@ -118,7 +121,8 @@ task:
     - ./test.sh
 
 macOS_task:
-  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
+  only_if: $BRANCH == 'staging' || $BRANCH == 'trying'
+  use_compute_credits: true
   osx_instance:
     image: catalina-xcode
   env:
@@ -143,7 +147,8 @@ macOS_task:
     - ./test.sh
 
 task:
-  skip: $CIRRUS_BRANCH =~ '.*\.tmp'
+  skip: $BRANCH =~ '.*\.tmp'
+  use_compute_credits: $BRANCH == 'staging' || $BRANCH == 'trying'
   env:
     matrix:
       - IMAGE: python:3.7-windowsservercore
